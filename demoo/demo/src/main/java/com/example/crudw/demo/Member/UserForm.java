@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class UserForm {
     private String id;
+    private String loginId;
     private String pw;
     private String name;
     private String email;

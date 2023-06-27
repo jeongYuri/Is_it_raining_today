@@ -1,9 +1,10 @@
 package com.example.crudw.demo.Repository;
 
 import com.example.crudw.demo.Member.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 
 public class MemoryUserRepository implements UserRepository{
@@ -23,6 +24,7 @@ public class MemoryUserRepository implements UserRepository{
                 .filter(user -> user.getId().equals(id))
                 .findAny();
     }
+
 
     @Override
     public List<User> findAll() {
