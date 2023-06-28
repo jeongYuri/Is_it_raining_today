@@ -60,18 +60,20 @@ public class HomeController {
         String id = form.getId();
         String pw = form.getPw();
 
-        // 로그인 기능 수행
         User loginUser = userService.login(id, pw);
 
-        //글로벌 에러 발생
         if(loginUser == null){
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
             return "login";
         }
-        // 성공 로직
+
         Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
         response.addCookie(cookie);
-        return "redirect:/";
+        return "loginhome";
+    }
+    @GetMapping(value = "/write")
+    public String write() {
+        return "write";
     }
 }
 
