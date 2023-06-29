@@ -77,6 +77,13 @@ public class HomeController {
         Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
         response.addCookie(cookie);
         return "loginhome";
+<<<<<<< HEAD
+=======
+    }
+    @GetMapping(value = "/write")
+    public String write() {
+        return "write";
+>>>>>>> 523aa7fa212e21d6a2665d5af58f1db5421d44f9
     }
     @GetMapping(value = "/write")
     public String write() {
