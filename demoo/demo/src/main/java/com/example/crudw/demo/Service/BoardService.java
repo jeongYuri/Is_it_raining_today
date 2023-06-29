@@ -23,7 +23,6 @@ public class BoardService {
     public Board getPost(Long no) {
         Optional<Board> boardOpt = boardRepository.findById(no);
         Board board = boardOpt.get();
-
         return board;
     }
     public Long savePost(Board board) {

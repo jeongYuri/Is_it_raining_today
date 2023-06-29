@@ -88,7 +88,6 @@ public class HomeController {
         //String id = (String)session.getAttribute("id");
         boardService.savePost(board);
         System.out.println(board);
-
         return "loginhome";
 
     }
