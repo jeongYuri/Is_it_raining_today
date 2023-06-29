@@ -16,9 +16,8 @@ public class BoardService {
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
-    public List<Board> getBoardList(String searchType, String searchStr) {
-        List<Board> boardList = boardRepository.findAll();
-   return boardList;
+    public List<Board> BoardList() {
+        return boardRepository.findAll();
     }
     public Board getPost(Long no) {
         Optional<Board> boardOpt = boardRepository.findById(no);

@@ -28,12 +28,12 @@
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Board</a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="./write">Write</a></li>
-            <li><a class="dropdown-item" href="#">List</a></li>
+            <li><a class="dropdown-item" href="./list">List</a></li>
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#">my page</a></li>
+            <tr><td th:text="${users?.id}"></td></tr>
           </ul>
         </li>
-        <a class="navbar-brand" th:text="${users?.name}">😨😨😨</a>
       </ul>
     </div>
   </div>

@@ -12,8 +12,11 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -77,18 +80,20 @@ public class HomeController {
         Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
         response.addCookie(cookie);
         return "loginhome";
-<<<<<<< HEAD
-=======
+
     }
     @GetMapping(value = "/write")
     public String write() {
         return "write";
->>>>>>> 523aa7fa212e21d6a2665d5af58f1db5421d44f9
+
     }
-    @GetMapping(value = "/write")
-    public String write() {
-        return "write";
+    @GetMapping(value = "/list")
+    public String list(Model model) {
+        //List<Board> boards = boardService.BoardList();
+        model.addAttribute("board",boardService.BoardList());
+        return "list";
     }
+
     @PostMapping(value = "/write")
     public String boardwrite(Board board){
         //HttpSession session = request.getSession();
