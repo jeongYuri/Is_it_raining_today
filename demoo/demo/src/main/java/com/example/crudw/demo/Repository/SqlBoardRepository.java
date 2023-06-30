@@ -21,10 +21,10 @@ public class SqlBoardRepository implements BoardRepository{
 
     @Override
     public Board insert(Board board) {
-        board.setWriterNo(++sequence);
+        board.setWriter_no(++sequence);
         //store.put(board.getWriterNo(),board);
         String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(null,?,'udi',?,?,'2023-06-24 17:50:00','2023-06-26 17:50:00',?,?,?)";
-        int result = jdbcTemplate.update(sql,board.getWriterNo(),board.getTitle(),board.getContent(),board.getHit(),board.getFileName(),board.getFileLink());
+        int result = jdbcTemplate.update(sql,board.getWriter_no(),board.getTitle(),board.getContent(),board.getHit(),board.getFile_name(),board.getFile_link());
         return board;
     }
 
@@ -37,12 +37,12 @@ public class SqlBoardRepository implements BoardRepository{
         return ((rs, rowNum) -> {
             Board board = new Board();
             //user.setNo(rs.getLong("no"));
-            board.setWriterNo(rs.getLong("writerno"));
-            board.setWriterName(rs.getString("writername"));
+            board.setWriter_no(rs.getLong("writer_no"));
+            board.setWriter_name(rs.getString("writer_name"));
             board.setTitle(rs.getString("title"));
             board.setContent(rs.getString("content"));
-            board.setFileName(rs.getString("filename"));
-            board.setFileLink(rs.getNString("filelink"));
+            board.setFile_name(rs.getString("file_name"));
+            board.setFile_link(rs.getNString("file_link"));
             return board;
         });
     }

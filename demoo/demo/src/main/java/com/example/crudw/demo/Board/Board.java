@@ -10,13 +10,15 @@ import lombok.Data;
 public class Board {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;
-    private Long writerNo;
-    private String writerName;
+    private Long writer_no;
+    private String writer_name;
     private String title;
     private String content;
+    private String create_time;
+    private String modify_time;
     private int hit;
-    private String fileName;
-    private String fileLink;
+    private String file_name;
+    private String file_link;
 
     public Long getNo() {
         return no;
@@ -26,20 +28,20 @@ public class Board {
         this.no = no;
     }
 
-    public Long getWriterNo() {
-        return writerNo;
+    public Long getWriter_no() {
+        return writer_no;
     }
 
-    public void setWriterNo(Long writerNo) {
-        this.writerNo = writerNo;
+    public void setWriter_no(Long writer_no) {
+        this.writer_no = writer_no;
     }
 
-    public String getWriterName() {
-        return writerName;
+    public String getWriter_name() {
+        return writer_name;
     }
 
-    public void setWriterName(String writerName) {
-        this.writerName = writerName;
+    public void setWriter_name(String writer_name) {
+        this.writer_name = writer_name;
     }
 
     public String getTitle() {
@@ -66,20 +68,34 @@ public class Board {
         this.hit = hit;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getFile_name() {
+        return file_name;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFile_name(String file_name) {
+        this.file_name = file_name;
     }
 
-    public String getFileLink() {
-        return fileLink;
+    public String getFile_link() {
+        return file_link;
     }
 
-    public void setFileLink(String fileLink) {
-        this.fileLink = fileLink;
+    public void setFile_link(String file_link) {
+        this.file_link = file_link;
+    }
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
+    }
+    public String getModify_time() {
+        return modify_time;
+    }
+
+    public void setModify_time(String modify_time) {
+        this.modify_time = modify_time;
     }
 }
 

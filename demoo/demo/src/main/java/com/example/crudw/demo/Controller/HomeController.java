@@ -66,12 +66,9 @@ public class HomeController {
         if (bindingResult.hasErrors()){
             return "/login";
         }
-
         String id = form.getId();
         String pw = form.getPw();
-
         User loginUser = userService.login(id, pw);
-
         if(loginUser == null){
             bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
             return "login";
@@ -90,7 +87,7 @@ public class HomeController {
     @GetMapping(value = "/list")
     public String list(Model model) {
         //List<Board> boards = boardService.BoardList();
-        model.addAttribute("board",boardService.BoardList());
+        model.addAttribute("nboard",boardService.BoardList());
         return "list";
     }
 
