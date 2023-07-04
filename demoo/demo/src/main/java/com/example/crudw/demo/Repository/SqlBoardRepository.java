@@ -1,6 +1,7 @@
 package com.example.crudw.demo.Repository;
 
 import com.example.crudw.demo.Board.Board;
+import com.example.crudw.demo.Member.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,11 +24,10 @@ public class SqlBoardRepository implements BoardRepository{
     public Board insert(Board board) {
         board.setWriter_no(++sequence);
         //store.put(board.getWriterNo(),board);
-        String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(null,?,'udi',?,?,'2023-06-24 17:50:00','2023-06-26 17:50:00',?,?,?)";
-        int result = jdbcTemplate.update(sql,board.getWriter_no(),board.getTitle(),board.getContent(),board.getHit(),board.getFile_name(),board.getFile_link());
+        String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,'udi',?,?,'2023-06-24 17:50:00','2023-06-26 17:50:00',?,?,?)";
+        int result = jdbcTemplate.update(sql,board.getNo(),board.getWriter_no(),board.getTitle(),board.getContent(),board.getHit(),board.getFile_name(),board.getFile_link());
         return board;
     }
-
     @Override
     public List<Board> findAll() {
         return jdbcTemplate.query("select *from nboard",boardRowMapper());
@@ -36,7 +36,7 @@ public class SqlBoardRepository implements BoardRepository{
     private RowMapper<Board> boardRowMapper() {
         return ((rs, rowNum) -> {
             Board board = new Board();
-            //user.setNo(rs.getLong("no"));
+            board.setNo(rs.getLong("no"));
             board.setWriter_no(rs.getLong("writer_no"));
             board.setWriter_name(rs.getString("writer_name"));
             board.setTitle(rs.getString("title"));
@@ -49,6 +49,8 @@ public class SqlBoardRepository implements BoardRepository{
 
     @Override
     public Optional<Board> findById(Long no) {
-        return Optional.empty();
+        String sql = "select * from nboard where no =?";
+        List<Board> list = jdbcTemplate.query(sql,boardRowMapper(),no);
+        return list.stream().findAny();
     }
 }

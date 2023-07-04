@@ -20,6 +20,7 @@ public class BoardService {
         return boardRepository.findAll();
     }
     public Board getPost(Long no) {
+        System.out.println(no);
         Optional<Board> boardOpt = boardRepository.findById(no);
         Board board = boardOpt.get();
         return board;

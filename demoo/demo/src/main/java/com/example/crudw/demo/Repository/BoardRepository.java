@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface BoardRepository {
     Board insert(Board board);
     List<Board> findAll();
+    //Optional<Board>findByNo(Long no);
     Optional<Board> findById(Long no);
 }

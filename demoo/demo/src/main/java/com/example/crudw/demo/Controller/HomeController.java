@@ -100,6 +100,17 @@ public class HomeController {
         return "loginhome";
 
     }
+    @GetMapping(value="/read/{no}")
+    public String read(@PathVariable("no") Long no,Model model){
+        //Board board = boardService.getPost(no);
+        //Cookie[] cookies = request.getCookies();
+        //boolean flag = true;
+        model.addAttribute("board",boardService.getPost(no));
+        System.out.println(no);
+   //     model.addAttribute("no",no);
+        return "detailboard";
+    }
+
 
 }
 
