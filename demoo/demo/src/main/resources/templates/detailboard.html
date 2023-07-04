@@ -71,11 +71,11 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div style=" text-align: center;">
-                    <a class="btn btn-secondary btn-sm text-white"  href="/write">수정</a>
-                    <a class="btn btn-secondary btn-sm text-white"  href="/list">목록</a>
-                    <a class="btn btn-secondary btn-sm text-white"  href="/list">삭제</a>
                 </div>
+                <div style=" text-align: center;">
+                    <a class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+ ${board.no}">수정</a>
+                    <a class="btn btn-secondary btn-sm text-white" type="button"  href="/list">목록</a>
+                    <a class="btn btn-secondary btn-sm text-white" type="button"  href="/list">삭제</a>
                 </div>
             </div>
         </div>

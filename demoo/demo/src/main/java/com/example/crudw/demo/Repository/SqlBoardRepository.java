@@ -1,14 +1,11 @@
 package com.example.crudw.demo.Repository;
 
 import com.example.crudw.demo.Board.Board;
-import com.example.crudw.demo.Member.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import javax.sql.DataSource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 @Slf4j
 public class SqlBoardRepository implements BoardRepository{
@@ -26,6 +23,13 @@ public class SqlBoardRepository implements BoardRepository{
         //store.put(board.getWriterNo(),board);
         String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,'udi',?,?,'2023-06-24 17:50:00','2023-06-26 17:50:00',?,?,?)";
         int result = jdbcTemplate.update(sql,board.getNo(),board.getWriter_no(),board.getTitle(),board.getContent(),board.getHit(),board.getFile_name(),board.getFile_link());
+       System.out.println(board);
+        return board;
+    }
+    @Override
+    public Board boardupdate(Board board){
+        String sql = "update nboard set title=#{title},content=#{content} where no=#{no}";
+        int result = jdbcTemplate.update(sql,board.getTitle(),board.getContent());
         return board;
     }
     @Override

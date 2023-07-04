@@ -110,6 +110,20 @@ public class HomeController {
    //     model.addAttribute("no",no);
         return "detailboard";
     }
+    @RequestMapping("/update/post/{no}")
+    public String update(@PathVariable("no") Long no, Model model) {
+        //boardService.boardupdate(board);
+       // boardService.boardupdate(board);
+        Board board = boardService.getPost(no);
+        model.addAttribute("board",board);
+        return "update";
+    }
+
+    @RequestMapping(value="/savePost",method = RequestMethod.POST)
+    public String boardupdate(Board board,Model model){
+        model.addAttribute(boardService.boardupdate(board));
+        return "redirect:/read";
+    }
 
 
 }

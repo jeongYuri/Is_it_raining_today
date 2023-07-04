@@ -2,9 +2,6 @@ package com.example.crudw.demo.Service;
 
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Repository.BoardRepository;
-import com.example.crudw.demo.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +16,10 @@ public class BoardService {
     public List<Board> BoardList() {
         return boardRepository.findAll();
     }
-    public Board getPost(Long no) {
+    public Board boardupdate(Board board){return boardRepository.boardupdate(board);
+    }
+
+        public Board getPost(Long no) {
         System.out.println(no);
         Optional<Board> boardOpt = boardRepository.findById(no);
         Board board = boardOpt.get();
