@@ -37,13 +37,14 @@
 </head>
 <body>
 <div class="container">
-  <form action="/write" method="post" >
+  <form action="/savePost" method="post" >
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
         <h3 class="mb-3">✍️✍️</h3>
         <form class="validation-form" novalidate>
           <div class="mb-3">
             <tr th:each="board:${nboard}"></tr>
+            <input type="hidden" class="form-control" name="no" id="no" th:value="${board.no}" required>
             <label for="name">Title</label>
             <input type="text" class="form-control" name="title" id="title" th:value="${board.title}" required>
             <div class="invalid-feedback">

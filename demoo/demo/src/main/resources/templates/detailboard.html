@@ -75,7 +75,7 @@
                 <div style=" text-align: center;">
                     <a class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+ ${board.no}">수정</a>
                     <a class="btn btn-secondary btn-sm text-white" type="button"  href="/list">목록</a>
-                    <a class="btn btn-secondary btn-sm text-white" type="button"  href="/list">삭제</a>
+                    <a class="btn btn-secondary btn-sm text-white" type="button"  th:href="'/deletePost/'+${board.no}">삭제</a>
                 </div>
             </div>
         </div>

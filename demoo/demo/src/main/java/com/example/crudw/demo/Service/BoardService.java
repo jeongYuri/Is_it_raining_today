@@ -2,6 +2,7 @@ package com.example.crudw.demo.Service;
 
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Repository.BoardRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +17,9 @@ public class BoardService {
     public List<Board> BoardList() {
         return boardRepository.findAll();
     }
-    public Board boardupdate(Board board){return boardRepository.boardupdate(board);
-    }
+    public Long boardupdate(Board board){return boardRepository.boardupdate(board).getNo();}
 
-        public Board getPost(Long no) {
-        System.out.println(no);
+    public Board getPost(Long no) {
         Optional<Board> boardOpt = boardRepository.findById(no);
         Board board = boardOpt.get();
         return board;
@@ -28,5 +27,6 @@ public class BoardService {
     public Long savePost(Board board) {
         return boardRepository.insert(board).getNo();
     }
-
+    public void deletePost(Long no){boardRepository.deleteById(no);
+    }
 }

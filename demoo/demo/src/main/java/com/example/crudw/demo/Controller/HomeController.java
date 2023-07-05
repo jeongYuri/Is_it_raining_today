@@ -97,7 +97,7 @@ public class HomeController {
         //String id = (String)session.getAttribute("id");
         boardService.savePost(board);
         System.out.println(board);
-        return "loginhome";
+        return "list";
 
     }
     @GetMapping(value="/read/{no}")
@@ -110,22 +110,31 @@ public class HomeController {
    //     model.addAttribute("no",no);
         return "detailboard";
     }
-    @RequestMapping("/update/post/{no}")
+    @GetMapping("/update/post/{no}")
     public String update(@PathVariable("no") Long no, Model model) {
-        //boardService.boardupdate(board);
-       // boardService.boardupdate(board);
         Board board = boardService.getPost(no);
         model.addAttribute("board",board);
         return "update";
     }
 
-    @RequestMapping(value="/savePost",method = RequestMethod.POST)
-    public String boardupdate(Board board,Model model){
-        model.addAttribute(boardService.boardupdate(board));
-        return "redirect:/read";
+    @PostMapping(value="/savePost")
+    public String savePost(@ModelAttribute Board board,Model model){
+         boardService.getPost(board.getNo());
+        // boardService.boardupdate(board);
+         model.addAttribute(boardService.boardupdate(board));
+         model.addAttribute(board.getNo());
+        return "redirect:/list";
+    }
+
+    @GetMapping("/deletePost/{no}")
+        public String deletePost(@PathVariable("no") Long no,Model model){
+            boardService.deletePost(no);
+           // model.addAttribute("url", "/list");
+            return "redirect:/list";
+        }
     }
 
 
-}
+
 
 

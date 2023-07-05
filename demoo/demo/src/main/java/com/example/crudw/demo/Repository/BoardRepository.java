@@ -10,4 +10,5 @@ public interface BoardRepository {
     List<Board> findAll();
     //Optional<Board>findByNo(Long no);
     Optional<Board> findById(Long no);
+    void deleteById(Long no);
 }

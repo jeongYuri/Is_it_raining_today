@@ -4,6 +4,7 @@ import com.example.crudw.demo.Board.Board;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+
 import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
@@ -23,15 +24,24 @@ public class SqlBoardRepository implements BoardRepository{
         //store.put(board.getWriterNo(),board);
         String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,'udi',?,?,'2023-06-24 17:50:00','2023-06-26 17:50:00',?,?,?)";
         int result = jdbcTemplate.update(sql,board.getNo(),board.getWriter_no(),board.getTitle(),board.getContent(),board.getHit(),board.getFile_name(),board.getFile_link());
-       System.out.println(board);
+        System.out.println(board);
         return board;
     }
     @Override
     public Board boardupdate(Board board){
-        String sql = "update nboard set title=#{title},content=#{content} where no=#{no}";
-        int result = jdbcTemplate.update(sql,board.getTitle(),board.getContent());
-        return board;
+        System.out.println(board);
+        String sql = "UPDATE nboard SET title = ?, content = ? WHERE no = ?";
+        jdbcTemplate.update(sql, board.getTitle(), board.getContent(), board.getNo());
+
+        //    System.out.println(board);
+         return board;
     }
+    @Override
+    public void deleteById(Long no) {
+        String sql ="delete from nboard where no = ?";
+        int result = jdbcTemplate.update(sql,no);
+    }
+
     @Override
     public List<Board> findAll() {
         return jdbcTemplate.query("select *from nboard",boardRowMapper());
@@ -50,11 +60,12 @@ public class SqlBoardRepository implements BoardRepository{
             return board;
         });
     }
-
     @Override
     public Optional<Board> findById(Long no) {
         String sql = "select * from nboard where no =?";
         List<Board> list = jdbcTemplate.query(sql,boardRowMapper(),no);
         return list.stream().findAny();
     }
+
+
 }
