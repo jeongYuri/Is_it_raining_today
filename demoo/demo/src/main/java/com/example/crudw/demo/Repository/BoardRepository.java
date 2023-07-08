@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface BoardRepository {
     Board insert(Board board);
     Board boardupdate(Board board);
+    void hit(Long no);
     List<Board> findAll();
     //Optional<Board>findByNo(Long no);
     Optional<Board> findById(Long no);

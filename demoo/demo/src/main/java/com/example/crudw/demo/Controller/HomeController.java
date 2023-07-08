@@ -106,7 +106,7 @@ public class HomeController {
         //Cookie[] cookies = request.getCookies();
         //boolean flag = true;
         model.addAttribute("board",boardService.getPost(no));
-        System.out.println(no);
+        //System.out.println(no);
    //     model.addAttribute("no",no);
         return "detailboard";
     }

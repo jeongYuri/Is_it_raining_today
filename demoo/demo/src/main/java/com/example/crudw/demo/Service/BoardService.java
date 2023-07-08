@@ -22,6 +22,7 @@ public class BoardService {
     public Board getPost(Long no) {
         Optional<Board> boardOpt = boardRepository.findById(no);
         Board board = boardOpt.get();
+        boardRepository.hit(no);
         return board;
     }
     public Long savePost(Board board) {
@@ -29,4 +30,5 @@ public class BoardService {
     }
     public void deletePost(Long no){boardRepository.deleteById(no);
     }
+
 }

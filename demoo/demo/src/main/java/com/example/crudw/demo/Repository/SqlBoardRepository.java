@@ -36,6 +36,13 @@ public class SqlBoardRepository implements BoardRepository{
         //    System.out.println(board);
          return board;
     }
+
+    @Override
+    public void hit(Long no) {
+        String sql="UPDATE nboard SET hit = hit+1 WHERE no = ?";
+        jdbcTemplate.update(sql,no);
+    }
+
     @Override
     public void deleteById(Long no) {
         String sql ="delete from nboard where no = ?";
@@ -54,6 +61,7 @@ public class SqlBoardRepository implements BoardRepository{
             board.setWriter_no(rs.getLong("writer_no"));
             board.setWriter_name(rs.getString("writer_name"));
             board.setTitle(rs.getString("title"));
+            board.setHit(rs.getInt("hit"));
             board.setContent(rs.getString("content"));
             board.setFile_name(rs.getString("file_name"));
             board.setFile_link(rs.getNString("file_link"));
