@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 @Slf4j
@@ -21,17 +22,20 @@ public class SqlBoardRepository implements BoardRepository{
     @Override
     public Board insert(Board board) {
         board.setWriter_no(++sequence);
+        board.setCreate_time(LocalDateTime.now()); // 현재 시간으로 설정
+        board.setModify_time(LocalDateTime.now());
         //store.put(board.getWriterNo(),board);
-        String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,'udi',?,?,'2023-06-24 17:50:00','2023-06-26 17:50:00',?,?,?)";
-        int result = jdbcTemplate.update(sql,board.getNo(),board.getWriter_no(),board.getTitle(),board.getContent(),board.getHit(),board.getFile_name(),board.getFile_link());
+        String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,'udi',?,?,?,?,?,?,?)";
+        int result = jdbcTemplate.update(sql, board.getNo(), board.getWriter_no(), board.getTitle(), board.getContent(), board.getCreate_time(), board.getModify_time(), board.getHit(), board.getFile_name(), board.getFile_link());
         System.out.println(board);
         return board;
     }
     @Override
     public Board boardupdate(Board board){
         System.out.println(board);
-        String sql = "UPDATE nboard SET title = ?, content = ? WHERE no = ?";
-        jdbcTemplate.update(sql, board.getTitle(), board.getContent(), board.getNo());
+        board.setModify_time(LocalDateTime.now());
+        String sql = "UPDATE nboard SET title = ?, content = ?, modify_time=? WHERE no = ?";
+        jdbcTemplate.update(sql, board.getTitle(), board.getContent(),board.getModify_time(), board.getNo());
 
         //    System.out.println(board);
          return board;
@@ -60,11 +64,13 @@ public class SqlBoardRepository implements BoardRepository{
             board.setNo(rs.getLong("no"));
             board.setWriter_no(rs.getLong("writer_no"));
             board.setWriter_name(rs.getString("writer_name"));
+            board.setCreate_time(rs.getObject("create_time", LocalDateTime.class));
+            board.setModify_time(rs.getObject("modify_time", LocalDateTime.class));
             board.setTitle(rs.getString("title"));
             board.setHit(rs.getInt("hit"));
             board.setContent(rs.getString("content"));
             board.setFile_name(rs.getString("file_name"));
-            board.setFile_link(rs.getNString("file_link"));
+            board.setFile_link(rs.getString("file_link"));
             return board;
         });
     }

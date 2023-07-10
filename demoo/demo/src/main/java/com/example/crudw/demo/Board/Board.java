@@ -1,21 +1,27 @@
 package com.example.crudw.demo.Board;
 
+import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
-@Data
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+
 @Entity
-public class Board {
+public class Board extends TimeEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;
     private Long writer_no;
     private String writer_name;
     private String title;
     private String content;
-    private String create_time;
-    private String modify_time;
+    private LocalDateTime create_time;
+    private LocalDateTime modify_time;
     private int hit;
     private String file_name;
     private String file_link;
@@ -79,23 +85,21 @@ public class Board {
     public String getFile_link() {
         return file_link;
     }
-
-    public void setFile_link(String file_link) {
-        this.file_link = file_link;
-    }
-    public String getCreate_time() {
+    public void setFile_link(String file_link){this.file_link = file_link;}
+    public LocalDateTime getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(LocalDateTime create_time) {
         this.create_time = create_time;
     }
-    public String getModify_time() {
+    public LocalDateTime getModify_time() {
         return modify_time;
     }
 
-    public void setModify_time(String modify_time) {
+    public void setModify_time(LocalDateTime modify_time) {
         this.modify_time = modify_time;
     }
+
 }
 
