@@ -32,7 +32,7 @@
             <li><hr class="dropdown-divider" /></li>
             <li><a class="dropdown-item" href="#">my page</a></li>
           </ul>
-        </li>
+          <li class="nav-item"><span class="nav-link" id ="userId">님😀</span></li>
       </ul>
     </div>
   </div>
@@ -50,3 +50,11 @@
 <script src="../static/js/scripts.js"></script>
 </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var userIdElement = document.getElementById("userId");
+    var userIdCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    userIdElement.textContent = userIdCookie+"님😊";
+  });
+</script>

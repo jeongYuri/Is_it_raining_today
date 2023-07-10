@@ -75,7 +75,10 @@ public class HomeController {
         }
 
         Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
+        cookie.setPath("/");
         response.addCookie(cookie);
+        System.out.println("쿠키 이름: " + cookie.getName());
+        System.out.println("쿠키 값: " + cookie.getValue());
         return "loginhome";
 
     }
