@@ -25,8 +25,8 @@ public class SqlBoardRepository implements BoardRepository{
         board.setCreate_time(LocalDateTime.now()); // 현재 시간으로 설정
         board.setModify_time(LocalDateTime.now());
         //store.put(board.getWriterNo(),board);
-        String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,'udi',?,?,?,?,?,?,?)";
-        int result = jdbcTemplate.update(sql, board.getNo(), board.getWriter_no(), board.getTitle(), board.getContent(), board.getCreate_time(), board.getModify_time(), board.getHit(), board.getFile_name(), board.getFile_link());
+        String sql = "insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,?,?,?,?,?,?,?,?)";
+        int result = jdbcTemplate.update(sql, board.getNo(),board.getWriter_no(),board.getWriter_name(), board.getTitle(), board.getContent(), board.getCreate_time(), board.getModify_time(), board.getHit(), board.getFile_name(), board.getFile_link());
         System.out.println(board);
         return board;
     }

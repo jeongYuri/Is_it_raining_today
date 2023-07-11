@@ -42,13 +42,20 @@
             <div class="input-form col-md-12 mx-auto">
                 <h3 class="mb-3">✍️✍️</h3>
                 <form class="validation-form" novalidate>
-                        <div class="mb-3">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <label for="name">Title</label>
                             <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요" value="" required>
                             <div class="invalid-feedback">
                                 제목을 입력해주세요!😨
                             </div>
                         </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="writer_name">Writer</label>
+                            <input type="text" class="form-control" name="writer_name" id="writer_name" placeholder="" required>
+                        </div>
+                    </div>
                         <div class="mb-3">
                             <label for="name">Content</label>
                             <input type="text" class="form-control" name="content" id="content" placeholder="내용을 입력해주세요" style="height:300px;font-size:15px;" value="" required>
@@ -73,9 +80,15 @@
         <footer class="my-3 text-center text-small">
             <p class="mb-1">&copy;2021 YD</p>
         </footer>
-    </form>
-</div>
 <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        var userIdCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/, "$1");
+
+        var writerNameElement = document.getElementById("writer_name");
+        writerNameElement.value = userIdCookie;
+
+    });
+
 </script>
 </body>
 
