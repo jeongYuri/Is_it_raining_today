@@ -3,7 +3,9 @@ import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserForm;
 import com.example.crudw.demo.Service.BoardService;
+import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
+import com.example.crudw.demo.comment.Comment;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.List;
+
 
 @Slf4j
 @Controller
@@ -24,12 +28,14 @@ public class HomeController {
 
     private final UserService userService;
     private final BoardService boardService;
+    private final CommentService commentService;
 
 
     @Autowired
-    public HomeController(UserService userService,BoardService boardService) {
+    public HomeController(UserService userService, BoardService boardService,CommentService commentService) {
         this.userService = userService;
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     @GetMapping(value = "/")
@@ -41,6 +47,7 @@ public class HomeController {
     public String join() {
         return "signup";
     }
+
     @GetMapping(value = "/login")
     public String loginhome() {
         return "login";
@@ -59,18 +66,19 @@ public class HomeController {
         userService.join(users);
         return "redirect:/";
     }
+
     @PostMapping(value = "/login")
     public String login(@Valid @ModelAttribute UserForm form, BindingResult bindingResult,
                         HttpServletResponse response) {
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "/login";
         }
         String id = form.getId();
         String pw = form.getPw();
         User loginUser = userService.login(id, pw);
-        if(loginUser == null){
-            bindingResult.reject("loginFail","아이디 또는 비밀번호가 맞지 않습니다.");
+        if (loginUser == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "login";
         }
 
@@ -82,20 +90,22 @@ public class HomeController {
         return "loginhome";
 
     }
+
     @GetMapping(value = "/write")
     public String write() {
         return "write";
 
     }
+
     @GetMapping(value = "/list")
     public String list(Model model) {
         //List<Board> boards = boardService.BoardList();
-        model.addAttribute("nboard",boardService.BoardList());
+        model.addAttribute("nboard", boardService.BoardList());
         return "list";
     }
 
     @PostMapping(value = "/write")
-    public String boardwrite(Board board){
+    public String boardwrite(Board board) {
         //HttpSession session = request.getSession();
         //String id = (String)session.getAttribute("id");
         boardService.savePost(board);
@@ -103,39 +113,87 @@ public class HomeController {
         return "list";
 
     }
-    @GetMapping(value="/read/{no}")
-    public String read(@PathVariable("no") Long no,Model model){
+
+    @GetMapping(value = "/read/{no}")
+    public String read(@PathVariable("no") Long no, Model model) {
         //Board board = boardService.getPost(no);
         //Cookie[] cookies = request.getCookies();
         //boolean flag = true;
-        model.addAttribute("board",boardService.getPost(no));
+        List<Comment> commentList = commentService.getCommentList(no);
+        model.addAttribute("board", boardService.getPost(no));
+        model.addAttribute("commentList",commentList);
         //System.out.println(no);
-   //     model.addAttribute("no",no);
+        model.addAttribute("board_no",no);
         return "detailboard";
     }
+
     @GetMapping("/update/post/{no}")
     public String update(@PathVariable("no") Long no, Model model) {
         Board board = boardService.getPost(no);
-        model.addAttribute("board",board);
+        model.addAttribute("board", board);
         return "update";
     }
 
-    @PostMapping(value="/savePost")
-    public String savePost(@ModelAttribute Board board,Model model){
-         boardService.getPost(board.getNo());
+    @PostMapping(value = "/savePost")
+    public String savePost(@ModelAttribute Board board, Model model) {
+        boardService.getPost(board.getNo());
         // boardService.boardupdate(board);
-         model.addAttribute(boardService.boardupdate(board));
-         model.addAttribute(board.getNo());
+        model.addAttribute(boardService.boardupdate(board));
+        model.addAttribute(board.getNo());
         return "redirect:/list";
     }
-
     @GetMapping("/deletePost/{no}")
-        public String deletePost(@PathVariable("no") Long no,Model model){
-            boardService.deletePost(no);
-           // model.addAttribute("url", "/list");
-            return "redirect:/list";
-        }
+    public String deletePost(@PathVariable("no") Long no, Model model) {
+        boardService.deletePost(no);
+        // model.addAttribute("url", "/list");
+        return "redirect:/list";
     }
+    @PostMapping(value="/comment")
+    public String saveComment(@ModelAttribute Comment comment, Model model, HttpServletRequest request) {
+
+        Comment oldComment = null;
+        if (comment.getNo() != null) oldComment = commentService.getComment(comment.getNo());
+        Long no = null;
+
+        String page = "/read/" + comment.getBoard_no();
+
+        HttpSession session = request.getSession();
+        String name = (String) session.getAttribute("name");
+        Long writer_no = (Long) session.getAttribute("no");
+        String writerName = comment.getWriter_name();
+        //comment.setWriter_name(name);
+        comment.setWriter_no(writer_no);
+
+        if (oldComment == null) {
+            no = commentService.saveComment(comment);
+        } else {
+            if (oldComment.getWriter_no().equals(comment.getWriter_no())) {
+                no = commentService.saveComment(comment);
+                System.out.println("ok");
+            }
+            System.out.println(comment.getContent());
+            System.out.println(comment.getWriter_name());
+
+        }
+        System.out.println("no" + no);
+
+
+            page = "redirect:" + page;
+
+
+        return page;
+/*
+        Long board_no = comment.getBoard_no();
+        String writerName = comment.getWriter_name();
+        String content = comment.getContent();
+        log.debug("Debug message");
+        commentService.saveComment(comment);
+        model.addAttribute("no", comment.getNo());
+        System.out.println(comment);
+        //return "redirect:/read/"+comment.getBoard_no();
+        return "redirect:/list";*/
+    }
+}
 
 
 
