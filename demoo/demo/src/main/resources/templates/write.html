@@ -53,7 +53,7 @@
 
                         <div class="col-md-6 mb-3">
                             <label for="writer_name">Writer</label>
-                            <input type="text" class="form-control" name="writer_name" id="writer_name" placeholder="" required>
+                            <input type="text" class="form-control" name="writer_name" id="writer_name" placeholder="" required th:value="${session.id}">
                         </div>
                     </div>
                         <div class="mb-3">
@@ -80,16 +80,6 @@
         <footer class="my-3 text-center text-small">
             <p class="mb-1">&copy;2021 YD</p>
         </footer>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-        var userIdCookie = document.cookie.replace(/(?:(?:^|.*;\s*)userId\s*=\s*([^;]*).*$)|^.*$/, "$1");
-
-        var writerNameElement = document.getElementById("writer_name");
-        writerNameElement.value = userIdCookie;
-
-    });
-
-</script>
 </body>
 
 </html>

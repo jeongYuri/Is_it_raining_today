@@ -49,10 +49,39 @@ public class HomeController {
     }
 
     @GetMapping(value = "/login")
-    public String loginhome() {
+    public String login() {
         return "login";
     }
+    @GetMapping(path="/logout")
+    public String login(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "redirect:/index";
+    }
+   @PostMapping(path = "/checkLogin")
+   public String checkLogin(@RequestParam(value="id")String id,
+                            @RequestParam(value="pw") String pw,
+                            Model model,HttpServletRequest request,@ModelAttribute UserForm form){
+       //boolean result = userService.login(id,pw);
+       User loginUser = userService.login(id, pw);
+       String page;
 
+       if(loginUser==null){
+           model.addAttribute("msg","로그인 정보가 맞지않습니다.");
+           model.addAttribute("url","login");
+           page="alert";
+
+       }else{
+            id = form.getId();
+            pw = form.getPw();
+            HttpSession session = request.getSession();
+            session.setAttribute("id",id);
+            session.setAttribute("pw",pw);
+            System.out.println(id);
+            page="redirect:/list";
+       }
+       return page;
+   }
     @PostMapping(value = "/signup")
     public String register(@ModelAttribute UserForm form) {
         System.out.println("hi");
@@ -67,7 +96,7 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/login")
+    /*@PostMapping(value = "/login")
     public String login(@Valid @ModelAttribute UserForm form, BindingResult bindingResult,
                         HttpServletResponse response) {
 
@@ -89,7 +118,7 @@ public class HomeController {
         System.out.println("쿠키 값: " + cookie.getValue());
         return "loginhome";
 
-    }
+    }*/
 
     @GetMapping(value = "/write")
     public String write() {
