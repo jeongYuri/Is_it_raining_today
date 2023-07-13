@@ -103,7 +103,6 @@ public class HomeController {
         model.addAttribute("nboard", boardService.BoardList());
         return "list";
     }
-
     @PostMapping(value = "/write")
     public String boardwrite(Board board) {
         //HttpSession session = request.getSession();
@@ -111,18 +110,14 @@ public class HomeController {
         boardService.savePost(board);
         System.out.println(board);
         return "list";
-
     }
 
     @GetMapping(value = "/read/{no}")
     public String read(@PathVariable("no") Long no, Model model) {
-        //Board board = boardService.getPost(no);
-        //Cookie[] cookies = request.getCookies();
-        //boolean flag = true;
+        Board board = boardService.getPost(no);
         List<Comment> commentList = commentService.getCommentList(no);
         model.addAttribute("board", boardService.getPost(no));
-        model.addAttribute("commentList",commentList);
-        //System.out.println(no);
+        model.addAttribute("comment",commentList);
         model.addAttribute("board_no",no);
         return "detailboard";
     }

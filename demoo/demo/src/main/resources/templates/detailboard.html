@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:text-align="http://www.w3.org/1999/xhtml">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
@@ -78,7 +78,28 @@
             </div>
         </div>
     </form>
-    <!-- Comments Form -->
+    <!-- Comments list -->
+    <div class="card my-4">
+        <h5 class="card-header">Comment</h5>
+        <div class="card-body">
+                <div class="form-group">
+                    <table class="table">
+                        <tr th:each="comment : ${comment}">
+                            <td>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="font-weight:bold" th:text="${comment.writer_name}"></span>
+                                    <span style="font-weight:initial;" th:text="${comment.create_time}"></span>
+                                </div>
+                                <div class="card-body">
+                                    <span th:text="${comment.content}"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+    </div>
+    <!-- Comments form -->
         <div class="card my-4">
                     <h5 class="card-header">Comment:</h5>
                     <div class="card-body">
