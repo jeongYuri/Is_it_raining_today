@@ -174,49 +174,28 @@ public class HomeController {
     }
     @PostMapping(value="/comment")
     public String saveComment(@ModelAttribute Comment comment, Model model, HttpServletRequest request) {
+        if (comment == null) {
 
-        Comment oldComment = null;
-        if (comment.getNo() != null) oldComment = commentService.getComment(comment.getNo());
-        Long no = null;
-
+            return "redirect:/list";  // 예시로 리다이렉트 처리하였습니다.
+        }
         String page = "/read/" + comment.getBoard_no();
-
+        commentService.saveComment(comment);
+        System.out.println("ok");
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("name");
-        Long writer_no = (Long) session.getAttribute("no");
-        String writerName = comment.getWriter_name();
-        //comment.setWriter_name(name);
-        comment.setWriter_no(writer_no);
-
-        if (oldComment == null) {
-            no = commentService.saveComment(comment);
-        } else {
-            if (oldComment.getWriter_no().equals(comment.getWriter_no())) {
-                no = commentService.saveComment(comment);
-                System.out.println("ok");
-            }
-            System.out.println(comment.getContent());
-            System.out.println(comment.getWriter_name());
-
-        }
-        System.out.println("no" + no);
-
-
-            page = "redirect:" + page;
-
-
+        Long wirterNo = (Long)session.getAttribute("no");
+        comment.setWriter_name(name);
+        comment.setWriter_no(wirterNo);
+        page = "redirect:" + page;
         return page;
-/*
-        Long board_no = comment.getBoard_no();
-        String writerName = comment.getWriter_name();
-        String content = comment.getContent();
-        log.debug("Debug message");
-        commentService.saveComment(comment);
-        model.addAttribute("no", comment.getNo());
-        System.out.println(comment);
-        //return "redirect:/read/"+comment.getBoard_no();
-        return "redirect:/list";*/
+     }
+    @GetMapping("/deleteComment/{no}")
+    public String deleteComment(@PathVariable("no") Long no, Model model, HttpServletRequest request,Comment comment) {
+        commentService.deleteComment(no);
+        return "redirect:/list";
     }
+
+
 }
 
 

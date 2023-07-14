@@ -19,6 +19,9 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findByBoardNoOrderByParentNoAscNoAsc(board_no);
         return commentList;
     }
+    public Long commentUpdate(Comment comment){
+        return commentRepository.commentupdate(comment).getBoard_no();
+    }
     public Comment getComment(Long no){
         Optional<Comment> commentOpt = commentRepository.findByNo(no);
         return commentOpt.orElse(null);

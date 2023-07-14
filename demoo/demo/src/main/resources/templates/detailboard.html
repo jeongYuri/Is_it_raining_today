@@ -80,9 +80,9 @@
         </div>
     </form>
     <div style=" text-align: center;">
-        <a class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+ ${board.no}">수정</a>
+        <a th:if="${session.id==board.writer_name}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+ ${board.no}">수정</a>
         <a class="btn btn-secondary btn-sm text-white" type="button"  href="/list">목록</a>
-        <a class="btn btn-secondary btn-sm text-white" type="button"  th:href="'/deletePost/'+${board.no}">삭제</a>
+        <a th:if="${session.id==board.writer_name}" class="btn btn-secondary btn-sm text-white" type="button"  th:href="'/deletePost/'+${board.no}">삭제</a>
     </div>
     <!-- Comments list -->
     <div class="card my-4">
@@ -100,8 +100,8 @@
                                     <span th:text="${comment.content}"></span>
                                 </div>
                                 <div style=" text-align: right;">
-                                <a type="button" class="btn btn-sm" data-rno="${comment.borad_no}">수정</a>
-                                <a type="button" class="btn btn-sm" data-rno="${comment.borad_no}">삭제</a>
+                                <a th:if="${session.id==comment.writer_name}"  type="button" class="btn btn-sm" data-rno="${comment.borad_no}">수정</a>
+                                <a th:if="${session.id==comment.writer_name}"  type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
                                 </div>
                             </td>
                         </tr>
@@ -132,6 +132,23 @@
                 </div>
             </div>
         </div>
+    <!-- Modify comment -->
+    <div id="modifyComment">
+        <form name="modifyComment" method='post' action="/saveComment">
+            <input type="hidden" name="parentNo" value="0">
+            <input type="hidden" name="boardNo" th:value="${board_no}">
+            <input type="hidden" name="no" value="0">
+            <div>
+                <div>
+                    <span th:text="${session.name}"></span>
+                </div>
+                <textarea class="form-control" id="comment-content" rows="3"></textarea>
+                <div style="text-align: right;">
+                    <a type="button" class="btn btn-sm" value="수정"></a>
+                    <a type="button" class="btn btn-sm" data-rno="${comment.borad_no}">삭제</a>
+                </div>
+            </div>
+        </form>
     </div>
 </main>
 <!-- Bootstrap core JS-->
@@ -140,4 +157,5 @@
 <script src="../static/js/scripts.js"></script>
 
 </body>
+
 </html>
