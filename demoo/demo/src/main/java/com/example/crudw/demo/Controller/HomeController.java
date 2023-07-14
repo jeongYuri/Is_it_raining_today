@@ -157,6 +157,18 @@ public class HomeController {
         model.addAttribute("board", board);
         return "update";
     }
+    @GetMapping("/updateComment/{no}")
+    public String updateComment(@PathVariable("no")Long no,Model model,@RequestParam("content") String content){
+        Comment comment = commentService.getComment(no);
+        comment.setContent(content);
+        model.addAttribute("comment",comment);
+        return "detailboard";
+    }
+    @PostMapping(value="/saveComment")
+    public String saveupComment(@ModelAttribute Comment comment,Model model){
+        model.addAttribute(commentService.commentUpdate(comment));
+        return"redirect:/list";
+    }
 
     @PostMapping(value = "/savePost")
     public String savePost(@ModelAttribute Board board, Model model) {
@@ -169,7 +181,6 @@ public class HomeController {
     @GetMapping("/deletePost/{no}")
     public String deletePost(@PathVariable("no") Long no, Model model) {
         boardService.deletePost(no);
-        // model.addAttribute("url", "/list");
         return "redirect:/list";
     }
     @PostMapping(value="/comment")

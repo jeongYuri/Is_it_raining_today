@@ -33,7 +33,6 @@ public class SqlCommentRepository implements CommentRepository {
 
     @Override
     public Comment commentupdate(Comment comment) {
-        System.out.println(comment);
         comment.setModify_time(LocalDateTime.now());
         String sql = "UPDATE comment SET content=?,modify_time=? WHERE no=?";
         jdbcTemplate.update(sql, comment.getContent(),comment.getModify_time(),comment.getNo());
