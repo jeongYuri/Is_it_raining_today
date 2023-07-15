@@ -150,6 +150,7 @@
                             <label for="content">Content</label>
                             <textarea class="form-control" id="modalcontent" name="content"></textarea>
                         </div>
+                        <input type="hidden" id="modalCommentNo" name="no">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                             <button type="button" class="btn btn-primary" onclick="saveComment()">저장</button>
@@ -172,13 +173,9 @@
         var writername = button.getAttribute('data-writer-name');
         var contentt = button.getAttribute('data-content');
         var no = button.getAttribute('data-no');
-
-        // 모달 내부의 입력 요소에 값을 설정합니다.
         $('#modalwriter_name').val(writername);
         $('#modalcontent').val(contentt);
         $('#modalCommentNo').val(no);
-
-        // 모달 창을 보여줍니다.
         $('#editCommentModal').modal('show');
     }
 
