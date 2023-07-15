@@ -101,7 +101,7 @@
                                 <span class="comment-content" th:text="${comment.content}"></span>
                             </div>
                             <div style="text-align: right;">
-                                <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" onclick="openEditModal('${comment.writer_name}', '${comment.content}', '${comment.no}')">수정</a>
+                                <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writer_name}" th:data-content="${comment.content}" th:data-no="${comment.no}" onclick="openEditModal(this)">수정</a>
                                 <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
                             </div>
                         </td>
@@ -141,18 +141,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="editCommentForm" method="post" action="/saveComment">
+                    <form id="editCommentForm" method="post" th:action="@{/saveComment}" th:object="${comment}">
                         <div class="form-group">
-                            <label for="writer_name">작성자</label>
-                            <input class="form-control" id="writer_name" name="writer_name" readonly th:value="${comments.writer_name}">
+                            <label for="writer_name">Writer</label>
+                            <input class="form-control" id="modalwriter_name" name="writer_name"  readonly>
                         </div>
                         <div class="form-group">
-                            <label for="content">댓글 내용</label>
-                            <input class="form-control" id="content" name="content" th:value="${comments.content}">
+                            <label for="content">Content</label>
+                            <textarea class="form-control" id="modalcontent" name="content"></textarea>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                            <button type="button" class="btn btn-primary" onclick="saveupComment()">저장</button>
+                            <button type="button" class="btn btn-primary" onclick="saveComment()">저장</button>
                         </div>
                     </form>
                 </div>
@@ -166,15 +166,26 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
 <script src="/js/scripts.js"></script>
+
 <script>
-    function openEditModal(writer_name, content, no) {
-        $('#editCommentContent').val(content);
-        $('#editCommentForm').attr('action', '/saveComment');
+    function openEditModal(button) {
+        var writername = button.getAttribute('data-writer-name');
+        var contentt = button.getAttribute('data-content');
+        var no = button.getAttribute('data-no');
+
+        // 모달 내부의 입력 요소에 값을 설정합니다.
+        $('#modalwriter_name').val(writername);
+        $('#modalcontent').val(contentt);
+        $('#modalCommentNo').val(no);
+
+        // 모달 창을 보여줍니다.
         $('#editCommentModal').modal('show');
     }
-    function saveupComment() {
+
+    function saveComment() {
         $('#editCommentForm').submit();
     }
 </script>
+
 </body>
 </html>
