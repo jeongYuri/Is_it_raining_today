@@ -1,5 +1,6 @@
 package com.example.crudw.demo.Repository;
 
+import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.comment.Comment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
@@ -50,6 +51,10 @@ public class SqlCommentRepository implements CommentRepository {
     public List<Comment> findByBoardNoOrderByParentNoAscNoAsc(Long board_no) {
         return jdbcTemplate.query("SELECT * FROM comment WHERE board_no =? ORDER BY parent_no ASC, no ASC",commentRowMapper(),board_no);
 
+    }
+    @Override
+    public List<Comment> findAll() {
+        return jdbcTemplate.query("select *from comment",commentRowMapper());
     }
 
     private RowMapper<Comment>commentRowMapper() {

@@ -110,36 +110,10 @@
             </div>
         </div>
     </div>
-    <!-- ModalEdit form -->
-    <div id="editCommentModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editCommentModal"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCommentModalLabel">Comment</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editCommentForm" method="post" action="/updateComment/{commentId}">
-                        <div class="form-group">
-                            <textarea class="form-control" id="editCommentContent" name="content" rows="3"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                            <button type="button" class="btn btn-primary" onclick="saveComment()">저장</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Comments form -->
     <div class="card my-4">
         <div id="c">
             <div th:if="${session.id==null}">
-                로그인 후 이용해주세요~!😨
+                Please login first.😨
             </div>
             <div th:if="${session.id!= null}" class="row">
                 <h5 class="card-header">Comment:</h5>
@@ -158,7 +132,34 @@
             </div>
         </div>
     </div>
-
+    <!-- ModalEdit form -->
+    <div class="modal" id="editCommentModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Comment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCommentForm" method="post" action="/saveComment">
+                        <div class="form-group">
+                            <label for="writer_name">작성자</label>
+                            <input class="form-control" id="writer_name" name="writer_name" readonly th:value="${comments.writer_name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="content">댓글 내용</label>
+                            <input class="form-control" id="content" name="content" th:value="${comments.content}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            <button type="button" class="btn btn-primary" onclick="saveupComment()">저장</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Comments form -->
 </main>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Bootstrap core JS-->
@@ -166,12 +167,12 @@
 <!-- Core theme JS-->
 <script src="/js/scripts.js"></script>
 <script>
-    function openEditModal(writer_name, content, commentId) {
+    function openEditModal(writer_name, content, no) {
         $('#editCommentContent').val(content);
-        $('#editCommentForm').attr('action', '/updateComment/' + commentId);
+        $('#editCommentForm').attr('action', '/saveComment');
         $('#editCommentModal').modal('show');
     }
-    function saveComment() {
+    function saveupComment() {
         $('#editCommentForm').submit();
     }
 </script>

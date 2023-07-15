@@ -142,11 +142,11 @@ public class HomeController {
     }
 
     @GetMapping(value = "/read/{no}")
-    public String read(@PathVariable("no") Long no, Model model) {
-        Board board = boardService.getPost(no);
-        List<Comment> commentList = commentService.getCommentList(no);
+    public String read(@PathVariable("no") Long no, Model model,Comment comment) {
+        List<Comment> commentlist = commentService.getCommentList(no);
         model.addAttribute("board", boardService.getPost(no));
-        model.addAttribute("comment",commentList);
+        model.addAttribute("comment",commentlist);
+        model.addAttribute("comments", commentService.getComment(comment.getNo()));
         model.addAttribute("board_no",no);
         return "detailboard";
     }
@@ -157,16 +157,17 @@ public class HomeController {
         model.addAttribute("board", board);
         return "update";
     }
-    @GetMapping("/updateComment/{no}")
+    @GetMapping("/updateComment/{no}") //조회
     public String updateComment(@PathVariable("no")Long no,Model model,@RequestParam("content") String content){
         Comment comment = commentService.getComment(no);
-        comment.setContent(content);
         model.addAttribute("comment",comment);
-        return "detailboard";
+        return "updateCommentForm";
     }
-    @PostMapping(value="/saveComment")
+    @PostMapping(value="/saveComment") //생성
     public String saveupComment(@ModelAttribute Comment comment,Model model){
-        model.addAttribute(commentService.commentUpdate(comment));
+        commentService.getComment(comment.getNo());
+        //model.addAttribute(commentService.commentUpdate(comment));
+        //model.addAttribute(comment.getNo());
         return"redirect:/list";
     }
 
