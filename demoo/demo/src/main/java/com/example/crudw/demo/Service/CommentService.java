@@ -20,9 +20,8 @@ public class CommentService {
         return commentList;
     }
     public Long commentUpdate(Comment comment){
-        Comment updatedComment = commentRepository.commentupdate(comment);
-        return updatedComment.getBoard_no();
-
+        Comment Comment = commentRepository.commentupdate(comment);
+        return Comment.getBoard_no();
     }
     public Comment getComment(Long no){
         Optional<Comment> commentOpt = commentRepository.findByNo(no);

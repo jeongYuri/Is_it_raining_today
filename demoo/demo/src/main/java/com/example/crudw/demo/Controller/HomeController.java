@@ -6,19 +6,16 @@ import com.example.crudw.demo.Service.BoardService;
 import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
 import com.example.crudw.demo.comment.Comment;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 
 
@@ -164,10 +161,13 @@ public class HomeController {
         model.addAttribute("comment", comment);
         return "updateCommentForm";
     }
+
     @PostMapping(value = "/saveComment") //생성
     public String saveupComment(@ModelAttribute Comment comment, Model model) {
+        String page = "/read/" + comment.getBoard_no();
         commentService.commentUpdate(comment);
-        return "redirect:/list";
+        page = "redirect:" + page;
+        return page;
     }
     @PostMapping(value = "/savePost")
     public String savePost(@ModelAttribute Board board, Model model) {
@@ -185,7 +185,7 @@ public class HomeController {
     public String saveComment(@ModelAttribute Comment comment, Model model, HttpServletRequest request) {
         if (comment == null) {
 
-            return "redirect:/list";  // 예시로 리다이렉트 처리하였습니다.
+            return "redirect:/list";
         }
         String page = "/read/" + comment.getBoard_no();
         commentService.saveComment(comment);

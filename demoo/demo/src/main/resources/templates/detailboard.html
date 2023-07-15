@@ -101,7 +101,7 @@
                                 <span class="comment-content" th:text="${comment.content}"></span>
                             </div>
                             <div style="text-align: right;">
-                                <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writer_name}" th:data-content="${comment.content}" th:data-no="${comment.no}" onclick="openEditModal(this)">수정</a>
+                                <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writer_name}" th:data-content="${comment.content}" th:data-no="${comment.no}" th:data-boardno="${comment.board_no}" onclick="openEditModal(this)">수정</a>
                                 <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
                             </div>
                         </td>
@@ -142,6 +142,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="editCommentForm" method="post" th:action="@{/saveComment}" th:object="${comment}">
+                        <input type="hidden" id="modalboardno" name="bono">
+                        <input type="hidden" id="modalCommentNo" name="no">
                         <div class="form-group">
                             <label for="writer_name">Writer</label>
                             <input class="form-control" id="modalwriter_name" name="writer_name"  readonly>
@@ -150,7 +152,6 @@
                             <label for="content">Content</label>
                             <textarea class="form-control" id="modalcontent" name="content"></textarea>
                         </div>
-                        <input type="hidden" id="modalCommentNo" name="no">
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                             <button type="button" class="btn btn-primary" onclick="saveComment()">저장</button>
@@ -173,14 +174,37 @@
         var writername = button.getAttribute('data-writer-name');
         var contentt = button.getAttribute('data-content');
         var no = button.getAttribute('data-no');
+        var boardno = button.getAttribute('data-boardno')
         $('#modalwriter_name').val(writername);
         $('#modalcontent').val(contentt);
         $('#modalCommentNo').val(no);
+        $('#modalboardno').val(boardno);
         $('#editCommentModal').modal('show');
     }
 
     function saveComment() {
-        $('#editCommentForm').submit();
+        var modalCommentNo = $('#modalCommentNo').val();
+        var modalboardno = $('#modalboardno').val();
+        var updatedContent = $('#modalcontent').val();
+
+        // AJAX 요청 실행
+        $.ajax({
+            url: '/saveComment',
+            type: 'POST',
+            data: {
+                no: modalCommentNo,
+                board_no: modalboardno,
+                content: updatedContent
+            },
+            success: function(response) {
+                // 성공적으로 댓글이 저장되면 현재 창을 새로고침합니다.
+                location.reload();
+            },
+            error: function(error) {
+                // 오류 처리
+                console.log(error);
+            }
+        });
     }
 </script>
 
