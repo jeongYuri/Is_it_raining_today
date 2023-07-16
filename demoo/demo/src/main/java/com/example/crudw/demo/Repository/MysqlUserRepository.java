@@ -27,11 +27,31 @@ public class MysqlUserRepository implements UserRepository{
     }
 
     @Override
+    public void deleteById(String id) {
+
+    }
+
+    @Override
+    public Optional<User> findById(Long no) {
+        String sql = "select * from users where no =?";
+        List<User> list = jdbcTemplate.query(sql,userRowMapper(),no);
+        return list.stream().findAny();
+    }
+
+    @Override
     public Optional<User> findById(String id) {
         String sql = "select * from users where id =?";
         List<User> list = jdbcTemplate.query(sql,userRowMapper(),id);
         return list.stream().findAny();
     }
+
+    @Override
+    public User userUpdate(User user) {
+        String sql = "update users set id=?,pw=?,name=?,email=?,phone=? where no=?";
+        jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getNo());
+        return  user;
+    }
+
     @Override
     public List<User>findAll(){
 
@@ -41,7 +61,7 @@ public class MysqlUserRepository implements UserRepository{
     private RowMapper<User> userRowMapper() {
         return ((rs, rowNum) -> {
             User user = new User();
-            //user.setNo(rs.getLong("no"));
+            user.setNo(rs.getLong("no"));
             user.setId(rs.getString("id"));
             user.setPw(rs.getString("pw"));
             user.setName(rs.getString("name"));

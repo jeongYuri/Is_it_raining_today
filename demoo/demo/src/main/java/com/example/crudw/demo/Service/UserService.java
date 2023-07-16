@@ -2,17 +2,9 @@ package com.example.crudw.demo.Service;
 
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @Slf4j
 public class UserService {
@@ -34,7 +26,24 @@ public class UserService {
                 });
     }
 
+    public void deleteUser(String id) {
+        userRepository.deleteById(id);
+    }
+    public Long userUpdate(User user){return userRepository.userUpdate(user).getNo();}
+    public User getUser(String id){
+        Optional<User> userO = userRepository.findById(id);
+        System.out.println(userO);
+        if (userO.isPresent()) {
+            return userO.get();
+        }
+        return null;
+    }
 
+    public User getUser(Long no) {
+        Optional<User> userOpt = userRepository.findById(no);
+        User user = userOpt.get();
+        return user;
+    }
     public User login(String id, String pw){
         Optional<User> findUser = userRepository.findById(id);
         return findUser.filter(user->user.getPw().equals(pw))

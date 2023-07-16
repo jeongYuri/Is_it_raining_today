@@ -47,6 +47,8 @@ public class HomeController {
 
     @GetMapping(value = "/login")
     public String login() {
+
+
         return "login";
     }
     @GetMapping(path="/logout")
@@ -93,30 +95,6 @@ public class HomeController {
         return "redirect:/";
     }
 
-    /*@PostMapping(value = "/login")
-    public String login(@Valid @ModelAttribute UserForm form, BindingResult bindingResult,
-                        HttpServletResponse response) {
-
-        if (bindingResult.hasErrors()) {
-            return "/login";
-        }
-        String id = form.getId();
-        String pw = form.getPw();
-        User loginUser = userService.login(id, pw);
-        if (loginUser == null) {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            return "login";
-        }
-
-        Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        System.out.println("쿠키 이름: " + cookie.getName());
-        System.out.println("쿠키 값: " + cookie.getValue());
-        return "loginhome";
-
-    }*/
-
     @GetMapping(value = "/write")
     public String write() {
         return "write";
@@ -147,6 +125,27 @@ public class HomeController {
         model.addAttribute("board_no",no);
         return "detailboard";
     }
+    @GetMapping(path="/myPage")
+    public String mypage(Model model,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        User user = userService.getUser(id);
+        if(user ==null){
+            model.addAttribute("msg","로그인 후 이용가능");
+        }else{
+            model.addAttribute("user",user);
+        }
+        return "myPage";
+    }
+
+    @GetMapping("/updateUser")
+    public String updateUser(Model model,HttpServletRequest request){
+        HttpSession session  = request.getSession();
+        String id = (String)session.getAttribute("id");
+        User user = userService.getUser(id);
+        model.addAttribute("user",user);
+        return "updateUser";
+    }
 
     @GetMapping("/update/post/{no}")
     public String update(@PathVariable("no") Long no, Model model) {
@@ -155,20 +154,6 @@ public class HomeController {
         return "update";
     }
 
-    @GetMapping("/updateComment/{no}") // 조회
-    public String updateComment(@PathVariable("no") Long no, Model model) {
-        Comment comment = commentService.getComment(no);
-        model.addAttribute("comment", comment);
-        return "updateCommentForm";
-    }
-
-    @PostMapping(value = "/saveComment") //생성
-    public String saveupComment(@ModelAttribute Comment comment, Model model) {
-        String page = "/read/" + comment.getBoard_no();
-        commentService.commentUpdate(comment);
-        page = "redirect:" + page;
-        return page;
-    }
     @PostMapping(value = "/savePost")
     public String savePost(@ModelAttribute Board board, Model model) {
         boardService.getPost(board.getNo());
@@ -198,12 +183,50 @@ public class HomeController {
         page = "redirect:" + page;
         return page;
      }
+    @GetMapping("/updateComment/{no}") // 조회
+    public String updateComment(@PathVariable("no") Long no, Model model) {
+        Comment comment = commentService.getComment(no);
+        model.addAttribute("comment", comment);
+        return "updateCommentForm";
+    }
+
+    @PostMapping(value = "/saveComment") //생성
+    public String saveupComment(@ModelAttribute Comment comment, Model model) {
+        String page = "/read/" + comment.getBoard_no();
+        commentService.commentUpdate(comment);
+        page = "redirect:" + page;
+        return page;
+    }
     @GetMapping("/deleteComment/{no}")
     public String deleteComment(@PathVariable("no") Long no, Model model, HttpServletRequest request,Comment comment) {
         commentService.deleteComment(no);
         return "redirect:/list";
     }
 
+
+     /*@PostMapping(value = "/login")
+    public String login(@Valid @ModelAttribute UserForm form, BindingResult bindingResult,
+                        HttpServletResponse response) {
+
+        if (bindingResult.hasErrors()) {
+            return "/login";
+        }
+        String id = form.getId();
+        String pw = form.getPw();
+        User loginUser = userService.login(id, pw);
+        if (loginUser == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            return "login";
+        }
+
+        Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        System.out.println("쿠키 이름: " + cookie.getName());
+        System.out.println("쿠키 값: " + cookie.getValue());
+        return "loginhome";
+
+    }*/
 
 }
 

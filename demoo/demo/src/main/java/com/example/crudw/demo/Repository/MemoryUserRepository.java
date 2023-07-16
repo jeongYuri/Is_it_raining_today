@@ -19,10 +19,25 @@ public class MemoryUserRepository implements UserRepository{
     }
 
     @Override
+    public void deleteById(String id) {
+
+    }
+
+    @Override
+    public Optional<User> findById(Long no) {
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<User> findById(String id) {
         return store.values().stream()
                 .filter(user -> user.getId().equals(id))
                 .findAny();
+    }
+
+    @Override
+    public User userUpdate(User user) {
+        return null;
     }
 
 
