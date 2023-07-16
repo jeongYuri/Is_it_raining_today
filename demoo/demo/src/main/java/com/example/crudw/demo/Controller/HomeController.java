@@ -215,9 +215,12 @@ public class HomeController {
     }
 
     @GetMapping("/deleteUser")
-    public String deleteUser(String id, Model model){
+    public String deleteUser( Model model,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute("id");
         userService.deleteUser(id);
-        return "redirect:/index";
+        session.invalidate();
+        return "redirect:/";
     }
 
      /*@PostMapping(value = "/login")
