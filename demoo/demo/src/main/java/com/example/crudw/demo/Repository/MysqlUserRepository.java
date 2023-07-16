@@ -28,7 +28,8 @@ public class MysqlUserRepository implements UserRepository{
 
     @Override
     public void deleteById(String id) {
-
+        String sql = "delete from users where id=?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
@@ -47,8 +48,10 @@ public class MysqlUserRepository implements UserRepository{
 
     @Override
     public User userUpdate(User user) {
+        System.out.println(user);
         String sql = "update users set id=?,pw=?,name=?,email=?,phone=? where no=?";
         jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getNo());
+        System.out.println(user);
         return  user;
     }
 

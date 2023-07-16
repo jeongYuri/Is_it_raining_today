@@ -32,12 +32,10 @@ public class SqlBoardRepository implements BoardRepository{
     }
     @Override
     public Board boardupdate(Board board){
-        System.out.println(board);
         board.setModify_time(LocalDateTime.now());
         String sql = "UPDATE nboard SET title = ?, content = ?, modify_time=? WHERE no = ?";
         jdbcTemplate.update(sql, board.getTitle(), board.getContent(),board.getModify_time(), board.getNo());
 
-        //    System.out.println(board);
          return board;
     }
 

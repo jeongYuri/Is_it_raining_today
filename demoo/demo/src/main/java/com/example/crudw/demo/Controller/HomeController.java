@@ -146,6 +146,17 @@ public class HomeController {
         model.addAttribute("user",user);
         return "updateUser";
     }
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute User user, Model model){
+        if (user.getNo() == null) {
+            model.addAttribute("errorMsg", "사용자 번호가 없습니다.");
+            return "updateUser";
+        }
+        System.out.println(user);
+        model.addAttribute("user",  userService.userUpdate(user));
+        //model.addAttribute(user.getNo());
+        return "redirect:/myPage";
+    }
 
     @GetMapping("/update/post/{no}")
     public String update(@PathVariable("no") Long no, Model model) {
@@ -203,6 +214,11 @@ public class HomeController {
         return "redirect:/list";
     }
 
+    @GetMapping("/deleteUser")
+    public String deleteUser(String id, Model model){
+        userService.deleteUser(id);
+        return "redirect:/index";
+    }
 
      /*@PostMapping(value = "/login")
     public String login(@Valid @ModelAttribute UserForm form, BindingResult bindingResult,

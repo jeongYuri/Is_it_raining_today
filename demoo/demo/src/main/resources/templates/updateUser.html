@@ -42,12 +42,13 @@
 
 <body>
 <div class="container">
-  <form action="/signup" method="post">
+  <form action="/saveUser" method="post">
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
         <h3 class="mb-3">🕶️정보 수정🕶️</h3>
         <form class="validation-form" novalidate>
           <div class="row">
+            <input type="hidden" name="no" id="no" th:value="${user.no}">
             <div class="col-md-6 mb-3">
               <label for="name">ID</label>
               <input type="text" class="form-control" name="id" id="id" placeholder="" value="" th:value="${user.id}" required>
@@ -72,7 +73,10 @@
             <label for="name">Phone</label>
             <input type="text" class="form-control" name="phone" id="phone" placeholder="010-****-****" th:value="${user.phone}" required>
           </div>
-          <button class="btn btn-primary btn-lg btn-block" type="submit" value="전송">가입</button>
+          <div align="center">
+          <button class="btn btn-primary col-md-2" type="submit" value="전송">수정하기</button>
+          <button class="btn btn-primary col-md-2 " type="button" value="뒤로가기" onclick="history.back();" >취소</button>
+          </div>
         </form>
       </div>
     </div>
