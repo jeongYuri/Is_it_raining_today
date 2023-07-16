@@ -32,9 +32,36 @@
             <div class="text-center mt-5">
                 <h1>나중에 수정해야지 수정하자 수정해!!</h1>
                 <p class="lead">This is My new Toy Project. Is it raining today?☔☔</p>
+                <button type="button" class="btn btn-primary" onclick="weather()">날씨</button>
 
             </div>
         </div>
+        <script>
+            function weather() {
+                jQuery.ajax({
+                    url: "/api/weather",
+                    type: "get",
+                    timeout: 30000,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data, status, xhr) {
+                        let dataHeader = data.result.response.header.resultCode;
+                    :
+                        if (dataHeader == "00") {
+                            console.log("sucess==>");
+                            console.log(data);
+                        } else {
+                            console.log("fail==>");
+                            console.log(data);
+                        }
+                    }, error: function (e, status, xhr, data) {
+                        console.log("error==>");
+                        console.log(e);
+                    }
+                });
+            }
+
+        </script>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
