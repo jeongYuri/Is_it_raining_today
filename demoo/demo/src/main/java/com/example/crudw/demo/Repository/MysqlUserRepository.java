@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import javax.sql.DataSource;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +21,9 @@ public class MysqlUserRepository implements UserRepository{
 
     @Override
     public User save(User user) {
-        String sql = "insert into users(no,id,pw,name,email,phone,create_time) values(null,?,?,?,?,?,'2023-06-24 17:50:00')";
-        int result = jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone());
+        user.setCreate_time(LocalDateTime.now());
+        String sql = "insert into users(no,id,pw,name,email,phone,create_time) values(null,?,?,?,?,?,?)";
+        int result = jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getCreate_time());
         log.warn("Hi I'm {MysqlUserRepository} log", "WARN");
         return user;
     }
@@ -49,8 +51,9 @@ public class MysqlUserRepository implements UserRepository{
     @Override
     public User userUpdate(User user) {
         System.out.println(user);
-        String sql = "update users set id=?,pw=?,name=?,email=?,phone=? where no=?";
-        jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getNo());
+        user.setModify_time(LocalDateTime.now());
+        String sql = "update users set id=?,pw=?,name=?,email=?,phone=?,modify_time=? where no=?";
+        jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getModify_time(),user.getNo());
         System.out.println(user);
         return  user;
     }
@@ -70,6 +73,8 @@ public class MysqlUserRepository implements UserRepository{
             user.setName(rs.getString("name"));
             user.setEmail(rs.getString("email"));
             user.setPhone(rs.getString("phone"));
+            user.setCreate_time(rs.getObject("create_time",LocalDateTime.class));
+            user.setModify_time(rs.getObject("modify_time", LocalDateTime.class));
             return user;
         });
     }

@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import org.hibernate.annotations.DynamicInsert;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 public class User {
@@ -18,8 +20,8 @@ public class User {
     private String name;
     private String email;
     private String phone;
-    private String create_time;
-
+    private LocalDateTime create_time;
+    private LocalDateTime modify_time;
 
     public Long getNo() {
         return no;
@@ -69,11 +71,18 @@ public class User {
         this.phone = phone;
     }
 
-    public String getCreate_time() {
+    public LocalDateTime getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(String create_time) {
+    public void setCreate_time(LocalDateTime create_time) {
         this.create_time = create_time;
+    }
+    public LocalDateTime getModify_time() {
+        return modify_time;
+    }
+
+    public void setModify_time(LocalDateTime modify_time) {
+        this.modify_time = modify_time;
     }
 }
