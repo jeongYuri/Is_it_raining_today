@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 @RestController
@@ -17,15 +20,27 @@ public class WeatherController {
     @GetMapping("/weather")
     public String getWeather() throws Exception {
 
-        String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst";
+        String apiUrl = "http://apis.data.go.kr/1360" +
+                "000/VilageFcstInfoService_2.0/getUltraSrtNcst";
         String serviceKey = "PXL4ObzaxgbrcVcEe5c8QTzAdF5bD9Y714d3X2Tus6DgtWsj10nEfjP6lUL6Z%2FAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
         String nx = "55";
         String ny = "127";
-        String base_date = "20230716";
-        String base_time = "0600";    //API 제공 시간을 입력하면 됨
+        //String base_date = "20230716";
+        //String base_time = "0600";    //API 제공 시간을 입력하면 됨
         String dataType = "JSON";    //타입 xml, json 등등 ..
         String numOfRows = "10";
-
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH00");
+        String base_date = currentDateTime.format(dateTimeFormatter);
+        int hour = currentDateTime.getHour();
+        int min = currentDateTime.getMinute();
+        if(min<=30){
+            hour -=1;
+        }
+        String base_time = hour +"00";
+        System.out.println(base_date);
+        System.out.println(base_time);
         String url = apiUrl + "?serviceKey=" + serviceKey + "&nx=" + nx + "&ny=" + ny + "&base_date=" + base_date + "&base_time=" + base_time + "&dataType=" + dataType + "&numOfRows=" + numOfRows;
 
         HashMap<String, Object> resultMap = getDataFromJson(url, "UTF-8", "get", "");
