@@ -27,26 +27,52 @@
                 </div>
             </div>
         </nav>
-        <!-- Page content-->
         <div class="container">
             <div class="text-center mt-5">
-                <div id="map" style="width: 400px; height: 300px;"></div>
-                <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=188858dc8f2c36e33e50f0c62b6c4968"></script>
-
+                <div style=" text-align: right;">
+                    <input type="text" id="searchInput" placeholder="주소 및 장소🗺️" style="width:280px;height:25px;font-size:15px;">
+                    <input type="button" class="btn btn-primary btn-sm" onclick="adress()" value="주소검색🗺️">
+                    <br></div>
+                <div id="map" style="width: 550px; height: 400px;"></div>
+                <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=188858dc8f2c36e33e50f0c62b6c4968&libraries=services"></script>
             </div>
         </div>
-        <script type="text/javascript">
+        <script>
+            var mapContainer = document.getElementById('map'),
+                mapOption={
+                    center:new daum.maps.LatLng(37.537187,127.005476),
+                    level:5
+                };
+            var map =new daum.maps.Map(mapContainer,mapOption);
+            var geocoder = new daum.maps.services.Geocoder();
+            var marker = new daum.maps.Marker({
+                position:new daum.maps.LatLng(37.537187,127.005476),
+                map:map
+            });
+            function adress() {
+                new daum.Postcode({
+                    oncomplete:function (data){
+                        var addr = data.address;
+                        document.getElementById("searchInput").value = addr;
+                        geocoder.addressSearch(data.address, function(results, status) {
+                            if (status === daum.maps.services.Status.OK) {
 
-            var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-            var options = { //지도를 생성할 때 필요한 기본 옵션
-                center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-                level: 3 //지도의 레벨(확대, 축소 정도)
-            };
-
-            var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+                                var result = results[0]; //첫번째 결과의 값을 활용
+                                var coords = new daum.maps.LatLng(result.y, result.x);
+                                mapContainer.style.display = "block";
+                                map.relayout();
+                                map.setCenter(coords); //마커를 결과로 옮기기
+                                marker.setPosition(coords)
+                            }
+                        });
+                    }
+                }).open();
+            }
 
         </script>
         <script>
+
             function weather() {
                 jQuery.ajax({
                     url: "/api/weather",
@@ -72,6 +98,7 @@
             }
 
         </script>
+        <!-- Page content-->
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
