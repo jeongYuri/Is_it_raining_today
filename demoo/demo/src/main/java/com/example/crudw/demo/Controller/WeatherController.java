@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
@@ -18,16 +19,12 @@ import java.util.HashMap;
 @RequestMapping("/api")
 public class WeatherController {
     @GetMapping("/weather")
-    public String getWeather() throws Exception {
+    public String getWeather(@RequestParam("nx") String nx, @RequestParam("ny") String ny) throws Exception {
 
         String apiUrl = "http://apis.data.go.kr/1360" +
                 "000/VilageFcstInfoService_2.0/getUltraSrtNcst";
         String serviceKey = "PXL4ObzaxgbrcVcEe5c8QTzAdF5bD9Y714d3X2Tus6DgtWsj10nEfjP6lUL6Z%2FAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
-        String nx = "55";
-        String ny = "127";
-        //String base_date = "20230716";
-        //String base_time = "0600";    //API 제공 시간을 입력하면 됨
-        String dataType = "JSON";    //타입 xml, json 등등 ..
+        String dataType = "JSON";
         String numOfRows = "10";
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -39,8 +36,13 @@ public class WeatherController {
             hour -=1;
         }
         String base_time = hour +"00";
-        System.out.println(base_date);
-        System.out.println(base_time);
+        if (nx.contains(".")) {
+            nx = nx.substring(0, nx.indexOf("."));
+        }
+
+        if (ny.contains(".")) {
+            ny = ny.substring(0, ny.indexOf("."));
+        }
         String url = apiUrl + "?serviceKey=" + serviceKey + "&nx=" + nx + "&ny=" + ny + "&base_date=" + base_date + "&base_time=" + base_time + "&dataType=" + dataType + "&numOfRows=" + numOfRows;
 
         HashMap<String, Object> resultMap = getDataFromJson(url, "UTF-8", "get", "");
