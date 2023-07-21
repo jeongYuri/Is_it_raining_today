@@ -70,8 +70,8 @@
                                 marker.setPosition(coords); //마커로 표시하기
                                 var nx = coords.getLat(); //nx,ny 가져오기같은데ㅣ..
                                 var ny = coords.getLng();
-                                document.getElementById("nx").value = nx; // 추가: hidden input에 nx 값을 넣어줌
-                                document.getElementById("ny").value = ny; // 추가: hidden input에 ny 값을 넣어줌
+                                document.getElementById("nx").value = nx; // 추가: hidden input에 nx 값을 넣어줌--날씨에게 넘겨주기 위해
+                                document.getElementById("ny").value = ny; // 추가: hidden input에 ny 값을 넣어줌--날씨에게 넘겨주기 위해
                                 console.log(nx, ny);
                                 console.log(nx,ny);
                                 alert(nx + "," +ny);
@@ -84,8 +84,6 @@
             function weather() {
                 var nx = $('#nx').val();
                 var ny = $('#ny').val();
-                console.log(ny);
-                console.log(nx);
                 jQuery.ajax({
                     url: "/api/weather",
                     type: "get",
@@ -99,7 +97,7 @@
                         let dataHeader = data.result.response.header.resultCode;
                         if (dataHeader == "00") {
                             var weatherData = data.weather; // 예시로 받아온 날씨 데이터를 weatherData 변수에 저장
-                            var weatherInfoElement = document.getElementById("weatherInfo");
+                            var weatherInfoElement = document.getElementById("weatherInfo"); //정보 얻기
                             weatherInfoElement.innerHTML = "날씨 정보: " + weatherData;
                             console.log("success==>");
                             console.log(data);
