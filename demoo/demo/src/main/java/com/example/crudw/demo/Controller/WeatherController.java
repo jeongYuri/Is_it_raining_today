@@ -1,6 +1,7 @@
 package com.example.crudw.demo.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @RestController
@@ -35,22 +37,21 @@ public class WeatherController {
         String base_date = currentDateTime.format(dateTimeFormatter);
         int hour = currentDateTime.getHour();
         int min = currentDateTime.getMinute();
-        if (hour >= 23 || (hour >= 2 && hour < 5)) {
-            hour = 2;
-        } else if (hour >= 5 && hour < 8) {
-            hour = 5;
-        } else if (hour >= 8 && hour < 11) {
-            hour = 8;
-        } else if (hour >= 11 && hour < 14) {
-            hour = 11;
-        } else if (hour >= 14 && hour < 17) {
-            hour = 14;
-        } else if (hour >= 17 && hour < 20) {
-            hour = 17;
-        } else if (hour >= 20 && hour < 23) {
-            hour = 20;
-        }
-        System.out.println(hour);
+            if (hour >= 23 || (hour >= 2 && hour < 5)) {
+                hour = 2;
+            } else if (hour >= 5 && hour < 8) {
+                hour = 5;
+            } else if (hour >= 8 && hour < 11) {
+                hour = 8;
+            } else if (hour >= 11 && hour < 14) {
+                hour = 11;
+            } else if (hour >= 14 && hour < 17) {
+                hour = 14;
+            } else if (hour >= 17 && hour < 20) {
+                hour = 17;
+            } else if (hour >= 20 && hour < 23) {
+                hour = 20;
+            }
         String base_time = hour +"00";
         if (nx.contains(".")) {
             nx = nx.substring(0, nx.indexOf("."));
@@ -63,12 +64,18 @@ public class WeatherController {
 
         HashMap<String, Object> resultMap = getDataFromJson(url, "UTF-8", "get", "");
         System.out.println("# RESULT :" + resultMap);
+        HashMap<String, Object> response = (HashMap<String, Object>) resultMap.get("response");
+        HashMap<String, Object> body = (HashMap<String, Object>) response.get("body");
+        HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
+        ArrayList<HashMap<String, Object>> itemArray = (ArrayList<HashMap<String, Object>>) items.get("item");
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result", resultMap);
-        return jsonObject.toString();
-
-        //JSONParser jsonParser = new JSONParser();
+        for (HashMap<String, Object> item : itemArray) {
+            String baseDate = (String) item.get("baseDate");
+            String baseTime = (String) item.get("baseTime");
+            System.out.println("baseDate: " + baseDate);
+            System.out.println("Result Message: " + baseTime);
+        }
+        return apiUrl;
     }
     public HashMap<String,Object> getDataFromJson(String url,String encoding,String type,String jsonStr)throws  Exception{
         boolean isPost = false;
@@ -110,8 +117,6 @@ public class WeatherController {
             String line = null;
             StringBuffer result = new StringBuffer();
             while((line=br.readLine())!=null)result.append(line);//버퍼에 있는 정보 문자열로 전환중
-            //문자열 파싱!~~!
-
             ObjectMapper mapper = new ObjectMapper();
             resultMap = mapper.readValue(result.toString(),HashMap.class);
         }catch (Exception e) {
@@ -124,4 +129,5 @@ public class WeatherController {
         }
         return resultMap;
     }
+
 }
