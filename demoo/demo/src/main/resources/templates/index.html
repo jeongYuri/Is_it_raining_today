@@ -31,16 +31,19 @@
         <div class="container">
             <div class="text-center mt-5">
                 <div style=" text-align: right;">
-                    <input type="text" id="searchInput" placeholder="주소 및 장소🗺️" style="width:280px;height:25px;font-size:15px;" readonly>
+                    <input type="text" id="searchInput" placeholder="주소 및 장소🗺️" style="width:240px;height:25px;font-size:15px;" readonly>
                     <input type="button" class="btn btn-primary btn-sm" onclick="adress()" value="주소검색🗺️">
+                    <input type="button" class="btn btn-primary btn-sm" onclick="weather()" value="날씨">
+                    <input type="button" class="btn btn-primary btn-sm" onclick="getWeather()" value="☔">
                     <input type="hidden" id="nx">
-                    <input type="hidden" id="ny">
-                    <br></div>
+                    <input type="hidden" id="ny"><br>
+                    <div id="weatherInfo">
+                        <ul id="tmpList"></ul>
+                        <ul id="popList"></ul>
+                    </div></div>
                 <div id="map" style="width: 550px; height: 400px;"></div>
                 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=188858dc8f2c36e33e50f0c62b6c4968&libraries=services"></script>
-                <input type="button" class="btn btn-primary btn-sm" onclick="weather()" value="날씨">
-                <div id="weatherInfo"></div>
             </div>
         </div>
         <script>
@@ -94,24 +97,44 @@
                         {nx: nx,
                         ny: ny},
                     success: function (data, status, xhr) {
-                        let dataHeader = data.result.response.header.resultCode;
-                        if (dataHeader == "00") {
-                            var weatherData = data.weather; // 예시로 받아온 날씨 데이터를 weatherData 변수에 저장
-                            var weatherInfoElement = document.getElementById("weatherInfo"); //정보 얻기
-                            weatherInfoElement.innerHTML = "날씨 정보: " + weatherData;
+                        //let dataHeader = data;
+                        //let dataHeader = data.result.response.header.resultCode;
+
+                        if (data!=null) {
                             console.log("success==>");
                             console.log(data);
                         } else {
                             console.log("fail==>");
                             console.log(data);
                         }
-                    }, error: function (e, status, xhr, data) {
+                    }, error: function (xhr, status, error) {
                         console.log("error==>");
-                        console.log(e);
+                        console.log(error);
                     }
                 });
             }
+            function getWeather() {
+                fetch('/api/weather')
+                    .then(jsonObect => jsonObect.json())
+                    .then(data => {
+                        // 서버로부터 받아온 데이터를 활용하여 화면에 출력
+                        const tmpList = document.getElementById('tmpList');
+                        const popList = document.getElementById('popList');
 
+                        data.tmpvalue.forEach(tmp => {
+                            const tmpItem = document.createElement('li');
+                            tmpItem.textContent = tmp;
+                            tmpList.appendChild(tmpItem);
+                        });
+
+                        data.popvalue.forEach(pop => {
+                            const popItem = document.createElement('li');
+                            popItem.textContent = pop;
+                            popList.appendChild(popItem);
+                        });
+                    })
+                    .catch(error => console.error(error));
+            }
         </script>
         <!-- Page content-->
         <!-- Bootstrap core JS-->

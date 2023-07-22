@@ -3,6 +3,8 @@ package com.example.crudw.demo.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,58 +64,58 @@ public class WeatherController {
             ny = ny.substring(0, ny.indexOf("."));
         }
         String url = apiUrl + "?serviceKey=" + serviceKey + "&nx=" + nx + "&ny=" + ny + "&base_date=" + base_date + "&base_time=" + base_time + "&dataType=" + dataType + "&numOfRows=" + numOfRows;
-
+        JSONObject jsonObject = new JSONObject();
         HashMap<String, Object> resultMap = getDataFromJson(url, "UTF-8", "get", "");
         System.out.println("# RESULT :" + resultMap);
+        jsonObject.put("result",resultMap);
         HashMap<String, Object> response = (HashMap<String, Object>) resultMap.get("response");
         HashMap<String, Object> body = (HashMap<String, Object>) response.get("body");
         HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
         ArrayList<HashMap<String, Object>> itemArray = (ArrayList<HashMap<String, Object>>) items.get("item");
-        List<String> tmpvalue = new ArrayList<>();
-        List<String> popvalue = new ArrayList<>();
-        List<String> rehvalue = new ArrayList<>();
-        List<String> wsdvalue = new ArrayList<>();
-        List<String> skyvalue = new ArrayList<>();
-        List<String> ptyvalue = new ArrayList<>();
+        HashMap<String, Object> dataToSend = new HashMap<>();
         for (HashMap<String, Object> item : itemArray) {
             String category = (String) item.get("category");
             if (category.equals("TMP")){
                 String fcstValue = (String) item.get("fcstValue");
-                tmpvalue.add(fcstValue);
+                dataToSend.put("TMP", fcstValue);
             }if(category.equals("POP")){
                 String fcstValue = (String)item.get("fcstValue");
-                popvalue.add(fcstValue);
+                dataToSend.put("POP", fcstValue);
             }if(category.equals("REH")){
                 String fcstValue = (String)item.get("fcstValue");
-                rehvalue.add(fcstValue);
+                dataToSend.put("REH", fcstValue);
             }if(category.equals("WSD")){
                 String fcstValue = (String)item.get("fcstValue");
-                wsdvalue.add(fcstValue);
+                dataToSend.put("WSD", fcstValue);
             }if(category.equals("SKY")){
                 String fcstValue = (String)item.get("fcstValue");
                 if(fcstValue.equals("1")){
-                    skyvalue.add("맑음");
+                    dataToSend.put("SKY", "맑음");
                 } else if (fcstValue.equals("3")) {
-                    skyvalue.add("구름많음");
+                    dataToSend.put("SKY", "구름많음");
                 }else if(fcstValue.equals("4")){
-                    skyvalue.add("흐림");
+                    dataToSend.put("SKY", "흐림");
                 }
             }if(category.equals("PTY")){
                 String fcstValue = (String)item.get("fcstValue");
                 if(fcstValue.equals("0")){
-                    ptyvalue.add("맑음");
+                    dataToSend.put("PTY", "맑음");
                 }else if(fcstValue.equals("1")) {
-                    ptyvalue.add("비");
+                    dataToSend.put("PTY", "비");
                 }else if(fcstValue.equals("2")){
-                    ptyvalue.add("진눈깨비");
+                    dataToSend.put("PTY", "진눈깨비");
                 }else if(fcstValue.equals("3")){
-                    ptyvalue.add("눈");
+                    dataToSend.put("PTY", "눈");
                 }else if(fcstValue.equals("4")){
-                    ptyvalue.add("소나기");
+                    dataToSend.put("PTY", "소나기");
                 }
             }
         }
-        return apiUrl;
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonData = objectMapper.writeValueAsString(dataToSend);
+        System.out.println(jsonData);
+        //return jsonObject.toString();
+        return jsonData;
     }
     public HashMap<String,Object> getDataFromJson(String url,String encoding,String type,String jsonStr)throws  Exception{
         boolean isPost = false;
