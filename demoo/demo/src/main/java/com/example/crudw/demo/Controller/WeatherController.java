@@ -91,13 +91,28 @@ public class WeatherController {
                 wsdvalue.add(fcstValue);
             }if(category.equals("SKY")){
                 String fcstValue = (String)item.get("fcstValue");
-                skyvalue.add(fcstValue);
+                if(fcstValue.equals("1")){
+                    skyvalue.add("맑음");
+                } else if (fcstValue.equals("3")) {
+                    skyvalue.add("구름많음");
+                }else if(fcstValue.equals("4")){
+                    skyvalue.add("흐림");
+                }
             }if(category.equals("PTY")){
                 String fcstValue = (String)item.get("fcstValue");
-                ptyvalue.add(fcstValue);
+                if(fcstValue.equals("0")){
+                    ptyvalue.add("맑음");
+                }else if(fcstValue.equals("1")) {
+                    ptyvalue.add("비");
+                }else if(fcstValue.equals("2")){
+                    ptyvalue.add("진눈깨비");
+                }else if(fcstValue.equals("3")){
+                    ptyvalue.add("눈");
+                }else if(fcstValue.equals("4")){
+                    ptyvalue.add("소나기");
+                }
             }
         }
-        System.out.println(tmpvalue);
         return apiUrl;
     }
     public HashMap<String,Object> getDataFromJson(String url,String encoding,String type,String jsonStr)throws  Exception{
