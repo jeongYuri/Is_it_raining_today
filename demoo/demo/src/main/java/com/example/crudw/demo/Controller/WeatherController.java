@@ -19,6 +19,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -68,13 +69,35 @@ public class WeatherController {
         HashMap<String, Object> body = (HashMap<String, Object>) response.get("body");
         HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
         ArrayList<HashMap<String, Object>> itemArray = (ArrayList<HashMap<String, Object>>) items.get("item");
-
+        List<String> tmpvalue = new ArrayList<>();
+        List<String> popvalue = new ArrayList<>();
+        List<String> rehvalue = new ArrayList<>();
+        List<String> wsdvalue = new ArrayList<>();
+        List<String> skyvalue = new ArrayList<>();
+        List<String> ptyvalue = new ArrayList<>();
         for (HashMap<String, Object> item : itemArray) {
-            String baseDate = (String) item.get("baseDate");
-            String baseTime = (String) item.get("baseTime");
-            System.out.println("baseDate: " + baseDate);
-            System.out.println("Result Message: " + baseTime);
+            String category = (String) item.get("category");
+            if (category.equals("TMP")){
+                String fcstValue = (String) item.get("fcstValue");
+                tmpvalue.add(fcstValue);
+            }if(category.equals("POP")){
+                String fcstValue = (String)item.get("fcstValue");
+                popvalue.add(fcstValue);
+            }if(category.equals("REH")){
+                String fcstValue = (String)item.get("fcstValue");
+                rehvalue.add(fcstValue);
+            }if(category.equals("WSD")){
+                String fcstValue = (String)item.get("fcstValue");
+                wsdvalue.add(fcstValue);
+            }if(category.equals("SKY")){
+                String fcstValue = (String)item.get("fcstValue");
+                skyvalue.add(fcstValue);
+            }if(category.equals("PTY")){
+                String fcstValue = (String)item.get("fcstValue");
+                ptyvalue.add(fcstValue);
+            }
         }
+        System.out.println(tmpvalue);
         return apiUrl;
     }
     public HashMap<String,Object> getDataFromJson(String url,String encoding,String type,String jsonStr)throws  Exception{
