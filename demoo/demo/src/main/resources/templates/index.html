@@ -114,27 +114,32 @@
                 });
             }
             function getWeather() {
-                fetch('/api/weather')
-                    .then(jsonObect => jsonObect.json())
+                    // 서버에서 전달받은 jsonData
+                var nx = $('#nx').val();
+                var ny = $('#ny').val();
+
+                fetch(`/api/weather?nx=${nx}&ny=${ny}`)
+                    .then(response => response.json())
                     .then(data => {
-                        // 서버로부터 받아온 데이터를 활용하여 화면에 출력
+                        console.log(data); // 서버로부터 받아온 데이터를 확인하기 위해 출력
+
+                        // 서버에서 전달받은 데이터를 활용하여 화면에 출력
                         const tmpList = document.getElementById('tmpList');
                         const popList = document.getElementById('popList');
 
-                        data.tmpvalue.forEach(tmp => {
-                            const tmpItem = document.createElement('li');
-                            tmpItem.textContent = tmp;
-                            tmpList.appendChild(tmpItem);
-                        });
+                        // 서버에서 받아온 데이터를 화면에 출력
+                        const tmpItem = document.createElement('li');
+                        tmpItem.textContent = data.TMP;
+                        tmpList.appendChild(tmpItem);
 
-                        data.popvalue.forEach(pop => {
-                            const popItem = document.createElement('li');
-                            popItem.textContent = pop;
-                            popList.appendChild(popItem);
-                        });
+                        const popItem = document.createElement('li');
+                        popItem.textContent = data.POP;
+                        popList.appendChild(popItem);
                     })
                     .catch(error => console.error(error));
-            }
+
+                }
+
         </script>
         <!-- Page content-->
         <!-- Bootstrap core JS-->
