@@ -20,19 +20,13 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/index">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/signup">SignUp</a></li>
-                <li class="nav-item"><a class="nav-link" href="/login">Logout</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Board</a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/write">Write</a></li>
-                        <li><a class="dropdown-item" href="/list">List</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="./myPage">my page</a></li>
-                    </ul>
+                <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="/login">Login</a></li>
+                <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="/login">Logout</a></li>
+                <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="./myPage">my page</a></li>
                 <li class="nav-item">
-                    <span class="nav-link" th:text="${session.id +'님😊'}"></span>
+                    <span class="nav-link" th:if="${session.id!=null}" th:text="${session.id +'님😊'}"></span>
                 </li>
             </ul>
         </div>
@@ -71,6 +65,14 @@
                             <tr>
                                 <th scope="row" style="height:150px;font-size:13px;" align="center" valign="middle">내용</th>
                                 <td align="center" valign="middle" colspan="3" th:text="${board.content}"></td>
+                            </tr>
+                            <tr>
+                                첨부파일:
+                                <th:block th:if="${board.file_name != null}">
+                                    <a th:href="'/sboard/download/'+${board.no}"><img src="/img/file.png">
+                                        <span th:text="${board.file_name}"></span>
+                                    </a>
+                                </th:block>
                             </tr>
                             </tbody>
                         </table>

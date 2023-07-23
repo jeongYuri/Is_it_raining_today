@@ -10,12 +10,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -107,11 +117,43 @@ public class HomeController {
         return "list";
     }
     @PostMapping(value = "/write")
-    public String boardwrite(Board board) {
+    public String boardwrite(Board board,@RequestParam(required = false,name= "file") MultipartFile file) {
         //HttpSession session = request.getSession();
         //String id = (String)session.getAttribute("id");
+        String file_name = null;
+        String file_link = null;
+        if (file!=null) {
+            file_name = file.getOriginalFilename();
+            if (file_name != null && file_name.isEmpty()) {
+                file_name = null;
+            }
+            if(file_name!=null){
+                String saveFileName = "";
+                Calendar calendar = Calendar.getInstance();
+                saveFileName += calendar.get(Calendar.YEAR);
+                saveFileName += calendar.get(Calendar.MONTH);
+                saveFileName += calendar.get(Calendar.DATE);
+                saveFileName += calendar.get(Calendar.HOUR);
+                saveFileName += calendar.get(Calendar.MINUTE);
+                saveFileName += calendar.get(Calendar.SECOND);
+                saveFileName += calendar.get(Calendar.MILLISECOND);
+                saveFileName += file_name;
+                file_link = "C:\\Users\\dydrk\\crud_webp\\upload\\" + saveFileName;
+                try {
+                    file.transferTo(new File(file_link));
+                } catch (IllegalStateException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        board.setFile_name(file_name);
+        board.setFile_link(file_link);
         boardService.savePost(board);
-        System.out.println(board);
         return "redirect:/list";
     }
 
@@ -220,6 +262,21 @@ public class HomeController {
         userService.deleteUser(id);
         session.invalidate();
         return "redirect:/";
+    }
+    @GetMapping("/download/{no}")
+    public ResponseEntity<InputStreamResource> fileDownload(@PathVariable("no") Long no) throws IOException {
+        Board board = boardService.getPost(no);
+
+        Path path = Paths.get("C:/Temp/" + board.getFile_link());
+        InputStreamResource resource = new InputStreamResource(Files.newInputStream(path));
+
+        String fileName = new String(board.getFile_name().getBytes("UTF-8"), "ISO-8859-1");
+
+        System.out.println(board.getFile_name());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + board.getFile_name())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
     }
 
      /*@PostMapping(value = "/login")

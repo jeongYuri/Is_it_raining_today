@@ -37,7 +37,7 @@
 </head>
 <body>
 <div class="container">
-    <form action="/write" method="post" >
+    <form action="/write" method="post" enctype="multipart/form-data" >
         <div class="input-form-backgroud row">
             <div class="input-form col-md-12 mx-auto">
                 <h3 class="mb-3">✍️✍️</h3>
@@ -50,22 +50,21 @@
                                 제목을 입력해주세요!😨
                             </div>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="writer_name">Writer</label>
                             <input type="text" class="form-control" name="writer_name" id="writer_name" placeholder="" required th:value="${session.id}">
                         </div>
                     </div>
                         <div class="mb-3">
-                            <label for="name">Content</label>
+                            <label for="content">Content</label>
                             <input type="text" class="form-control" name="content" id="content" placeholder="내용을 입력해주세요" style="height:300px;font-size:15px;" value="" required>
                             <div class="invalid-feedback">
                                 내용을 입력해주세요!😨
                             </div>
                         </div>
                     <div class="mb-3">
-                        <label for="name">File</label>
-                        <input type="file" class="form-control" name="inputfile" id="inputfile" value="">
+                        <label for="file">File</label>
+                        <input type="file" class="form-control" name="file" id="file" value="">
                     </div>
                     <div style=" text-align: center;">
                         <button class="btn btn-primary btn-sm" type="submit">글쓰기</button>
@@ -74,8 +73,9 @@
                         <button class="btn btn-primary btn-sm" type="button" value="뒤로가기" onclick="history.back();" >취소</button>
                     </div>
                 </form>
-
             </div>
+            </div>
+            </form>
         </div>
         <footer class="my-3 text-center text-small">
             <p class="mb-1">&copy;2021 YD</p>
