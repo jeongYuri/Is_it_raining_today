@@ -267,7 +267,7 @@ public class HomeController {
     public ResponseEntity<InputStreamResource> fileDownload(@PathVariable("no") Long no) throws IOException {
         Board board = boardService.getPost(no);
 
-        Path path = Paths.get("C:/Temp/" + board.getFile_link());
+        Path path = Paths.get(board.getFile_link());
         InputStreamResource resource = new InputStreamResource(Files.newInputStream(path));
 
         String fileName = new String(board.getFile_name().getBytes("UTF-8"), "ISO-8859-1");

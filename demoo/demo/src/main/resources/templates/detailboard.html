@@ -67,12 +67,13 @@
                                 <td align="center" valign="middle" colspan="3" th:text="${board.content}"></td>
                             </tr>
                             <tr>
-                                첨부파일:
-                                <th:block th:if="${board.file_name != null}">
-                                    <a th:href="'/sboard/download/'+${board.no}"><img src="/img/file.png">
+                                <th th:if="${board.file_name != null}">첨부파일</th>
+                                <td align="center" valign="middle" colspan="3" >
+                                    <a th:href="'/download/'+${board.no}">
+                                        <img src="/img/file.png">
                                         <span th:text="${board.file_name}"></span>
                                     </a>
-                                </th:block>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
