@@ -39,7 +39,8 @@ public class HomeController {
     public String home() {
         return "index";
     }
-
+    @GetMapping(value="/loginhome")
+    public String loginhome(){return "loginhome";}
     @GetMapping(value = "/signup")
     public String join() {
         return "signup";
@@ -47,15 +48,13 @@ public class HomeController {
 
     @GetMapping(value = "/login")
     public String login() {
-
-
         return "login";
     }
     @GetMapping(path="/logout")
     public String login(HttpServletRequest request){
         HttpSession session = request.getSession();
         session.invalidate();
-        return "redirect:/index";
+        return "redirect:/";
     }
    @PostMapping(path = "/checkLogin")
    public String checkLogin(@RequestParam(value="id")String id,
@@ -77,7 +76,7 @@ public class HomeController {
             session.setAttribute("id",id);
             session.setAttribute("pw",pw);
             System.out.println(id);
-            page="redirect:/list";
+            page="redirect:/";
        }
        return page;
    }
@@ -113,7 +112,7 @@ public class HomeController {
         //String id = (String)session.getAttribute("id");
         boardService.savePost(board);
         System.out.println(board);
-        return "list";
+        return "redirect:/list";
     }
 
     @GetMapping(value = "/read/{no}")

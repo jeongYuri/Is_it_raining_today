@@ -99,7 +99,7 @@ public class WeatherController {
             }if(category.equals("PTY")){
                 String fcstValue = (String)item.get("fcstValue");
                 if(fcstValue.equals("0")){
-                    dataToSend.put("PTY", "맑음");
+                    dataToSend.put("PTY", "없음");
                 }else if(fcstValue.equals("1")) {
                     dataToSend.put("PTY", "비");
                 }else if(fcstValue.equals("2")){

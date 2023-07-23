@@ -20,10 +20,10 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="./loginhome">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="./">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="./signup">SignUp</a></li>
-                <li class="nav-item"><a class="nav-link" href="./login">Logout</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Weather</a></li>
+                <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./login">Login</a></li>
+                <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="./login">Logout</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Board</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -67,7 +67,7 @@
                                  </tr>
                                  </tbody>
                     </table>
-                    <div class="btn btn-secondary oardList-footer">
+                    <div class="btn btn-secondary oardList-footer" th:if="${session.id!=null}" >
                         <a href="./write" class="text-white">글쓰기</a>
                     </div>
                 </div>

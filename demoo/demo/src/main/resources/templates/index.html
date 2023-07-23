@@ -20,10 +20,15 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="./">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="./signup">SignUp</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./login">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Weather</a></li>
+                        <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./login">Login</a></li>
+                        <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="./login">Logout</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./list">Board</a></li>
+                        <li><a th:if="${session.id!=null}" class="nav-link" href="./myPage">mypage</a></li>
+                        <li class="nav-item">
+                            <span class="nav-link" th:if="${session.id!=null}" th:text="${session.id +'님😊'}"></span>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -37,8 +42,8 @@
                             <div class="col-lg-6">
                                 <div style="display: flex; justify-content: space-between;">
                                     <div style="display: flex; align-items: center;">
-                                        <input type="text" id="searchInput" placeholder="주소 및 장소🗺️" style="width: 240px; height: 25px; font-size: 15px;" class="form-control" readonly>
-                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="adress()" value="주소검색🗺️">
+                                        <input type="text" id="searchInput" placeholder="주소를 입력😎" style="width: 240px; height: 25px; font-size: 15px;" class="form-control" readonly>
+                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="adress()" value="주소검색">
                                         <input type="button" class="btn btn-primary btn-sm" onclick="weather()" value="날씨">
                                         <input type="button" class="btn btn-primary btn-sm ml-2" onclick="getWeather()" value="☔">
                                         <input type="hidden" id="nx">
@@ -48,10 +53,10 @@
                                 <div id="weatherInfo" class="mt-3">
                                     <ul id="tmpList"></ul>
                                     <ul id="popList"></ul>
+                                    <ul id="ptyList"></ul>
                                     <ul id="rehList"></ul>
                                     <ul id="wsdList"></ul>
                                     <ul id="skyList"></ul>
-                                    <ul id="ptyList"></ul>
                                 </div>
                             </div>
                         </div>
@@ -142,35 +147,35 @@
                         const ptyList = document.getElementById('ptyList');
                         // 서버에서 받아온 데이터를 화면에 출력
                         const tmpItem = document.createElement('li');
-                        tmpItem.textContent = 'TMP: ' + data.TMP;
+                        tmpItem.textContent = '🌡️기온: ' + data.TMP +'℃';
                         tmpList.appendChild(tmpItem);
 
                         const popItem = document.createElement('li');
-                        popItem.textContent = 'pop: '+data.POP;
+                        popItem.textContent = '☔강수확률: '+data.POP +'%';
                         popList.appendChild(popItem);
 
+                        const ptyItem = document.createElement('li');
+                        ptyItem.textContent = '☔강수형태: ' + data.PTY;
+                        ptyList.appendChild(ptyItem);
+
                         const rehItem = document.createElement('li');
-                        rehItem.textContent = 'REH: '+ data.REH;
+                        rehItem.textContent = '💧습도: '+ data.REH+'%';
                         rehList.appendChild(rehItem);
 
                         const wsdItem = document.createElement('li');
-                        wsdItem.textContent = 'WSD: '+data.WSD;
+                        wsdItem.textContent = '🌬️풍속: '+data.WSD+'m/s';
                         wsdList.appendChild(wsdItem);
 
                         const skyItem = document.createElement('li');
-                        skyItem.textContent = 'SKY: ' + data.SKY;
+                        skyItem.textContent = '🏳️‍⚧️하늘상태: ' + data.SKY;
                         skyList.appendChild(skyItem);
 
-                        const ptyItem = document.createElement('li');
-                        ptyItem.textContent = 'PTY: ' + data.PTY;
-                        ptyList.appendChild(ptyItem);
                     })
                     .catch(error => console.error(error));
 
                 }
 
         </script>
-        <!-- Page content-->
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
