@@ -51,6 +51,7 @@ public class SqlBoardRepository implements BoardRepository{
         int result = jdbcTemplate.update(sql,no);
     }
 
+
     @Override
     public List<Board> findAll() {
         return jdbcTemplate.query("select *from nboard",boardRowMapper());
@@ -77,6 +78,12 @@ public class SqlBoardRepository implements BoardRepository{
         String sql = "select * from nboard where no =?";
         List<Board> list = jdbcTemplate.query(sql,boardRowMapper(),no);
         return list.stream().findAny();
+    }
+
+    @Override
+    public List<Board> findByWriterName(String writerName) {
+        String sql = "select * from nboard where writer_name =?";
+        return jdbcTemplate.query(sql,boardRowMapper(),writerName);
     }
 
 

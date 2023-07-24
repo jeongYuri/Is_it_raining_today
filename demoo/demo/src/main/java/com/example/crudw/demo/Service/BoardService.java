@@ -25,10 +25,18 @@ public class BoardService {
         boardRepository.hit(no);
         return board;
     }
+
+
+    public List<Board> getPostsByUserId(String writerName) {
+        return boardRepository.findByWriterName(writerName);
+    }
     public Long savePost(Board board) {
         return boardRepository.insert(board).getNo();
     }
     public void deletePost(Long no){boardRepository.deleteById(no);
     }
+
+
+
 
 }
