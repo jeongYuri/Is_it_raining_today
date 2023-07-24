@@ -48,6 +48,18 @@ public class SqlCommentRepository implements CommentRepository {
     }
 
     @Override
+    public void deleteByUserId(String writerName) {
+        String sql = "delete from comment where writer_name=?";
+        int result= jdbcTemplate.update(sql, writerName);
+    }
+/*
+    @Override
+    public List<Comment> findById(String writerName) {
+        String sql = "select *from comment where writer_name=?";
+        return jdbcTemplate.query(sql,commentRowMapper(), writerName);
+    }*/
+
+    @Override
     public List<Comment> findByBoardNoOrderByParentNoAscNoAsc(Long board_no) {
         return jdbcTemplate.query("SELECT * FROM comment WHERE board_no =? ORDER BY parent_no ASC, no ASC",commentRowMapper(),board_no);
 

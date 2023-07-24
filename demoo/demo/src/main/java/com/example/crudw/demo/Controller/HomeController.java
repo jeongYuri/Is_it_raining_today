@@ -266,7 +266,7 @@ public class HomeController {
         for (Board board : userBoards) {
             // 파일이 존재하는 경우 파일도 삭제
             if (board.getFile_link() != null) {
-                Path filePath = Paths.get("C:/Temp/" + board.getFile_link());
+                Path filePath = Paths.get( board.getFile_link());
                 try {
                     Files.delete(filePath);
                 } catch (IOException e) {
@@ -275,6 +275,7 @@ public class HomeController {
             }
             // 게시글 삭제
             boardService.deletePost(board.getNo());
+            commentService.deleteCommentById(writerName);
         }
         userService.deleteUser(id);
         session.invalidate();

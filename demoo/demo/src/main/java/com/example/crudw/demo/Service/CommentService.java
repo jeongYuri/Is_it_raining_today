@@ -27,6 +27,12 @@ public class CommentService {
         Optional<Comment> commentOpt = commentRepository.findByNo(no);
         return commentOpt.orElse(null);
     }
+    /*
+    public List<Comment> getComment(String writerName){
+       return commentRepository.findById(writerName);
+
+    }*/
+    public void deleteCommentById(String writerName){commentRepository.deleteByUserId(writerName);}
 
     public Long saveComment(Comment comment){return commentRepository.save(comment).getNo();}
 

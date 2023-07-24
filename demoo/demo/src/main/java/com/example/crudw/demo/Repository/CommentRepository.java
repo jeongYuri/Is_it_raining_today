@@ -11,6 +11,8 @@ public interface CommentRepository {
     Comment commentupdate(Comment comment);
     List<Comment> findAll();
     void deleteById(Long no);
+    void deleteByUserId(String writerName);
+   // List<Comment> findById(String writerName);
     List<Comment> findByBoardNoOrderByParentNoAscNoAsc(Long board_no);
     Optional<Comment> findByNo(Long no);
 }
