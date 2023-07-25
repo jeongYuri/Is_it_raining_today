@@ -30,7 +30,7 @@ public class WeatherController {
     public String getWeather(@RequestParam("nx") String nx, @RequestParam("ny") String ny) throws Exception {
 
         String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
-        String serviceKey = "PXL4ObzaxgbrcVcEe5c8QTzAdF5bD9Y714d3X2Tus6DgtWsj10nEfjP6lUL6Z%2FAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
+        String serviceKey = "PXLAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
         String dataType = "JSON";
         String numOfRows = "50";
         LocalDateTime currentDateTime = LocalDateTime.now();
