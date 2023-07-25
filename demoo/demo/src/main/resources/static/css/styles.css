@@ -10823,5 +10823,7 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
-
+}
+li {
+  margin-bottom: 100px;
 }

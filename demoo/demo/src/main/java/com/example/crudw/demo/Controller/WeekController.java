@@ -19,6 +19,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.logging.log4j.Logger;
@@ -76,12 +77,10 @@ public class WeekController {
         int hour = currentDateTime.getHour();
         String name = region.getId();
         String tmFc = null;
-        logger.info("getWeekWeather called with city: {}",city);
+        //logger.info("getWeekWeather called with city: {}",city);
         if (name != null) {
             if(name.equals(city)){
-                System.out.println(city);
                 regId = region.getCode();
-                System.out.println(regId);
             }
         } else {
             System.out.println("bye");
@@ -96,11 +95,55 @@ public class WeekController {
         }else{
             tmFc = base_date+hour+"00";
         }
-        //String tmFc = base_date+hour+"00";
         String url = apiUrl+"?serviceKey="+serviceKey+"&pageNo="+pageNo+"&numOfRows="+numOfRows+"&dataType="+dataType+"&regId="+regId+"&tmFc="+tmFc;
-        System.out.println(tmFc);
         JSONObject jsonObject = new JSONObject();
         HashMap<String, Object> resultMap = getDataFromJson(url, "UTF-8", "get", "");
+        HashMap<String, Object> response = (HashMap<String, Object>) resultMap.get("response");
+        HashMap<String, Object> body = (HashMap<String, Object>) response.get("body");
+        HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
+        ArrayList<HashMap<String, Object>> itemArray = (ArrayList<HashMap<String, Object>>) items.get("item");
+        HashMap<String, Object> dataToSend = new HashMap<>();
+        for (HashMap<String, Object> item : itemArray) {
+            int taMin3=(int)item.get("taMin3");
+            dataToSend.put("taMin3", taMin3);
+            int taMax3 = (int)item.get("taMax3");
+            dataToSend.put("taMax3",taMax3);
+            int taMin4 = (int)item.get("taMin4");
+            dataToSend.put("taMin4", taMin4);
+            int taMax4 = (int)item.get("taMax4");
+            dataToSend.put("taMax4",taMax4);
+            int taMin5 = (int)item.get("taMin5");
+            dataToSend.put("taMin5", taMin5);
+            int taMax5 = (int)item.get("taMax5");
+            dataToSend.put("taMax5",taMax5);
+            int taMin6 = (int)item.get("taMin6");
+            dataToSend.put("taMin6", taMin6);
+            int taMax6 = (int)item.get("taMax6");
+            dataToSend.put("taMax6",taMax6);
+            int taMin7 = (int)item.get("taMin7");
+            dataToSend.put("taMin7", taMin7);
+            int taMax7 = (int)item.get("taMax7");
+            dataToSend.put("taMax7",taMax7);
+            int taMin8 = (int)item.get("taMin8");
+            dataToSend.put("taMin8", taMin8);
+            int taMax8 = (int)item.get("taMax8");
+            dataToSend.put("taMax8",taMax8);
+            int taMin9 = (int)item.get("taMin9");
+            dataToSend.put("taMin9", taMin9);
+            int taMax9 = (int)item.get("taMax9");
+            dataToSend.put("taMax9",taMax9);
+            int taMin10 = (int)item.get("taMin10");
+            dataToSend.put("taMin10", taMin10);
+            int taMax10 = (int)item.get("taMax10");
+            dataToSend.put("taMax10",taMax10);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonData = objectMapper.writeValueAsString(dataToSend);
+            System.out.println(jsonData);
+            return jsonData;
+        }
+
+
+
         System.out.println("# RESULT :" + resultMap);
         jsonObject.put("result",resultMap);
         return url;//이거 임시임 돌리지마..
