@@ -5,23 +5,30 @@ import com.example.crudw.demo.Member.UserForm;
 import com.example.crudw.demo.Service.BoardService;
 import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
+import com.example.crudw.demo.Weather.Region;
 import com.example.crudw.demo.comment.Comment;
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,13 +43,15 @@ public class HomeController {
     private final UserService userService;
     private final BoardService boardService;
     private final CommentService commentService;
+    private final EntityManager em;
 
 
     @Autowired
-    public HomeController(UserService userService, BoardService boardService,CommentService commentService) {
+    public HomeController(UserService userService, BoardService boardService, CommentService commentService, EntityManager em) {
         this.userService = userService;
         this.boardService = boardService;
         this.commentService = commentService;
+        this.em = em;
     }
 
     @GetMapping(value = "/")
@@ -322,6 +331,8 @@ public class HomeController {
     }*/
 
 }
+
+
 
 
 

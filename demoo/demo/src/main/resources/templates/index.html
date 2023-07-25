@@ -43,11 +43,12 @@
                                 <div style="display: flex; justify-content: space-between;">
                                     <div style="display: flex; align-items: center;">
                                         <input type="text" id="searchInput" placeholder="주소를 입력😎" style="width: 240px; height: 25px; font-size: 15px;" class="form-control" readonly>
-                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="adress()" value="주소검색">
-                                        <input type="button" class="btn btn-primary btn-sm" onclick="weather()" value="날씨">
-                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="getWeather()" value="☔">
+                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="combinedFunction();" value="주소검색">
+                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="getWeather()" value="Today🌁">
+                                        <input type="button" class="btn btn-primary btn-sm ml-2" onclick="weekWeather()" value="Week🌁">
                                         <input type="hidden" id="nx">
                                         <input type="hidden" id="ny">
+                                        <input type="hidden" id="city">
                                     </div>
                                 </div>
                                 <div id="weatherInfo" class="mt-3">
@@ -65,6 +66,7 @@
             </div>
         </div>
         <script>
+
             var mapContainer = document.getElementById('map'),
                 mapOption={
                     center:new daum.maps.LatLng(37.537187,127.005476),
@@ -93,12 +95,23 @@
                                 var ny = coords.getLng();
                                 document.getElementById("nx").value = nx; // 추가: hidden input에 nx 값을 넣어줌--날씨에게 넘겨주기 위해
                                 document.getElementById("ny").value = ny; // 추가: hidden input에 ny 값을 넣어줌--날씨에게 넘겨주기 위해
-                                console.log(nx, ny);
-                                console.log(nx,ny);
+                                var regi=results[0].road_address.region_1depth_name;
+                                if(regi ==="전남"||regi==="전북"||regi==="경북"||regi==="경남"||regi==="충남"||regi==="충북"||regi==="강원"||regi==="경기" ) {
+                                    city= results[0].road_address.region_2depth_name.substring(0,2);
+                                }else{
+                                    city = results[0].road_address.region_1depth_name;
+                                }
+                                document.getElementById("city").value = city;
+                            }
+                            if (typeof callback === 'function') {
+                                callback();
                             }
                         });
                     }
                 }).open();
+            }
+            function combinedFunction() {
+                adress(weather);
             }
 
             function weather() {
@@ -117,6 +130,32 @@
                         //let dataHeader = data;
                         //let dataHeader = data.result.response.header.resultCode;
 
+                        if (data!=null) {
+                            console.log("success==>");
+                            console.log(data);
+                        } else {
+                            console.log("fail==>");
+                            console.log(data);
+                        }
+                    }, error: function (xhr, status, error) {
+                        console.log("error==>");
+                        console.log(error);
+                    }
+                });
+            }
+            function weekWeather(){
+                var city = $('#city').val();
+                console.log(city);
+                jQuery.ajax({
+                    url: "/api/week",
+                    type: "get",
+                    timeout: 300000,
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: {city:city},
+                    success: function (data, status, xhr) {
+                        //let dataHeader = data;
+                        //let dataHeader = data.result.response.header.resultCode;
                         if (data!=null) {
                             console.log("success==>");
                             console.log(data);

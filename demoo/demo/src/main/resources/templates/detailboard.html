@@ -70,7 +70,7 @@
                                 <th th:if="${board.file_name != null}">첨부파일</th>
                                 <td align="center" valign="middle" colspan="3" >
                                     <a th:href="'/download/'+${board.no}">
-                                        <img src="/img/file.png">
+                                        <img th:if="${board.file_name!=null}" src="/img/file.png">
                                         <span th:text="${board.file_name}"></span>
                                     </a>
                                 </td>
