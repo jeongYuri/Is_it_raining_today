@@ -26,5 +26,8 @@
 **Main home**
 <img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/648c622e-9708-472b-80a2-ced6c2dc08ca.png" />
 
+<img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/bdef7e63-65c5-472e-884e-b616c76e0d7a.png" />
+
+
 
 
