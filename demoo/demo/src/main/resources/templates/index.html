@@ -16,7 +16,7 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="./">☔☂️</a>
+                <a class="navbar-brand" href="#">☔☂️</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -60,17 +60,13 @@
                                             <ul id="rehList"></ul>
                                             <ul id="wsdList"></ul>
                                             <ul id="skyList"></ul>
-                                        </div>
+                                </div>
                                     </div>
                                         <div style="flex: 1;">
                                             <div id="weekInfo">
                                                 <ul id="taMinList"></ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <div id="notificationInfo">
-                                    <!-- 우산 알림 문구가 추가될 부분 -->
                                 </div>
+                                        </div>
                             </div>
                         </div>
                 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -228,13 +224,6 @@
                         skyItem.textContent = '🏳️‍⚧️하늘상태: ' + data.SKY;
                         skyList.appendChild(skyItem);
 
-                        if (data.POP >= 40) {
-                            const notificationText = "❗오늘 비 올 확률이 높습니다! 우산을 챙기세요!.☔";
-                            const notificationElement = document.createElement("div");
-                            notificationElement.textContent = notificationText;
-                            const notificationInfo = document.getElementById("notificationInfo"); //알람문자 넣기
-                            notificationInfo.appendChild(notificationElement);
-                        }
                     })
                     .catch(error => console.error(error));
 
