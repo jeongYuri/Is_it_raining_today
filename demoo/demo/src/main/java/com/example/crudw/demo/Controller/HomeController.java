@@ -330,30 +330,6 @@ public class HomeController {
                 .body(resource);
     }
 
-     /*@PostMapping(value = "/login")
-    public String login(@Valid @ModelAttribute UserForm form, BindingResult bindingResult,
-                        HttpServletResponse response) {
-
-        if (bindingResult.hasErrors()) {
-            return "/login";
-        }
-        String id = form.getId();
-        String pw = form.getPw();
-        User loginUser = userService.login(id, pw);
-        if (loginUser == null) {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-            return "login";
-        }
-
-        Cookie cookie = new Cookie("userId", String.valueOf(loginUser.getId()));
-        cookie.setPath("/");
-        response.addCookie(cookie);
-        System.out.println("쿠키 이름: " + cookie.getName());
-        System.out.println("쿠키 값: " + cookie.getValue());
-        return "loginhome";
-
-    }*/
-
 }
 
 
