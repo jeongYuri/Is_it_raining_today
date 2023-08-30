@@ -52,18 +52,25 @@
                                  <tbody>
                                  <tr th:each="board:${nboard}">
                                      <td th:text="${board.no}"></td>
-                                     <td th:text="${board.writer_name}"></td>
+                                     <td th:text="${board.writerName}"></td>
                                      <td>
                                          <a th:text="${board.title}" th:href="@{./read/{no}(no=${board.no})}"></a></td>
                                      <td th:text="${board.hit}"></td>
-                                     <td th:text="${board.create_time}"><</td>
+                                     <td th:text="${board.createTime}"><</td>
                                  </tr>
                                  </tbody>
                     </table>
                     <div class="btn btn-secondary oardList-footer" th:if="${session.id!=null}" >
                         <a href="./write" class="text-white">글쓰기</a>
                     </div>
-                </div>
+                    <div class="pagination justify-content-center">
+                        <a th:if="${startPage > 1}" th:href="@{/list(page=1)}" class="btn btn-sm"></a>
+                        <a th:if="${nboard.hasPrevious()}" th:href="@{/list(page=${nboard.previousPageable().pageNumber})}" role="button" class="btn btn-lg ">⬅️</a>
+                        <a th:each="page : ${#numbers.sequence(startPage -1 , endPage - 1)}" th:href="@{/list(page=${page})}" role="button" class="btn btn-lg bi" th:classappend="${page == nboard.number +1 ? 'bi-circle-fill' : 'bi-circle'}" th:text="${page}"></a>
+                        <a th:if="${nboard.hasNext()}" th:href="@{/list(page=${nboard.nextPageable().pageNumber})}" role="button" class="btn btn-lg ">➡️</a>
+                        <a th:if="${endPage < nboard.totalPages}" class="btn btn-sm" th:href="@{/list(page=${nboard.totalPages})}"></a>
+                    </div>
+
             </div>
         </div>
     </div>

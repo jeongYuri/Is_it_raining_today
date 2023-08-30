@@ -1,19 +1,27 @@
 package com.example.crudw.demo.Controller;
 import com.example.crudw.demo.Board.Board;
+import com.example.crudw.demo.Board.BoardUpdate;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserForm;
+import com.example.crudw.demo.Member.UserUpdate;
 import com.example.crudw.demo.Service.BoardService;
 import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
 import com.example.crudw.demo.Weather.Region;
 import com.example.crudw.demo.comment.Comment;
+import com.example.crudw.demo.comment.CommentUpdate;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,20 +47,15 @@ import java.util.List;
 @Slf4j
 @Controller
 public class HomeController {
-
-    private final UserService userService;
-    private final BoardService boardService;
-    private final CommentService commentService;
-    private final EntityManager em;
-
-
     @Autowired
-    public HomeController(UserService userService, BoardService boardService, CommentService commentService, EntityManager em) {
-        this.userService = userService;
-        this.boardService = boardService;
-        this.commentService = commentService;
-        this.em = em;
-    }
+    UserService userService;
+    @Autowired
+    BoardService boardService;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    EntityManager em;
+
 
     @GetMapping(value = "/")
     public String home() {
@@ -61,10 +64,24 @@ public class HomeController {
     @GetMapping(value="/loginhome")
     public String loginhome(){return "loginhome";}
     @GetMapping(value = "/signup")
-    public String join() {
-        return "signup";
+    public String signup(Model model) {
+        return "signup"; // 오타 수정
     }
+    @PostMapping(path="/addUser")
+    public String addUser(@ModelAttribute User user, Model model) {
+        boolean exist = userService.getUser(user.getId()) != null;
 
+        if (exist == true) {
+            model.addAttribute("msg", "회원가입에 실패하였습니다.");
+            model.addAttribute("url", "signup");
+        } else {
+            Long no = userService.saveUser(user);
+            model.addAttribute("msg", "회원가입에 성공하였습니다.");
+            model.addAttribute("url", "login");
+        }
+
+        return "alert";
+    }
     @GetMapping(value = "/login")
     public String login() {
         return "login";
@@ -80,38 +97,26 @@ public class HomeController {
                             @RequestParam(value="pw") String pw,
                             Model model,HttpServletRequest request,@ModelAttribute UserForm form){
        //boolean result = userService.login(id,pw);
-       User loginUser = userService.login(id, pw);
+       boolean result = userService.login(id, pw);
        String page;
 
-       if(loginUser==null){
+       if(result == false){
            model.addAttribute("msg","로그인 정보가 맞지않습니다.");
            model.addAttribute("url","login");
            page="alert";
 
        }else{
-            id = form.getId();
-            pw = form.getPw();
+           User user = userService.getUser(id);
             HttpSession session = request.getSession();
             session.setAttribute("id",id);
             session.setAttribute("pw",pw);
+           session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
             System.out.println(id);
             page="redirect:/";
        }
        return page;
    }
-    @PostMapping(value = "/signup")
-    public String register(@ModelAttribute UserForm form) {
-        System.out.println("hi");
-        User users = new User();
-        users.setId(form.getId());
-        users.setPw(form.getPw());
-        users.setName(form.getName());
-        users.setEmail(form.getEmail());
-        users.setPhone(form.getPhone());
-        System.out.println(form.getId());
-        userService.join(users);
-        return "redirect:/";
-    }
+
 
     @GetMapping(value = "/write")
     public String write() {
@@ -120,9 +125,20 @@ public class HomeController {
     }
 
     @GetMapping(value = "/list")
-    public String list(Model model) {
+    public String list(Model model,@PageableDefault(size = 5, sort="no",direction = Sort.Direction.DESC)Pageable pageable) {
         //List<Board> boards = boardService.BoardList();
-        model.addAttribute("nboard", boardService.BoardList());
+        //model.addAttribute("nboard", boardService.BoardList());
+        System.out.println("Pageable: " + pageable);
+        Page<Board> boardPage = boardService.pageList(pageable);
+        int startPage = Math.max(1,boardPage.getPageable().getPageNumber()-5);
+        int endPage = Math.min(boardPage.getTotalPages(),boardPage.getPageable().getPageNumber()+5);
+        model.addAttribute("startPage",startPage);
+        model.addAttribute("endPage",endPage);
+        model.addAttribute("hasNext", boardPage.hasNext()); //이전/다음 페이지 유무에 따라서..! true/false 반환..
+        model.addAttribute("hasPrev", boardPage.hasPrevious());
+        model.addAttribute("nboard", boardPage);
+        //model.addAttribute("nboard",boardService.pageList(pageable));
+
         return "list";
     }
     @PostMapping(value = "/write")
@@ -160,15 +176,16 @@ public class HomeController {
             }
         }
 
-        board.setFile_name(file_name);
-        board.setFile_link(file_link);
+        board.setFileName(file_name);
+        board.setFileLink(file_link);
         boardService.savePost(board);
         return "redirect:/list";
     }
 
     @GetMapping(value = "/read/{no}")
-    public String read(@PathVariable("no") Long no, Model model,Comment comment) {
+    public String read(@PathVariable("no") Long no, Model model,Comment comment,Board board) {
         List<Comment> commentlist = commentService.getCommentList(no);
+        boardService.hit(no);
         model.addAttribute("board", boardService.getPost(no));
         model.addAttribute("comment",commentlist);
         model.addAttribute("comments",comment);
@@ -189,7 +206,7 @@ public class HomeController {
     }
 
     @GetMapping("/updateUser")
-    public String updateUser(Model model,HttpServletRequest request){
+    public String updateUser(Model model, HttpServletRequest request){
         HttpSession session  = request.getSession();
         String id = (String)session.getAttribute("id");
         User user = userService.getUser(id);
@@ -197,15 +214,19 @@ public class HomeController {
         return "updateUser";
     }
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute User user, Model model){
-        if (user.getNo() == null) {
-            model.addAttribute("errorMsg", "사용자 번호가 없습니다.");
-            return "updateUser";
-        }
-        System.out.println(user);
-        model.addAttribute("user",  userService.userUpdate(user));
-        //model.addAttribute(user.getNo());
-        return "redirect:/myPage";
+    public String saveUser( HttpServletRequest request, Model model, @ModelAttribute UserUpdate updateDTO){
+        //Long no = userService.saveUser(user);
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute("id");
+
+        userService.updateUser(id, updateDTO);
+        User updatedUser = userService.getUser(id);
+
+        model.addAttribute("user", updatedUser);
+        model.addAttribute("msg", "정보 수정에 성공하였습니다.");
+        model.addAttribute("url", "mypage");
+
+        return "myPage";
     }
 
     @GetMapping("/update/post/{no}")
@@ -216,9 +237,10 @@ public class HomeController {
     }
 
     @PostMapping(value = "/savePost")
-    public String savePost(@ModelAttribute Board board, Model model) {
-        boardService.getPost(board.getNo());
-        model.addAttribute(boardService.boardupdate(board));
+    public String savePost(@ModelAttribute Board board, Model model, @ModelAttribute BoardUpdate updateDTO) {
+        //boardService.getPost(board.getNo());
+        boardService.updateBoard(board.getNo(), updateDTO);
+        //model.addAttribute(boardService.boardupdate(board));
         model.addAttribute(board.getNo());
         return "redirect:/list";
     }
@@ -233,14 +255,14 @@ public class HomeController {
 
             return "redirect:/list";
         }
-        String page = "/read/" + comment.getBoard_no();
+        String page = "/read/" + comment.getBoardNo();
         commentService.saveComment(comment);
         System.out.println("ok");
         HttpSession session = request.getSession();
         String name = (String) session.getAttribute("name");
         Long wirterNo = (Long)session.getAttribute("no");
-        comment.setWriter_name(name);
-        comment.setWriter_no(wirterNo);
+        comment.setWriterName(name);
+        comment.setWriterNo(wirterNo);
         page = "redirect:" + page;
         return page;
      }
@@ -248,15 +270,17 @@ public class HomeController {
     public String updateComment(@PathVariable("no") Long no, Model model) {
         Comment comment = commentService.getComment(no);
         model.addAttribute("comment", comment);
-        return "updateCommentForm";
+        return "detailboard";
     }
 
     @PostMapping(value = "/saveComment") //생성
-    public String saveupComment(@ModelAttribute Comment comment, Model model) {
-        String page = "/read/" + comment.getBoard_no();
-        commentService.commentUpdate(comment);
-        page = "redirect:" + page;
-        return page;
+    public String saveupComment(@ModelAttribute Comment comment, Model model, @ModelAttribute CommentUpdate updateDTO) {
+        commentService.updateComment(comment.getNo(), updateDTO);
+        String page = "/read/" + comment.getBoardNo();
+        System.out.println("/read/" + comment.getBoardNo());
+        //commentService.commentUpdate(comment);
+        //return "redirect:" + page;
+        return "redirect:/list";
     }
     @GetMapping("/deleteComment/{no}")
     public String deleteComment(@PathVariable("no") Long no, Model model, HttpServletRequest request,Comment comment) {
@@ -274,8 +298,8 @@ public class HomeController {
         // 회원의 모든 게시글 삭제
         for (Board board : userBoards) {
             // 파일이 존재하는 경우 파일도 삭제
-            if (board.getFile_link() != null) {
-                Path filePath = Paths.get( board.getFile_link());
+            if (board.getFileLink() != null) {
+                Path filePath = Paths.get( board.getFileLink());
                 try {
                     Files.delete(filePath);
                 } catch (IOException e) {
@@ -284,7 +308,7 @@ public class HomeController {
             }
             // 게시글 삭제
             boardService.deletePost(board.getNo());
-            commentService.deleteCommentById(writerName);
+            //commentService.deleteCommentById(writerName);
         }
         userService.deleteUser(id);
         session.invalidate();
@@ -294,14 +318,14 @@ public class HomeController {
     public ResponseEntity<InputStreamResource> fileDownload(@PathVariable("no") Long no) throws IOException {
         Board board = boardService.getPost(no);
 
-        Path path = Paths.get(board.getFile_link());
+        Path path = Paths.get(board.getFileLink());
         InputStreamResource resource = new InputStreamResource(Files.newInputStream(path));
 
-        String fileName = new String(board.getFile_name().getBytes("UTF-8"), "ISO-8859-1");
+        String fileName = new String(board.getFileName().getBytes("UTF-8"), "ISO-8859-1");
 
-        System.out.println(board.getFile_name());
+        System.out.println(board.getFileName());
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + board.getFile_name())
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + board.getFileName())
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
     }

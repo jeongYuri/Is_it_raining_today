@@ -54,24 +54,24 @@
                                 <th scope="row">제목</th>
                                 <td style="font-size:13px" th:text="${board.title}"></td>
                                 <th scope="row">수정일</th>
-                                <td style="font-size:13px" th:text="${board.modify_time}"></td>
+                                <td style="font-size:13px" th:text="${board.modifyTime}"></td>
                             </tr>
                             <tr>
                                 <th scope="row" style="font-size:13px">조회</th>
                                 <td th:text="${board.hit}"></td>
                                 <th scope="row" style="font-size:13px">작성자</th>
-                                <td th:text="${board.writer_name}"></td>
+                                <td th:text="${board.writerName}"></td>
                             </tr>
                             <tr>
                                 <th scope="row" style="height:150px;font-size:13px;" align="center" valign="middle">내용</th>
                                 <td align="center" valign="middle" colspan="3" th:text="${board.content}"></td>
                             </tr>
                             <tr>
-                                <th th:if="${board.file_name != null}">첨부파일</th>
+                                <th th:if="${board.fileName != null}">첨부파일</th>
                                 <td align="center" valign="middle" colspan="3" >
                                     <a th:href="'/download/'+${board.no}">
-                                        <img th:if="${board.file_name!=null}" src="/img/file.png">
-                                        <span th:text="${board.file_name}"></span>
+                                        <img th:if="${board.fileName!=null}" src="/img/file.png">
+                                        <span th:text="${board.fileName}"></span>
                                     </a>
                                 </td>
                             </tr>
@@ -83,9 +83,9 @@
         </div>
     </form>
     <div style="text-align: center;">
-        <a th:if="${session.id==board.writer_name}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+${board.no}">수정</a>
+        <a th:if="${session.id==board.writerName}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+${board.no}">수정</a>
         <a class="btn btn-secondary btn-sm text-white" type="button" href="/list">목록</a>
-        <a th:if="${session.id==board.writer_name}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/deletePost/'+${board.no}">삭제</a>
+        <a th:if="${session.id==board.writerName}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/deletePost/'+${board.no}">삭제</a>
     </div>
     <!-- Comments list -->
     <div class="card my-4">
@@ -96,15 +96,15 @@
                     <tr th:each="comment : ${comment}">
                         <td>
                             <div style="display: flex; justify-content: space-between;">
-                                <span style="font-weight:bold" th:text="${comment.writer_name}"></span>
-                                <span style="font-weight:initial;" th:text="${comment.create_time}"></span>
+                                <span style="font-weight:bold" th:text="${comment.writerName}"></span>
+                                <span style="font-weight:initial;" th:text="${comment.createTime}"></span>
                             </div>
                             <div class="card-body">
                                 <span class="comment-content" th:text="${comment.content}"></span>
                             </div>
                             <div style="text-align: right;">
-                                <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writer_name}" th:data-content="${comment.content}" th:data-no="${comment.no}" th:data-boardno="${comment.board_no}" onclick="openEditModal(this)">수정</a>
-                                <a th:if="${session.id==comment.writer_name}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
+                                <a th:if="${session.id==comment.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writerName}" th:data-content="${comment.content}" th:data-no="${comment.no}" th:data-boardno="${comment.boardNo}" onclick="openEditModal(this)">수정</a>
+                                <a th:if="${session.id==comment.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
                             </div>
                         </td>
                     </tr>
@@ -122,8 +122,9 @@
                 <div class="card-body">
                     <form name="newComment" action="/comment" method="post">
                         <div class="form-group">
-                            <input type="hidden" name="board_no" th:value="${board_no}">
-                            <input type="hidden" name="writer_name" id="writer_name" th:value="${session.id}"/>
+                            <input type="hidden" name="boardNo" th:value="${board.no}">
+                            <input type="hidden" name="writerNo" id="writerNo" th:value="${session.no}"/>
+                            <input type="hidden" name="writerName" id="writerName" th:value="${session.id}"/>
                             <textarea id="content" name="content" class="form-control" rows="3"></textarea>
                         </div>
                         <div style="text-align: right;">
@@ -147,8 +148,8 @@
                         <input type="hidden" id="modalboardno" name="bono">
                         <input type="hidden" id="modalCommentNo" name="no">
                         <div class="form-group">
-                            <label for="writer_name">Writer</label>
-                            <input class="form-control" id="modalwriter_name" name="writer_name"  readonly>
+                            <label for="writerName">Writer</label>
+                            <input class="form-control" id="modalwriter_name" name="writerName"  readonly>
                         </div>
                         <div class="form-group">
                             <label for="content">Content</label>
@@ -199,11 +200,9 @@
                 content: updatedContent
             },
             success: function(response) {
-                // 성공적으로 댓글이 저장되면 현재 창을 새로고침합니다.
                 location.reload();
             },
             error: function(error) {
-                // 오류 처리
                 console.log(error);
             }
         });

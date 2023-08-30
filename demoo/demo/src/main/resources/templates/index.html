@@ -21,7 +21,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="./">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./signup">SignUp</a></li>
+                        <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./signup">SignUp</a></li>
                         <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./login">Login</a></li>
                         <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="./login">Logout</a></li>
                         <li class="nav-item"><a class="nav-link" href="./list">Board</a></li>
@@ -34,10 +34,10 @@
             </div>
         </nav>
         <div class="container">
-                    <div class="container mt-5">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div id="map" style="width: 100%; height: 400px;"></div>
+              <div class="container mt-5">
+                    <div class="row">
+                        <div class="col-lg-6">
+                           <div id="map" style="width: 100%; height: 400px;"></div>
                             </div>
                             <div class="col-lg-6">
                                 <div style="display: flex; justify-content: space-between;">
@@ -52,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div style="display: flex;">
-                                    <div style="flex: 1; margin-right: 20px;">
+                                    <div style="flex: 1;">
                                         <div id="weatherInfo">
                                             <ul id="tmpList"></ul>
                                             <ul id="popList"></ul>

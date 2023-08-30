@@ -51,8 +51,9 @@
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="writer_name">Writer</label>
-                            <input type="text" class="form-control" name="writer_name" id="writer_name" placeholder="" required th:value="${session.id}">
+                            <label for="writerName">Writer</label>
+                            <input type="text" class="form-control" name="writerName" id="writerName" placeholder="" required th:value="${session.id}">
+                            <input type="hidden" name="writerNo" th:value="${session.no}">
                         </div>
                     </div>
                         <div class="mb-3">

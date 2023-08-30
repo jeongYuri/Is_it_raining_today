@@ -1,18 +1,18 @@
 package com.example.crudw.demo.Member;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.crudw.demo.TimeEntity;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-public class User {
+@NoArgsConstructor
+@Table(name = "users")
+public class User extends TimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;
     private String id;
@@ -20,8 +20,7 @@ public class User {
     private String name;
     private String email;
     private String phone;
-    private LocalDateTime create_time;
-    private LocalDateTime modify_time;
+
 
     public Long getNo() {
         return no;
@@ -69,20 +68,5 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public LocalDateTime getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(LocalDateTime create_time) {
-        this.create_time = create_time;
-    }
-    public LocalDateTime getModify_time() {
-        return modify_time;
-    }
-
-    public void setModify_time(LocalDateTime modify_time) {
-        this.modify_time = modify_time;
     }
 }

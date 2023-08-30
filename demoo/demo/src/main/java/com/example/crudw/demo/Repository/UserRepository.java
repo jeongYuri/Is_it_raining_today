@@ -1,18 +1,16 @@
 package com.example.crudw.demo.Repository;
 
 import com.example.crudw.demo.Member.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
-import java.util.List;
-import java.util.Optional;
 
-public interface UserRepository {
-    User save(User user);
+
+public interface UserRepository extends JpaRepository<User,Long> {
     void deleteById(String id);
-   Optional<User> findById(Long no);
-    Optional<User> findById(String id);
-    User userUpdate(User user);
-    List<User> findAll();
+    //User findById(Long no);
+    User findById(String id);
+
 
 
 }
