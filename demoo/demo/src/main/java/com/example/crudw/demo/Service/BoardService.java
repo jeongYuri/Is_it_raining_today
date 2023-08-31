@@ -78,7 +78,11 @@ public class BoardService {
         return boardRepository.hit(no);
     }
 
-
+    @Transactional
+    public List<Board> search(String searchStr){
+        List<Board> boardList= boardRepository.findByTitleContainingOrderByNoDesc(searchStr);
+        return boardList;
+    }
 
 
 }

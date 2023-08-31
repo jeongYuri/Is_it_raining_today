@@ -33,6 +33,12 @@
     </div>
 </nav>
 <!-- Page content-->
+
+<form th:action="@{/search}" method="get" class="form-inline p-2 bd-highlight d-flex justify-content-end" role="search">
+    <input type="text" name="searchStr" class="form-control" id="search" placeholder="검색" style="width: 150px;">
+    <button type="submit" class="btn btn-dark bi bi-search">🔍</button>
+</form>
+
 <main class="mb-4">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">

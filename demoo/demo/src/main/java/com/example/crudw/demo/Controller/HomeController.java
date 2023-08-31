@@ -19,6 +19,7 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -124,23 +125,32 @@ public class HomeController {
 
     }
 
-    @GetMapping(value = "/list")
-    public String list(Model model,@PageableDefault(size = 5, sort="no",direction = Sort.Direction.DESC)Pageable pageable) {
-        //List<Board> boards = boardService.BoardList();
-        //model.addAttribute("nboard", boardService.BoardList());
-        System.out.println("Pageable: " + pageable);
-        Page<Board> boardPage = boardService.pageList(pageable);
-        int startPage = Math.max(1,boardPage.getPageable().getPageNumber()-5);
-        int endPage = Math.min(boardPage.getTotalPages(),boardPage.getPageable().getPageNumber()+5);
-        model.addAttribute("startPage",startPage);
-        model.addAttribute("endPage",endPage);
-        model.addAttribute("hasNext", boardPage.hasNext()); //이전/다음 페이지 유무에 따라서..! true/false 반환..
+    @GetMapping(value = {"/list", "/search"})
+    public String listAndSearch(@RequestParam(value = "searchStr", required = false) String searchStr,
+                                Model model,
+                                @PageableDefault(size = 5, sort = "no", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        Page<Board> boardPage;
+
+        if (searchStr != null && !searchStr.isEmpty()) { //searchStr가 비어있지않다면 검색기능 수행
+            List<Board> searchList = boardService.search(searchStr);
+            boardPage = new PageImpl<>(searchList, pageable, searchList.size());
+            model.addAttribute("searchList", searchList);
+        } else {//searchStr가 비어있다면 그냥 페이징 처리된거 보여줘야징
+            boardPage = boardService.pageList(pageable);
+        }
+
+        int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 5);
+        int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 5);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("hasNext", boardPage.hasNext());
         model.addAttribute("hasPrev", boardPage.hasPrevious());
         model.addAttribute("nboard", boardPage);
-        //model.addAttribute("nboard",boardService.pageList(pageable));
 
-        return "list";
+        return "list"; // 검색 + 페이징 처리 통합
     }
+
     @PostMapping(value = "/write")
     public String boardwrite(Board board,@RequestParam(required = false,name= "file") MultipartFile file) {
         //HttpSession session = request.getSession();
@@ -329,6 +339,9 @@ public class HomeController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .body(resource);
     }
+
+
+
 
 }
 

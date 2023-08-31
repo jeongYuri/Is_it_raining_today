@@ -24,7 +24,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
    // Page<Board> findAll(Pageable pageable);
     List<Board> findByWriterNameContainingOrderByNoDesc(String searchStr);
 
-    List<Board> findByTitleContainingOrderByNoDesc(String searchStr);
+    List<Board> findByTitleContainingOrderByNoDesc(String searchStr);  //검색하기
 
     List<Board> findByContentContainingOrderByNoDesc(String searchStr);
 }
