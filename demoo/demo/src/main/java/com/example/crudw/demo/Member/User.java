@@ -3,14 +3,15 @@ package com.example.crudw.demo.Member;
 
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
-
+@Getter
 @Entity
-@NoArgsConstructor
 @Table(name = "users")
 public class User extends TimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,8 @@
 package com.example.crudw.demo.Controller;
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Board.BoardUpdate;
+import com.example.crudw.demo.Heart.HeartRequest;
+import com.example.crudw.demo.Heart.HeartService;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserForm;
 import com.example.crudw.demo.Member.UserUpdate;
@@ -54,6 +56,8 @@ public class HomeController {
     BoardService boardService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    HeartService heartService;
     @Autowired
     EntityManager em;
 
@@ -193,13 +197,19 @@ public class HomeController {
     }
 
     @GetMapping(value = "/read/{no}")
-    public String read(@PathVariable("no") Long no, Model model,Comment comment,Board board) {
+    public String read(@PathVariable("no") Long no, Model model,Comment comment,Board board,HttpServletRequest request) {
         List<Comment> commentlist = commentService.getCommentList(no);
+        HttpSession session = request.getSession();
+        String userId = (String)session.getAttribute("id");
         boardService.hit(no);
+        //heartService.addHeart(no,userId);
+        //heartService.removeHeart(no,userId);//로그인 정보와 게시글 번호 보내기
         model.addAttribute("board", boardService.getPost(no));
         model.addAttribute("comment",commentlist);
         model.addAttribute("comments",comment);
         model.addAttribute("board_no",no);
+        //model.addAttribute("heart",heart);
+
         return "detailboard";
     }
     @GetMapping(path="/myPage")

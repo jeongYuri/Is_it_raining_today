@@ -2,11 +2,16 @@ package com.example.crudw.demo.Board;
 
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
-
+@Getter
 @Entity
 @Table(name = "nboard")
 public class Board extends TimeEntity {
@@ -25,6 +30,8 @@ public class Board extends TimeEntity {
     private String fileName;
     @Column(name = "file_link")
     private String fileLink;
+    @Column(name = "like_count",nullable = false,columnDefinition = "integer default 0") // 원하는 컬럼명으로 설정
+    private int likeCount;
 
 
     public Long getNo() {
@@ -83,5 +90,12 @@ public class Board extends TimeEntity {
     }
 
 
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
 }
 
