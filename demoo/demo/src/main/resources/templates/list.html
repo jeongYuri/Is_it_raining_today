@@ -71,9 +71,9 @@
                     </div>
                     <div class="pagination justify-content-center">
                         <a th:if="${startPage > 1}" th:href="@{/list(page=1)}" class="btn btn-sm"></a>
-                        <a th:if="${nboard.hasPrevious()}" th:href="@{/list(page=${nboard.previousPageable().pageNumber})}" role="button" class="btn btn-lg bi bi-arrow-left-square-fill">⬅️</a>
+                        <a th:if="${nboard.hasPrevious()}" th:href="@{/list(page=${nboard.previousPageable().pageNumber})}" role="button" class="btn btn-lg bi bi-arrow-left-square-fill"><img th:src="@{/icon/arrow-left-square-fill.svg}"></a>
                         <a th:each="page : ${#numbers.sequence(startPage -1 , endPage - 1)}" th:href="@{/list(page=${page})}" role="button" class="btn btn-lg bi" th:classappend="${page == nboard.number +1 ? 'bi-circle-fill' : 'bi-circle'}" th:text="${page}"></a>
-                        <a th:if="${nboard.hasNext()}" th:href="@{/list(page=${nboard.nextPageable().pageNumber})}" role="button" class="btn btn-lg ">➡️</a>
+                        <a th:if="${nboard.hasNext()}" th:href="@{/list(page=${nboard.nextPageable().pageNumber})}" role="button" class="btn btn-lg "><img th:src="@{/icon/arrow-right-square-fill.svg}"></a>
                         <a th:if="${endPage < nboard.totalPages}" class="btn btn-sm" th:href="@{/list(page=${nboard.totalPages})}"></a>
                     </div>
 

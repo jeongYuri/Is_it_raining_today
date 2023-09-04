@@ -1,6 +1,7 @@
 package com.example.crudw.demo.Controller;
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Board.BoardUpdate;
+import com.example.crudw.demo.Heart.Heart;
 import com.example.crudw.demo.Heart.HeartRequest;
 import com.example.crudw.demo.Heart.HeartService;
 import com.example.crudw.demo.Member.User;
@@ -115,7 +116,7 @@ public class HomeController {
             HttpSession session = request.getSession();
             session.setAttribute("id",id);
             session.setAttribute("pw",pw);
-           session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
+            session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
             System.out.println(id);
             page="redirect:/";
        }
@@ -197,16 +198,16 @@ public class HomeController {
     }
 
     @GetMapping(value = "/read/{no}")
-    public String read(@PathVariable("no") Long no, Model model,Comment comment,Board board,HttpServletRequest request) {
+    public String read(@PathVariable("no") Long no, Model model, Comment comment, Board board, HttpServletRequest request, Heart heart) {
         List<Comment> commentlist = commentService.getCommentList(no);
         HttpSession session = request.getSession();
         String userId = (String)session.getAttribute("id");
         boardService.hit(no);
-        //heartService.addHeart(no,userId);
-        //heartService.removeHeart(no,userId);//로그인 정보와 게시글 번호 보내기
+        model.addAttribute("like",heartService.findLike(no,userId)); //게시글 읽을때 좋아요 눌렀는지 확인?
         model.addAttribute("board", boardService.getPost(no));
         model.addAttribute("comment",commentlist);
         model.addAttribute("comments",comment);
+        model.addAttribute("heart",heart);
         model.addAttribute("board_no",no);
         //model.addAttribute("heart",heart);
 

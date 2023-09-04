@@ -25,7 +25,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     @Modifying
     @Query("UPDATE Board SET likeCount = likeCount -1 WHERE no=:no")
-    void deleteHeart(@Param("no") Long no);
+    void deleteCount(@Param("no") Long no);
 
     //Optional<Board>findByNo(Long no);
     Optional<Board> findById(Long no);
@@ -37,7 +37,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findAllByOrderByNoDesc();
 
     // Page<Board> findAll(Pageable pageable);
-    List<Board> findByWriterNameContainingOrderByNoDesc(String searchStr);
+    List<Board> findByWriterNameContainingOrderByNoDesc(String searchStr); //검색하기
 
     List<Board> findByTitleContainingOrderByNoDesc(String searchStr);  //검색하기
 
