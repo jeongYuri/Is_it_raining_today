@@ -1,4 +1,4 @@
-package com.example.crudw.demo.Repository;
+package com.example.crudw.demo.Member;
 
 import com.example.crudw.demo.Member.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,7 +2,7 @@ package com.example.crudw.demo.Service;
 
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Board.BoardUpdate;
-import com.example.crudw.demo.Repository.BoardRepository;
+import com.example.crudw.demo.Board.BoardRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -12,6 +12,7 @@ import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
 import com.example.crudw.demo.Weather.Region;
 import com.example.crudw.demo.comment.Comment;
+import com.example.crudw.demo.comment.CommentRequestDto;
 import com.example.crudw.demo.comment.CommentUpdate;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
@@ -133,7 +134,7 @@ public class HomeController {
     @GetMapping(value = {"/list", "/search"})
     public String listAndSearch(@RequestParam(value = "searchStr", required = false) String searchStr,
                                 Model model,
-                                @PageableDefault(size = 5, sort = "no", direction = Sort.Direction.DESC) Pageable pageable) {
+                                @PageableDefault(size = 10, sort = "no", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Board> boardPage;
 
@@ -145,8 +146,8 @@ public class HomeController {
             boardPage = boardService.pageList(pageable);
         }
 
-        int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 5);
-        int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 5);
+        int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 10);
+        int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 10);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("hasNext", boardPage.hasNext());
@@ -156,61 +157,22 @@ public class HomeController {
         return "list"; // 검색 + 페이징 처리 통합
     }
 
-    @PostMapping(value = "/write")
-    public String boardwrite(Board board,@RequestParam(required = false,name= "file") MultipartFile file) {
-        //HttpSession session = request.getSession();
-        //String id = (String)session.getAttribute("id");
-        String file_name = null;
-        String file_link = null;
-        if (file!=null) {
-            file_name = file.getOriginalFilename();
-            if (file_name != null && file_name.isEmpty()) {
-                file_name = null;
-            }
-            if(file_name!=null){
-                String saveFileName = "";
-                Calendar calendar = Calendar.getInstance();
-                saveFileName += calendar.get(Calendar.YEAR);
-                saveFileName += calendar.get(Calendar.MONTH);
-                saveFileName += calendar.get(Calendar.DATE);
-                saveFileName += calendar.get(Calendar.HOUR);
-                saveFileName += calendar.get(Calendar.MINUTE);
-                saveFileName += calendar.get(Calendar.SECOND);
-                saveFileName += calendar.get(Calendar.MILLISECOND);
-                saveFileName += file_name;
-                file_link = "C:\\Users\\dydrk\\crud_webp\\upload\\" + saveFileName;
-                try {
-                    file.transferTo(new File(file_link));
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }
 
-        board.setFileName(file_name);
-        board.setFileLink(file_link);
-        boardService.savePost(board);
-        return "redirect:/list";
-    }
 
     @GetMapping(value = "/read/{no}")
-    public String read(@PathVariable("no") Long no, Model model, Comment comment, Board board, HttpServletRequest request, Heart heart) {
-        List<Comment> commentlist = commentService.getCommentList(no);
+    public String read(@PathVariable("no") Long no, Model model, @ModelAttribute Comment comment, Board board, HttpServletRequest request, Heart heart) {
+        //List<Comment> commentlist = commentService.getCommentList(no);
+        List<CommentRequestDto> commentList = commentService.getComments(no);
         HttpSession session = request.getSession();
         String userId = (String)session.getAttribute("id");
         boardService.hit(no);
         model.addAttribute("like",heartService.findLike(no,userId)); //게시글 읽을때 좋아요 눌렀는지 확인?
         model.addAttribute("board", boardService.getPost(no));
-        model.addAttribute("comment",commentlist);
+        model.addAttribute("comment",commentList);
         model.addAttribute("comments",comment);
         model.addAttribute("heart",heart);
         model.addAttribute("board_no",no);
         //model.addAttribute("heart",heart);
-
         return "detailboard";
     }
     @GetMapping(path="/myPage")
@@ -250,65 +212,6 @@ public class HomeController {
         return "myPage";
     }
 
-    @GetMapping("/update/post/{no}")
-    public String update(@PathVariable("no") Long no, Model model) {
-        Board board = boardService.getPost(no);
-        model.addAttribute("board", board);
-        return "update";
-    }
-
-    @PostMapping(value = "/savePost")
-    public String savePost(@ModelAttribute Board board, Model model, @ModelAttribute BoardUpdate updateDTO) {
-        //boardService.getPost(board.getNo());
-        boardService.updateBoard(board.getNo(), updateDTO);
-        //model.addAttribute(boardService.boardupdate(board));
-        model.addAttribute(board.getNo());
-        return "redirect:/list";
-    }
-    @GetMapping("/deletePost/{no}")
-    public String deletePost(@PathVariable("no") Long no, Model model) {
-        boardService.deletePost(no);
-        return "redirect:/list";
-    }
-    @PostMapping(value="/comment")
-    public String saveComment(@ModelAttribute Comment comment, Model model, HttpServletRequest request) {
-        if (comment == null) {
-
-            return "redirect:/list";
-        }
-        String page = "/read/" + comment.getBoardNo();
-        commentService.saveComment(comment);
-        System.out.println("ok");
-        HttpSession session = request.getSession();
-        String name = (String) session.getAttribute("name");
-        Long wirterNo = (Long)session.getAttribute("no");
-        comment.setWriterName(name);
-        comment.setWriterNo(wirterNo);
-        page = "redirect:" + page;
-        return page;
-     }
-    @GetMapping("/updateComment/{no}") // 조회
-    public String updateComment(@PathVariable("no") Long no, Model model) {
-        Comment comment = commentService.getComment(no);
-        model.addAttribute("comment", comment);
-        return "detailboard";
-    }
-
-    @PostMapping(value = "/saveComment") //생성
-    public String saveupComment(@ModelAttribute Comment comment, Model model, @ModelAttribute CommentUpdate updateDTO) {
-        commentService.updateComment(comment.getNo(), updateDTO);
-        String page = "/read/" + comment.getBoardNo();
-        System.out.println("/read/" + comment.getBoardNo());
-        //commentService.commentUpdate(comment);
-        //return "redirect:" + page;
-        return "redirect:/list";
-    }
-    @GetMapping("/deleteComment/{no}")
-    public String deleteComment(@PathVariable("no") Long no, Model model, HttpServletRequest request,Comment comment) {
-        commentService.deleteComment(no);
-        return "redirect:/list";
-    }
-
     @GetMapping("/deleteUser")
     public String deleteUser( Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -334,21 +237,6 @@ public class HomeController {
         userService.deleteUser(id);
         session.invalidate();
         return "redirect:/";
-    }
-    @GetMapping("/download/{no}")
-    public ResponseEntity<InputStreamResource> fileDownload(@PathVariable("no") Long no) throws IOException {
-        Board board = boardService.getPost(no);
-
-        Path path = Paths.get(board.getFileLink());
-        InputStreamResource resource = new InputStreamResource(Files.newInputStream(path));
-
-        String fileName = new String(board.getFileName().getBytes("UTF-8"), "ISO-8859-1");
-
-        System.out.println(board.getFileName());
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + board.getFileName())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
     }
 
 

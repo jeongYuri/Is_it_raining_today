@@ -1,4 +1,4 @@
-package com.example.crudw.demo.Repository;
+package com.example.crudw.demo.Board;
 import com.example.crudw.demo.Board.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

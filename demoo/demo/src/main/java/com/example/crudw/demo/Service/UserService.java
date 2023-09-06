@@ -1,15 +1,11 @@
 package com.example.crudw.demo.Service;
 
-import com.example.crudw.demo.Board.Board;
-import com.example.crudw.demo.Board.BoardUpdate;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserUpdate;
-import com.example.crudw.demo.Repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.crudw.demo.Member.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
