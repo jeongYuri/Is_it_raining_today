@@ -10,6 +10,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment,Long> {
     List<Comment> findByBoardNoOrderByParentNoAscNoAsc(Long boardNo);
     Comment findByNo(Long no);
+    Comment findCommentByNo(Long no);
     List<Comment> findAllByBoardNo(Long boardNo);
 
 

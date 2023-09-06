@@ -31,12 +31,11 @@ public class CommentService {
     }
 
     @Transactional
-    public List<CommentRequestDto> getComments(Long boardNo) {
+    public List<CommentRequestDto> getComments(Long boardNo) { //게시글 가져오기~
         List<Comment> comments = commentRepository.findAllByBoardNo(boardNo);//해당게시글 댓글 조회
         List<CommentRequestDto> commentRequestDtoList = CommentRequestDtoList(comments);//comments를 CommentRequestDto로 변환
         return commentRequestDtoList;
     }
-
     private List<CommentRequestDto>CommentRequestDtoList(List<Comment> comments) {
         List<CommentRequestDto> commentRequestDtoList = new ArrayList<>();
         for (Comment comment : comments) {
@@ -85,14 +84,34 @@ public class CommentService {
                         .writerName(commentRequestDto.getWriterName())
                         .build();
 
-        if(commentRequestDto.getParentNo()!=null){
+        if(commentRequestDto.getParentNo()!=null){//부모 번호가 있다는것!!
                  Comment parentComment = commentRepository.findByNo(commentRequestDto.getParentNo());
                  comment.updateParent(parentComment);
         }
-        return commentRepository.save(comment);
+        return commentRepository.save(comment); //저장
+    }
+    @Transactional
+    public void deleteComment(Long no) {
+        Comment comment = commentRepository.findCommentByNo(no);
+        if (comment.getChildren().size()!= 0) {
+            comment.changeIsDeleted(true);//자식이 있으면 상태만 변경..
+            commentRepository.save(comment);
+        } else {
+            commentRepository.delete(getDeleteableParent(comment));
+
+        }
+    }
+        private Comment getDeleteableParent(Comment comment){ //삭제 가능 조상 찾기
+            Comment parentNo = comment.getParentNo();//댓글의 부모 구하기
+            if(parentNo!=null && parentNo.getChildren().size() == 1 && parentNo.getIsDeleted()==true)
+                return getDeleteableParent(parentNo);
+        return comment;
     }
 
-    public void deleteComment(Long no){commentRepository.deleteById(no);} //댓글 삭제
+
+
+
+
     @Transactional
     public Comment updateComment(Long boardId, CommentUpdate updateDTO) {
         Comment comment = commentRepository.findById(boardId)
@@ -102,8 +121,5 @@ public class CommentService {
         }
         return commentRepository.save(comment);
     }
-
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.crudw.demo.comment;
 
+import com.example.crudw.demo.Repository.MemoryUserRepository;
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,7 +32,7 @@ public class Comment extends TimeEntity {
     private Comment parentNo;
 
     @Builder.Default
-    @OneToMany(mappedBy = "parentNo", orphanRemoval = true)  //부모 댓글 삭제시 관련 자식댓글들 다 삭제..~~
+    @OneToMany(mappedBy = "parentNo", orphanRemoval = true)  //부모 댓글 삭제시 관련 자식댓글들 다 삭제..~~가 안되야만 함...
     private List<Comment> children = new ArrayList<>();
 
     @Column(name = "writer_no")
@@ -43,12 +44,15 @@ public class Comment extends TimeEntity {
     private String content;
 
 
-    public void changeIsDeleted(Boolean isDeleted){
+    public void changeIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+        this.content = isDeleted ? "삭제되었습니다." : null;
     }
     public void updateParent(Comment comment){
         this.parentNo = comment;
     }
 
-
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
 }
