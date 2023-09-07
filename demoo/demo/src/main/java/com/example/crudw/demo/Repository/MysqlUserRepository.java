@@ -9,9 +9,9 @@ import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
+/*
 @Slf4j
-public class MysqlUserRepository implements UserRepository{
+public class MysqlUserRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public MysqlUserRepository(DataSource dataSource) {
@@ -19,7 +19,7 @@ public class MysqlUserRepository implements UserRepository{
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    @Override
+
     public User save(User user) {
         user.setCreate_time(LocalDateTime.now());
         String sql = "insert into users(no,id,pw,name,email,phone,create_time) values(null,?,?,?,?,?,?)";
@@ -28,27 +28,27 @@ public class MysqlUserRepository implements UserRepository{
         return user;
     }
 
-    @Override
+
     public void deleteById(String id) {
         String sql = "delete from users where id=?";
         jdbcTemplate.update(sql, id);
     }
 
-    @Override
+
     public Optional<User> findById(Long no) {
         String sql = "select * from users where no =?";
         List<User> list = jdbcTemplate.query(sql,userRowMapper(),no);
         return list.stream().findAny();
     }
 
-    @Override
+
     public Optional<User> findById(String id) {
         String sql = "select * from users where id =?";
         List<User> list = jdbcTemplate.query(sql,userRowMapper(),id);
         return list.stream().findAny();
     }
 
-    @Override
+
     public User userUpdate(User user) {
         System.out.println(user);
         user.setModify_time(LocalDateTime.now());
@@ -58,7 +58,7 @@ public class MysqlUserRepository implements UserRepository{
         return  user;
     }
 
-    @Override
+
     public List<User>findAll(){
 
         return jdbcTemplate.query("select *from users",userRowMapper());
@@ -78,4 +78,4 @@ public class MysqlUserRepository implements UserRepository{
             return user;
         });
     }
-}
+}*/

@@ -31,12 +31,12 @@ public class CommentService {
     }
 
     @Transactional
-    public List<CommentRequestDto> getComments(Long boardNo) { //게시글 가져오기~
+    public List<CommentRequestDto> getComments(Long boardNo) { //게시글의 댓글가져오기~
         List<Comment> comments = commentRepository.findAllByBoardNo(boardNo);//해당게시글 댓글 조회
         List<CommentRequestDto> commentRequestDtoList = CommentRequestDtoList(comments);//comments를 CommentRequestDto로 변환
         return commentRequestDtoList;
     }
-    private List<CommentRequestDto>CommentRequestDtoList(List<Comment> comments) {
+    private List<CommentRequestDto>CommentRequestDtoList(List<Comment> comments) { //dto를 이용하여 parent 유무에 따른 값 저장
         List<CommentRequestDto> commentRequestDtoList = new ArrayList<>();
         for (Comment comment : comments) {
             CommentRequestDto cmrd = new CommentRequestDto();
@@ -49,19 +49,34 @@ public class CommentService {
             cmrd.setModifyTime(comment.getModifyTime()); //
 
             if (comment.getParentNo() == null) {
-                commentRequestDtoList.add(cmrd);
+                commentRequestDtoList.add(cmrd); //부모가 비었다? 그냥 저장
             } else {
+                /*
                 CommentRequestDto parentDto = commentRequestDtoList.stream()
                         .filter(dto -> dto.getNo().equals(comment.getParentNo().getNo()))
                         .findFirst()
-                        .orElse(null);
-
+                        .orElse(null);*/
+                CommentRequestDto parentDto = findParent(commentRequestDtoList, comment.getParentNo().getNo());//부모가 있으니 부모 번호를 가져와서 저장
                 if (parentDto != null) {
-                    parentDto.getChildren().add(cmrd);
+                    parentDto.addChild(cmrd);
+                    //parentDto.getChildren().add(cmrd);
                 }
             }
         }
         return commentRequestDtoList;
+    }
+    private CommentRequestDto findParent(List<CommentRequestDto> commentRequestDtoList, Long parentNo) {//부모 찾기
+        for (CommentRequestDto dto : commentRequestDtoList) {
+            if (dto.getNo().equals(parentNo)) {
+                return dto;
+            } else if (dto.getChildren() != null) {
+                CommentRequestDto result = findParent(dto.getChildren(), parentNo);
+                if (result != null) {
+                    return result;
+                }
+            }
+        }
+        return null;
     }
 
     public Comment getComment(Long no) {
@@ -98,17 +113,15 @@ public class CommentService {
             commentRepository.save(comment);
         } else {
             commentRepository.delete(getDeleteableParent(comment));
-
         }
     }
         private Comment getDeleteableParent(Comment comment){ //삭제 가능 조상 찾기
             Comment parentNo = comment.getParentNo();//댓글의 부모 구하기
             if(parentNo!=null && parentNo.getChildren().size() == 1 && parentNo.getIsDeleted()==true)
+                //부모번호가 null값이 아니라면..상태가 true인 상태라면 삭제 가능
                 return getDeleteableParent(parentNo);
         return comment;
     }
-
-
 
 
 
@@ -121,5 +134,4 @@ public class CommentService {
         }
         return commentRepository.save(comment);
     }
-
 }

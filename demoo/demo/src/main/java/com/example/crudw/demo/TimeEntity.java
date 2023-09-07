@@ -39,8 +39,4 @@ public class TimeEntity {
         modify_time = LocalDateTime.now();
     }
 
-
-
-
-
 }

@@ -1,5 +1,5 @@
 package com.example.crudw.demo.Repository;
-
+/*
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.comment.Comment;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class SqlCommentRepository implements CommentRepository {
+public class SqlCommentRepository  {
     private final JdbcTemplate jdbcTemplate;
     private static long sequence = 0L;
     public SqlCommentRepository(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    @Override
+
     public Comment save(Comment comment) {
         System.out.println("hi");
         comment.setWriter_no(++sequence);
@@ -32,7 +32,7 @@ public class SqlCommentRepository implements CommentRepository {
         return comment;
     }
 
-    @Override
+
     public Comment commentupdate(Comment comment) {
         comment.setModify_time(LocalDateTime.now());
         String sql = "UPDATE comment SET content=?,modify_time=? WHERE no=?";
@@ -40,14 +40,14 @@ public class SqlCommentRepository implements CommentRepository {
         return comment;
     }
 
-    @Override
+
     public void deleteById(Long no) {
         String sql = "delete from comment where no=?";
         int result= jdbcTemplate.update(sql, no);
 
     }
 
-    @Override
+
     public void deleteByUserId(String writerName) {
         String sql = "delete from comment where writer_name=?";
         int result= jdbcTemplate.update(sql, writerName);
@@ -57,14 +57,14 @@ public class SqlCommentRepository implements CommentRepository {
     public List<Comment> findById(String writerName) {
         String sql = "select *from comment where writer_name=?";
         return jdbcTemplate.query(sql,commentRowMapper(), writerName);
-    }*/
-
-    @Override
-    public List<Comment> findByBoardNoOrderByParentNoAscNoAsc(Long board_no) {
-        return jdbcTemplate.query("SELECT * FROM comment WHERE board_no =? ORDER BY parent_no ASC, no ASC",commentRowMapper(),board_no);
-
     }
-    @Override
+
+
+//    public List<Comment> findByBoardNoOrderByParentNoAscNoAsc(Long board_no) {
+  //      return jdbcTemplate.query("SELECT * FROM comment WHERE board_no =? ORDER BY parent_no ASC, no ASC",commentRowMapper(),board_no);
+
+    //}
+
     public List<Comment> findAll() {
         return jdbcTemplate.query("select *from comment",commentRowMapper());
     }
@@ -83,10 +83,11 @@ public class SqlCommentRepository implements CommentRepository {
         });
     }
 
-    @Override
+
     public Optional<Comment> findByNo(Long no) {
         String sql = "select * from comment where no=?";
         List<Comment> list = jdbcTemplate.query(sql,commentRowMapper(),no);
         return list.stream().findAny();
     }
 }
+*/

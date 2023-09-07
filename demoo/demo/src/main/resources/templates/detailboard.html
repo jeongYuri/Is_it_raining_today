@@ -112,18 +112,36 @@
                             <div th:if="${comment.children}">
                                 <h6 class="card-subtitle my-2 text-muted"></h6>
                                 <div th:each="child : ${comment.children}" class="child-comment card my-2">
-                                    <h6 class="card-header"  style="display: flex; justify-content: space-between;">
+                                    <h6 class="card-header"  style="display:  flex; padding: 5px; justify-content: space-between;">
                                         <span style="font-weight:bold" th:text="'Reply: ' + ${child.writerName}"></span>
                                         <span style="font-weight:initial;" th:text="${child.modifyTime}"></span>
                                     </h6>
                                     <div class="card-body">
                                         <p class="card-text" th:text="${child.content}"></p>
-                                        <!-- 대댓글 액션 버튼 -->
-                                        <div th:if="${session.id==child.writerName}">
-                                            <button type="button" class="btn btn-sm" th:data-writer-name="${child.writerName}" th:data-content="${child.content}" th:data-no="${child.no}" th:data-boardno="${child.boardNo}" onclick="openEditModal(this)">수정</button>
-                                            <a type="button" class="btn btn-sm" th:href="'/deleteComment/'+${child.no}">삭제</a>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${child.writerName}" th:data-content="${child.content}" th:data-no="${child.no}" th:data-boardno="${child.boardNo}" onclick="openEditModal(this)">수정</a>
+                                            <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${child.no}">삭제</a>
+                                            <a th:if="${session.id!=null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                               th:attr="data-comment-no=${child.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">댓글달기</a>
+                                        </div>
+                                        <div th:each="childComment : ${child.children}" class="child-comment card my-2 ml-3">
+                                            <h6 class="card-header"  style="display: flex; justify-content: space-between;">
+                                                <span style="font-weight:bold" th:text="'🎃Reply: ' + ${childComment.writerName}"></span>
+                                                <span style="font-weight:initial;" th:text="${childComment.modifyTime}"></span>
+                                            </h6>
+                                            <div class="card-body" >
+                                                <p class="card-text" th:text="${childComment.content}"></p>
+                                                <div style="text-align: right;">
+                                                     <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${childComment.writerName}" th:data-content="${childComment.content}" th:data-no="${childComment.no}" th:data-boardno="${childComment.boardNo}" onclick="openEditModal(this)">수정</a>
+                                                     <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${childComment.no}">삭제</a>
+                                                     <a th:if="${session.id!=null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                                        th:attr="data-comment-no=${childComment.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">댓글달기</a>
+                                                </div>
                                         </div>
                                     </div>
+
+                                </div>
                                 </div>
                             </div>
                         </td>

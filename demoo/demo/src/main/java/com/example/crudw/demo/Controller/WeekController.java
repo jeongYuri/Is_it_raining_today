@@ -61,7 +61,7 @@ public class WeekController {
     @GetMapping("/week")
     public String getWeekWeather(@RequestParam("city")String city) throws Exception {
         String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa";
-        String serviceKey = "PXL4OUL6Z%2FAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
+        String serviceKey = "PXL4ObzaxgbrcVcEe5c8QTzAdF5bD9Y714d3X2Tus6DgtWsj10nEfjP6lUL6Z%2FAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
         String dataType = "JSON";
         String pageNo = "1";
         String numOfRows = "50";
