@@ -215,24 +215,7 @@ public class HomeController {
     public String deleteUser( Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("id");
-        String writerName = (String) session.getAttribute("id");//id 값이 writername 같기 떄문에ㅣ.!
-        List<Board> userBoards = boardService.getPostsByUserId(writerName);
-
-        // 회원의 모든 게시글 삭제
-        for (Board board : userBoards) {
-            // 파일이 존재하는 경우 파일도 삭제
-            if (board.getFileLink() != null) {
-                Path filePath = Paths.get( board.getFileLink());
-                try {
-                    Files.delete(filePath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            // 게시글 삭제
-            boardService.deletePost(board.getNo());
-            //commentService.deleteCommentById(writerName);
-        }
+        //String writerName = (String) session.getAttribute("id");//id 값이 writername 같기 떄문에ㅣ.!
         userService.deleteUser(id);
         session.invalidate();
         return "redirect:/";

@@ -46,6 +46,7 @@ public class Comment extends TimeEntity {
 
     public void changeIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+        this.writerName = isDeleted ? "(알수없음)" : null;
         this.content = isDeleted ? "삭제되었습니다." : null;
     }
     public void updateParent(Comment comment){

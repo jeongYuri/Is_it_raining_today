@@ -19,10 +19,7 @@ public class Board extends TimeEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long no;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer_no")
-    private User writerNo;
+    private Long writerNo;
 
     @Column(name = "writer_name")
     private String writerName;

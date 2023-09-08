@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<Board,Long> {
 
     Board findByNo(Long no);
+    boolean existsBywriterName(String writerName);
 
     @Modifying
     @Query("update Board  set hit = hit +1 where no = :no")
@@ -33,6 +34,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByWriterName(String writer_name);
 
     void deleteById(Long no);
+    void deleteByWriterName(String writerName);
 
     List<Board> findAllByOrderByNoDesc();
     List<Board> findBywriterNameOrderByNoDesc(String writerName);
