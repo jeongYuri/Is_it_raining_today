@@ -13,7 +13,7 @@
 - 사용자가 원하는 장소 검색
 - 검색한 지역의 날씨 및 일주일 날씨를 알려줌
 - 강수확률을 통해 우산을 가져가야할지 말아야할지 알려줌
-- 사용자는 게시판 글쓰기 및 가능
+- 사용자는 게시판 글쓰기 및 검색 가능 ( 작성자, 제목, 내용에 따라)
 - 로그인하지 않을 경우 게시판 글쓰기 및 댓글쓰기 불가능
 - 사용자 정보 수정 가능 및 탈퇴
 - 회원 탈퇴 및 탈퇴시 작성 글 및 댓글 삭제
@@ -28,6 +28,12 @@
 <img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/648c622e-9708-472b-80a2-ced6c2dc08ca.png" />
 
 <img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/bdef7e63-65c5-472e-884e-b616c76e0d7a.png" />
+
+
+**Board**
+<img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/33d0b3ef-96f3-4d8d-8dbe-7208a7981982.png" />
+
+<img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/b9842a90-47bb-4f9e-9f38-f5ef3c5ade1d" />
 
 
 
