@@ -30,6 +30,9 @@
 <img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/bdef7e63-65c5-472e-884e-b616c76e0d7a.png" />
 
 
+
+
+
 **Board**
 <img src="https://github.com/jeongYuri/Is_it_raining_today/assets/74125993/33d0b3ef-96f3-4d8d-8dbe-7208a7981982.png" />
 
