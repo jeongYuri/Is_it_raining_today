@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,9 +80,24 @@ public class BoardService {
     }
 
     @Transactional
-    public List<Board> search(String searchStr){
-        List<Board> boardList= boardRepository.findByTitleContainingOrderByNoDesc(searchStr);
+    public List<Board> search(String searchStr,String searchType){
+        List<Board> boardList;
+        if("title".equals(searchType)){
+            boardList= boardRepository.findByTitleContainingOrderByNoDesc(searchStr);
+        }else if("content".equals(searchType)){
+            boardList= boardRepository.findByContentContainingOrderByNoDesc(searchStr);
+        }else if("writer".equals(searchType)){
+            boardList= boardRepository.findByWriterNameContainingOrderByNoDesc(searchStr);
+        }else{
+            boardList = Collections.emptyList(); //검색이 없으면~
+        }
         return boardList;
+    }
+
+    @Transactional
+    public List<Board> myboard(String id){//내가쓴 글 보기
+        List<Board> myBoardList = boardRepository.findBywriterNameOrderByNoDesc(id);
+        return myBoardList;
     }
 
 

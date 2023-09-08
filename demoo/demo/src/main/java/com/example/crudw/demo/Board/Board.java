@@ -1,5 +1,6 @@
 package com.example.crudw.demo.Board;
 
+import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -18,10 +19,14 @@ public class Board extends TimeEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long no;
-    @Column(name = "writer_no")
-    private Long writerNo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_no")
+    private User writerNo;
+
     @Column(name = "writer_name")
     private String writerName;
+
     private String title;
     private String content;
     @Column(columnDefinition = "integer default 0",nullable = false)
@@ -73,13 +78,7 @@ public class Board extends TimeEntity {
         this.fileLink = fileLink;
     }
 
-    public Long getWriterNo() {
-        return writerNo;
-    }
 
-    public void setWriterNo(Long writerNo) {
-        this.writerNo = writerNo;
-    }
 
     public String getWriterName() {
         return writerName;

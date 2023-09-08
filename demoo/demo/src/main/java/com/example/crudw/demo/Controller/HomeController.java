@@ -15,6 +15,7 @@ import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRequestDto;
 import com.example.crudw.demo.comment.CommentUpdate;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PreUpdate;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -96,14 +97,13 @@ public class HomeController {
     @GetMapping(path="/logout")
     public String login(HttpServletRequest request){
         HttpSession session = request.getSession();
-        session.invalidate();
+        session.invalidate(); //로그아웃시 세션 만료
         return "redirect:/";
     }
    @PostMapping(path = "/checkLogin")
    public String checkLogin(@RequestParam(value="id")String id,
                             @RequestParam(value="pw") String pw,
                             Model model,HttpServletRequest request,@ModelAttribute UserForm form){
-       //boolean result = userService.login(id,pw);
        boolean result = userService.login(id, pw);
        String page;
 
@@ -111,14 +111,13 @@ public class HomeController {
            model.addAttribute("msg","로그인 정보가 맞지않습니다.");
            model.addAttribute("url","login");
            page="alert";
-
        }else{
            User user = userService.getUser(id);
             HttpSession session = request.getSession();
             session.setAttribute("id",id);
             session.setAttribute("pw",pw);
             session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
-            System.out.println(id);
+
             page="redirect:/";
        }
        return page;
@@ -128,18 +127,19 @@ public class HomeController {
     @GetMapping(value = "/write")
     public String write() {
         return "write";
-
     }
 
     @GetMapping(value = {"/list", "/search"})
     public String listAndSearch(@RequestParam(value = "searchStr", required = false) String searchStr,
+                                @RequestParam(value = "searchType",required = false) String searchType,
                                 Model model,
                                 @PageableDefault(size = 10, sort = "no", direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Board> boardPage;
+        System.out.println(searchStr + searchType);
 
         if (searchStr != null && !searchStr.isEmpty()) { //searchStr가 비어있지않다면 검색기능 수행
-            List<Board> searchList = boardService.search(searchStr);
+            List<Board> searchList = boardService.search(searchStr,searchType);
             boardPage = new PageImpl<>(searchList, pageable, searchList.size());
             model.addAttribute("searchList", searchList);
         } else {//searchStr가 비어있다면 그냥 페이징 처리된거 보여줘야징
@@ -150,31 +150,29 @@ public class HomeController {
         int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 10);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
-        model.addAttribute("hasNext", boardPage.hasNext());
-        model.addAttribute("hasPrev", boardPage.hasPrevious());
+        model.addAttribute("hasNext", boardPage.hasNext()); //다음페이지
+        model.addAttribute("hasPrev", boardPage.hasPrevious()); //이전페이지
         model.addAttribute("nboard", boardPage);
-
         return "list"; // 검색 + 페이징 처리 통합
     }
 
 
-
     @GetMapping(value = "/read/{no}")
     public String read(@PathVariable("no") Long no, Model model, @ModelAttribute Comment comment, Board board, HttpServletRequest request, Heart heart) {
-        //List<Comment> commentlist = commentService.getCommentList(no);
         List<CommentRequestDto> commentList = commentService.getComments(no);
         HttpSession session = request.getSession();
         String userId = (String)session.getAttribute("id");
         boardService.hit(no);
+
         model.addAttribute("like",heartService.findLike(no,userId)); //게시글 읽을때 좋아요 눌렀는지 확인?
         model.addAttribute("board", boardService.getPost(no));
-        model.addAttribute("comment",commentList);
+        model.addAttribute("comment",commentList); //댓글을 보여주기
         model.addAttribute("comments",comment);
         model.addAttribute("heart",heart);
         model.addAttribute("board_no",no);
-        //model.addAttribute("heart",heart);
         return "detailboard";
     }
+
     @GetMapping(path="/myPage")
     public String mypage(Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
@@ -196,13 +194,14 @@ public class HomeController {
         model.addAttribute("user",user);
         return "updateUser";
     }
+
     @PostMapping("/saveUser")
     public String saveUser( HttpServletRequest request, Model model, @ModelAttribute UserUpdate updateDTO){
         //Long no = userService.saveUser(user);
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("id");
 
-        userService.updateUser(id, updateDTO);
+        userService.updateUser(id, updateDTO); //정보 업데이트
         User updatedUser = userService.getUser(id);
 
         model.addAttribute("user", updatedUser);
@@ -239,9 +238,17 @@ public class HomeController {
         return "redirect:/";
     }
 
-
-
-
+    @GetMapping("/myBoardList")
+    public String myBoard(HttpServletRequest request, Model model){
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute("id");//id가져오기
+        User user = userService.getUser(id); //회원 정보 가져옴
+        //userService.getBoard(user.getNo()); //가져온 회원 정보의 no를 보내줌
+        List<Board> myBoards = boardService.myboard(id); //id값으로 검색하기
+        model.addAttribute("myBoard",user);
+        model.addAttribute("myBoards",myBoards );
+        return "myBoardList";
+    }
 }
 
 

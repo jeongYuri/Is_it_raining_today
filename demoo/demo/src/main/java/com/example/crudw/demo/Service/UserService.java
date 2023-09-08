@@ -1,5 +1,6 @@
 package com.example.crudw.demo.Service;
 
+import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserUpdate;
 import com.example.crudw.demo.Member.UserRepository;
@@ -40,6 +41,7 @@ public class UserService {
         return userOpt.orElse(null);
     }
 
+
     public boolean login(String id, String pw) {
         System.out.println(id + " " + pw);
 
@@ -59,7 +61,6 @@ public class UserService {
     @Transactional
     public User updateUser(String id, UserUpdate updateDTO) {
         User user = userRepository.findById(id);
-
 
         if (updateDTO.getId() != null) {
             user.setId(updateDTO.getId());

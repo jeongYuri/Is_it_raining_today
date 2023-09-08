@@ -35,6 +35,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     void deleteById(Long no);
 
     List<Board> findAllByOrderByNoDesc();
+    List<Board> findBywriterNameOrderByNoDesc(String writerName);
 
     // Page<Board> findAll(Pageable pageable);
     List<Board> findByWriterNameContainingOrderByNoDesc(String searchStr); //검색하기

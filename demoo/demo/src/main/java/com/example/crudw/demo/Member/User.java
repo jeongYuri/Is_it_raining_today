@@ -1,6 +1,7 @@
 package com.example.crudw.demo.Member;
 
 
+import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,6 +11,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @Table(name = "users")
@@ -21,6 +25,7 @@ public class User extends TimeEntity {
     private String name;
     private String email;
     private String phone;
+
 
 
     public Long getNo() {

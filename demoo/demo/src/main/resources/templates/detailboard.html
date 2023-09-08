@@ -133,8 +133,8 @@
                                             <div class="card-body" >
                                                 <p class="card-text" th:text="${childComment.content}"></p>
                                                 <div style="text-align: right;">
-                                                     <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${childComment.writerName}" th:data-content="${childComment.content}" th:data-no="${childComment.no}" th:data-boardno="${childComment.boardNo}" onclick="openEditModal(this)">수정</a>
-                                                     <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${childComment.no}">삭제</a>
+                                                     <a th:if="${session.id==childComment.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${childComment.writerName}" th:data-content="${childComment.content}" th:data-no="${childComment.no}" th:data-boardno="${childComment.boardNo}" onclick="openEditModal(this)">수정</a>
+                                                     <a th:if="${session.id==childComment.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${childComment.no}">삭제</a>
                                                      <a th:if="${session.id!=null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
                                                         th:attr="data-comment-no=${childComment.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">댓글달기</a>
                                                 </div>
