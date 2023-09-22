@@ -21,10 +21,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="./">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="./list">Board</a></li>
                         <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./signup">SignUp</a></li>
                         <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./login">Login</a></li>
                         <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="./login">Logout</a></li>
-                        <li class="nav-item"><a class="nav-link" href="./list">Board</a></li>
                         <li><a th:if="${session.id!=null}" class="nav-link" href="./myPage">mypage</a></li>
                         <li class="nav-item">
                             <span class="nav-link" th:if="${session.id!=null}" th:text="${session.id +'님😊'}"></span>

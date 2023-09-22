@@ -1,7 +1,6 @@
 package com.example.crudw.demo.Service;
 
 import com.example.crudw.demo.Board.BoardRepository;
-import com.example.crudw.demo.TimeEntity;
 import com.example.crudw.demo.comment.CommentRepository;
 import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRequestDto;
@@ -9,7 +8,6 @@ import com.example.crudw.demo.comment.CommentUpdate;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,16 +44,11 @@ public class CommentService {
             cmrd.setWriterNo(comment.getWriterNo());
             cmrd.setBoardNo(comment.getBoardNo());
             cmrd.setCreateTime(comment.getCreateTime()); // 생성 시간 추가
-            cmrd.setModifyTime(comment.getModifyTime()); //
+            cmrd.setModifyTime(comment.getModifyTime()); //수정시간
 
-            if (comment.getParentNo() == null) {
+            if (comment.getParentNo() == null) {//부모가 없다는 뜻
                 commentRequestDtoList.add(cmrd); //부모가 비었다? 그냥 저장
             } else {
-                /*
-                CommentRequestDto parentDto = commentRequestDtoList.stream()
-                        .filter(dto -> dto.getNo().equals(comment.getParentNo().getNo()))
-                        .findFirst()
-                        .orElse(null);*/
                 CommentRequestDto parentDto = findParent(commentRequestDtoList, comment.getParentNo().getNo());//부모가 있으니 부모 번호를 가져와서 저장
                 if (parentDto != null) {
                     parentDto.addChild(cmrd);

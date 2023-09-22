@@ -85,16 +85,11 @@ public class UserService {
 
 
     public boolean login(String id, String pw) {
-        System.out.println(id + " " + pw);
-
         User user = getUser(id);
-
         if (user == null) {
             return false;
         }
-
         String storedPw = user.getPw();
-
         boolean result = pw.equals(storedPw);
 
         return result;

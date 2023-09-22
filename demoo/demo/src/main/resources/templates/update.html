@@ -37,7 +37,7 @@
 </head>
 <body>
 <div class="container">
-  <form action="/savePost" method="post" >
+  <form action="/savePost" method="post" enctype="multipart/form-data" >
     <div class="input-form-backgroud row">
       <div class="input-form col-md-12 mx-auto">
         <h3 class="mb-3">✍️✍️</h3>
@@ -60,7 +60,7 @@
           </div>
           <div class="mb-3">
             <label for="name">File</label>
-            <input type="file" class="form-control" name="inputfile" id="inputfile" value="">
+            <input type="file" class="form-control" name="newFile" id="inputfile" value="">
           </div>
           <div style=" text-align: center;">
             <button class="btn btn-primary btn-sm" type="submit">수정</button>

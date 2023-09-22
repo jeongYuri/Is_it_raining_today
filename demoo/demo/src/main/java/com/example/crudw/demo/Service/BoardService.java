@@ -55,7 +55,7 @@ public class BoardService {
     public void deletePost(Long no){boardRepository.deleteById(no);
     }
     @Transactional
-    public Board updateBoard(Long boardId, BoardUpdate updateDTO) {
+    public Board updateBoard(Long boardId,BoardUpdate updateDTO) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
@@ -71,7 +71,6 @@ public class BoardService {
         if (updateDTO.getFileLink() != null) {
             board.setFileLink(updateDTO.getFileLink());
         }
-
         return boardRepository.save(board);
     }
     @Transactional

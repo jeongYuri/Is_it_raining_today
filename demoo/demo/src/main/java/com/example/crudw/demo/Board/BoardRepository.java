@@ -44,7 +44,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     List<Board> findByTitleContainingOrderByNoDesc(String searchStr);  //검색하기
 
-    List<Board> findByContentContainingOrderByNoDesc(String searchStr);
+    List<Board> findByContentContainingOrderByNoDesc(String searchStr); //검색하기
 
 
 }

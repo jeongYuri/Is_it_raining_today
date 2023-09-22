@@ -26,8 +26,6 @@ public class User extends TimeEntity {
     private String email;
     private String phone;
 
-
-
     public Long getNo() {
         return no;
     }
