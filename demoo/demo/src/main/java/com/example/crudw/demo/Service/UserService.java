@@ -72,9 +72,6 @@ public class UserService {
         return user;
     }
     public Long saveUser(User user) {
-        System.out.println(user.getId() + " " + user.getPw());
-        System.out.println(user.getId() + " " + user.getPw());
-
         return userRepository.save(user).getNo();
     }
 
@@ -93,6 +90,10 @@ public class UserService {
         boolean result = pw.equals(storedPw);
 
         return result;
+    }
+    public User findId(String name, String email){
+        User founduser = userRepository.findByNameAndEmail(name, email);
+        return founduser;
     }
 
     @Transactional

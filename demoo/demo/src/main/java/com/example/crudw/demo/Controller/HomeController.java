@@ -1,8 +1,6 @@
 package com.example.crudw.demo.Controller;
 import com.example.crudw.demo.Board.Board;
-import com.example.crudw.demo.Board.BoardUpdate;
 import com.example.crudw.demo.Heart.Heart;
-import com.example.crudw.demo.Heart.HeartRequest;
 import com.example.crudw.demo.Heart.HeartService;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserForm;
@@ -10,44 +8,26 @@ import com.example.crudw.demo.Member.UserUpdate;
 import com.example.crudw.demo.Service.BoardService;
 import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
-import com.example.crudw.demo.Weather.Region;
 import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRequestDto;
-import com.example.crudw.demo.comment.CommentUpdate;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PreUpdate;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -93,6 +73,23 @@ public class HomeController {
     @GetMapping(value = "/login")
     public String login() {
         return "login";
+    }
+    @GetMapping(value = "/findIdPw")
+    public String findid() {
+        return "findIdPw";
+    }
+    @PostMapping(path="/findId", produces = "application/json")
+    @ResponseBody
+    public Map<String, String> findId(@RequestParam(value = "name") String name,
+                                      @RequestParam(value = "email") String email) {
+        Map<String, String> response = new HashMap<>();
+        User foundUsers = userService.findId(name, email);
+        if (foundUsers != null) {
+            response.put("foundUser", foundUsers.getId());
+        } else {
+            response.put("notfound", "true");
+        }
+        return response;
     }
     @GetMapping(path="/logout")
     public String login(HttpServletRequest request){
