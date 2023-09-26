@@ -7,6 +7,7 @@ import com.example.crudw.demo.Heart.HeartRepository;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserUpdate;
 import com.example.crudw.demo.Member.UserRepository;
+import com.example.crudw.demo.Notification.EmitterRepository;
 import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRepository;
 import com.example.crudw.demo.comment.CommentRequestDto;
@@ -29,6 +30,7 @@ public class UserService {
     private CommentRepository commentRepository;
     @Autowired
     private HeartRepository heartRepository;
+
     //public UserService(UserRepository userRepository) {
         //this.userRepository = userRepository;
     //}

@@ -42,41 +42,41 @@
 <body>
 <div class="container">
   <form action="/checkLogin" method="post" >
-  <div class="input-form-backgroud row">
-    <div class="input-form col-md-12 mx-auto">
-      <h3 class="mb-3">🪄로그인🪄</h3>
-      <form class="validation-form" novalidate>
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label for="name">ID</label>
-            <input type="text" class="form-control" name="id" id="id" placeholder="" value="" required>
-            <div class="invalid-feedback">
-              ID를 입력해주세요
+    <div class="input-form-backgroud row">
+      <div class="input-form col-md-12 mx-auto">
+        <h3 class="mb-3">🪄로그인🪄</h3>
+        <form class="validation-form" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="name">ID</label>
+              <input type="text" class="form-control" name="id" id="id" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                ID를 입력해주세요
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="name">Password</label>
+              <input type="password" class="form-control" name="pw" id="pw" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                pw를 입력해주세요.
+              </div>
             </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label for="name">Password</label>
-            <input type="password" class="form-control" name="pw" id="pw" placeholder="" value="" required>
-            <div class="invalid-feedback">
-              pw를 입력해주세요.
-            </div>
-          </div>
-        </div>
 
-        <div class="form-row">
-          <div class="col-md-6 mb-4">
-            <button class="btn btn-primary btn-lg btn-block" type="submit">로그인</button>
+          <div class="form-row">
+            <div class="col-md-6 mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">로그인</button>
+            </div>
+            <div class="col-md-6 mb-4">
+              <a class="btn btn-primary btn-lg btn-block" type="button" href="./findIdPw">아이디 찾기</a>
+            </div>
           </div>
-          <div class="col-md-6 mb-4">
-            <a class="btn btn-primary btn-lg btn-block" type="button" href="./findIdPw">아이디 찾기</a>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-  <footer class="my-3 text-center text-small">
-    <p class="mb-1">&copy; 2021 YD</p>
-  </footer>
+    <footer class="my-3 text-center text-small">
+      <p class="mb-1">&copy; 2021 YD</p>
+    </footer>
   </form>
 </div>
 <script>

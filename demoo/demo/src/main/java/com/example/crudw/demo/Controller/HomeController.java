@@ -143,7 +143,7 @@ public class HomeController {
             boardPage = boardService.pageList(pageable);
         }
 
-        int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 10);
+        int startPage = Math.max(1, boardPage.getPageable().getPageNumber() - 10); //10개의 게시글 보여줘야지
         int endPage = Math.min(boardPage.getTotalPages(), boardPage.getPageable().getPageNumber() + 10);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
@@ -155,7 +155,7 @@ public class HomeController {
 
 
     @GetMapping(value = "/read/{no}")
-    public String read(@PathVariable("no") Long no, Model model, @ModelAttribute Comment comment, Board board, HttpServletRequest request, Heart heart) {
+    public String read(@PathVariable("no") Long no, Model model, @ModelAttribute Comment comment, HttpServletRequest request, Heart heart) {
         List<CommentRequestDto> commentList = commentService.getComments(no);
         HttpSession session = request.getSession();
         String userId = (String)session.getAttribute("id");

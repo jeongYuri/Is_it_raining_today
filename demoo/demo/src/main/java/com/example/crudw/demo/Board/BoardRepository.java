@@ -33,6 +33,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     List<Board> findByWriterName(String writer_name);
 
+
     void deleteById(Long no);
     void deleteByWriterName(String writerName);
 

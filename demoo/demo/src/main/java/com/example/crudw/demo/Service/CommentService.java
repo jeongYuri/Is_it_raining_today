@@ -1,12 +1,16 @@
 package com.example.crudw.demo.Service;
 
+import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Board.BoardRepository;
+import com.example.crudw.demo.Notification.NotificationService;
 import com.example.crudw.demo.comment.CommentRepository;
 import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRequestDto;
 import com.example.crudw.demo.comment.CommentUpdate;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +20,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Service
 public class CommentService {
+    private static final Logger logger = LoggerFactory.getLogger(CommentService.class);
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private NotificationService notificationService;
+
 
     public List<Comment> getCommentList(Long board_no) {
         List<Comment> commentList = commentRepository.findByBoardNoOrderByParentNoAscNoAsc(board_no); //board 번호로 commentlist
@@ -96,8 +105,35 @@ public class CommentService {
                  Comment parentComment = commentRepository.findByNo(commentRequestDto.getParentNo());
                  comment.updateParent(parentComment);
         }
-        return commentRepository.save(comment); //저장
+        Comment savedComment = commentRepository.save(comment);
+        Long boardNo = commentRequestDto.getBoardNo();
+        Board board = boardRepository.findById(boardNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+        // 댓글 작성자와 게시글 작성자가 다를 경우에만 알림을 보냄
+        if (!commentRequestDto.getWriterName().equals(board.getWriterName())) {
+            notificationService.send(board.getWriterName(), savedComment, "새로운 댓글이 달렸습니다!");
+            logger.info("알림 전송: 받는 사람={}, 내용={}", board.getWriterName(), "새로운 댓글이 달렸습니다!");
+        }
+        return savedComment;
     }
+    /*
+    @Transactional
+    public void notifyCommentCreation(CommentRequestDto commentRequestDto) {
+        // 댓글을 저장하고 댓글 정보를 가져옴
+        Comment savedComment = saveComment(commentRequestDto);
+        System.out.println(savedComment + "1212");
+        // 게시글 정보를 가져옴 (여기서는 예시로 게시글 번호로 가져오는 것으로 가정)
+        Long boardNo = commentRequestDto.getBoardNo();
+        Board board = boardRepository.findById(boardNo)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+        // 댓글 작성자와 게시글 작성자가 다를 경우에만 알림을 보냄
+        if (!commentRequestDto.getWriterName().equals(board.getWriterName())) {
+            notificationService.send(board.getWriterName(), savedComment, "새로운 댓글이 달렸습니다!");
+            logger.info("알림 전송: 받는 사람={}, 내용={}", board.getWriterName(), "새로운 댓글이 달렸습니다!");
+        }
+    }*/
+
+
     @Transactional
     public void deleteComment(Long no) {
         Comment comment = commentRepository.findCommentByNo(no);
