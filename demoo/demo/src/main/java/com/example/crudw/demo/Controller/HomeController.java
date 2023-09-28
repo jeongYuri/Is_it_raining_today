@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -74,6 +75,34 @@ public class HomeController {
     public String login() {
         return "login";
     }
+
+    @PostMapping(path = "/checkLogin")
+    public String checkLogin(@RequestParam(value="id")String id,
+                             @RequestParam(value="pw") String pw,
+                             Model model,HttpServletRequest request,@ModelAttribute UserForm form){
+        boolean result = userService.login(id, pw);
+        String page;
+
+        if(result == false){
+            model.addAttribute("msg","로그인 정보가 맞지않습니다.");
+            model.addAttribute("url","login");
+            page="alert";
+        }else{
+            User user = userService.getUser(id);
+            HttpSession session = request.getSession();
+            session.setAttribute("id",id);
+            session.setAttribute("pw",pw);
+            session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
+
+            String sessionId = session.getId(); // 세션 ID를 얻어옵니다.
+            model.addAttribute("sessionId", sessionId);
+            System.out.println(sessionId);
+
+            page="redirect:/";
+        }
+        return page;
+    }
+
     @GetMapping(value = "/findIdPw")
     public String findid() {
         return "findIdPw";
@@ -97,28 +126,7 @@ public class HomeController {
         session.invalidate(); //로그아웃시 세션 만료
         return "redirect:/";
     }
-   @PostMapping(path = "/checkLogin")
-   public String checkLogin(@RequestParam(value="id")String id,
-                            @RequestParam(value="pw") String pw,
-                            Model model,HttpServletRequest request,@ModelAttribute UserForm form){
-       boolean result = userService.login(id, pw);
-       String page;
 
-       if(result == false){
-           model.addAttribute("msg","로그인 정보가 맞지않습니다.");
-           model.addAttribute("url","login");
-           page="alert";
-       }else{
-           User user = userService.getUser(id);
-            HttpSession session = request.getSession();
-            session.setAttribute("id",id);
-            session.setAttribute("pw",pw);
-            session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
-
-            page="redirect:/";
-       }
-       return page;
-   }
 
 
     @GetMapping(value = "/write")

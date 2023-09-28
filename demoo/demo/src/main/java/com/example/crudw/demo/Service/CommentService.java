@@ -32,6 +32,7 @@ public class CommentService {
     private NotificationService notificationService;
 
 
+
     public List<Comment> getCommentList(Long board_no) {
         List<Comment> commentList = commentRepository.findByBoardNoOrderByParentNoAscNoAsc(board_no); //board 번호로 commentlist
         return commentList;
@@ -111,8 +112,8 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         // 댓글 작성자와 게시글 작성자가 다를 경우에만 알림을 보냄
         if (!commentRequestDto.getWriterName().equals(board.getWriterName())) {
-            notificationService.send(board.getWriterName(), savedComment, "새로운 댓글이 달렸습니다!");
-            logger.info("알림 전송: 받는 사람={}, 내용={}", board.getWriterName(), "새로운 댓글이 달렸습니다!");
+            notificationService.send(board.getWriterName(), savedComment);
+            logger.info("알림 전송: 받는 사람={}, 내용={}", board.getWriterName(), commentRequestDto.getContent());
         }
         return savedComment;
     }
