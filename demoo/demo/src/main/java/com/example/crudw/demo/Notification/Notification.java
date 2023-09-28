@@ -40,17 +40,12 @@ public class Notification extends TimeEntity {
 
 
     @Builder
-    public Notification(Comment comment, String user, Board board,String message,Boolean isread) {
+    public Notification(Comment comment, String user, Board board,String message) {
         this.comment = comment;
         this.user = user;
         this.board = board;
         this.message = message;
-        this.isread = isread;
 
     }
-    public void read() {
-        this.isread = true;
-    }
-
 
 }

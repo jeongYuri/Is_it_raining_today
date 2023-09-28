@@ -339,15 +339,26 @@
                             var messageParagraph = document.createElement("p");
                             messageParagraph.textContent = "메시지: " + notification.message;
 
+                            var boardId = notification.board_no;
+                            notificationDiv.setAttribute('data-board-id', boardId);
 
                             var deleteButton = document.createElement("button");
                             deleteButton.textContent = "삭제";
                             deleteButton.className = "btn btn-sm btn-danger";
                             deleteButton.setAttribute('data-notification-id', notification.id); // 알림 ID를 데이터 속성으로 설정
-                            deleteButton.onclick = function() {
+                            deleteButton.onclick = function(event) {
+                                event.stopPropagation(); //상위로 전파 놉
                                 var notificationId = this.getAttribute('data-notification-id');
-                                deleteNotification(notificationId); // 알림 삭제 함수 호출
+                                deleteNotification(notificationId, function() {
+                                    $('#NotificationModal').modal('hide');
+                                });
                             };
+
+
+                            notificationDiv.addEventListener('click', function () {
+                                var boardId = this.getAttribute('data-board-id');
+                                handleNotificationClick(boardId, notification.id);
+                            });
 
                             notificationDiv.appendChild(h5Element);
                             notificationDiv.appendChild(nameParagraph);
@@ -364,28 +375,30 @@
                     },
                 });
             }
-            function deleteNotification(notificationId) {
-                console.log(notificationId);
+
+            // 삭제 요청을 보내는 함수
+            function deleteNotification(notificationId, callback) {
                 $.ajax({
                     url: '/deletenotification/' + notificationId,
                     type: 'POST',
                     dataType: 'text',
                     success: function (response) {
                         console.log('알림 삭제 성공:', response);
-                        $('#NotificationModal').modal('hide');
+                        if (typeof callback === 'function') {
+                            callback(); // 삭제 성공 시 콜백 함수 호출
+                        }
                     },
                     error: function (error) {
                         console.error('알림 삭제 오류:', error);
                     }
                 });
             }
-            // 모달 폼 채우기 함수
-            function fillModalForm() {
-                if (selectedNotification) {
-                    document.getElementById("modalwriter_name").value = selectedNotification.writer;
-                    document.getElementById("modalcontent").value = selectedNotification.message;
-                    document.getElementById("modalNotificationId").value = selectedNotification.id;
-                }
+
+            function handleNotificationClick(boardId, notificationId) {
+                deleteNotification(notificationId, function () {
+                    var postUrl = '/read/' + boardId;
+                    window.location.href = postUrl;
+                });
             }
 
         </script>

@@ -119,4 +119,9 @@ public class NotificationService {
         notificationRepository.deleteById(id);
     }
 
+
+    @Transactional
+    public void deleteByCommentNo(Long no) {
+        notificationRepository.deleteByCommentNo(no);
+    }
 }

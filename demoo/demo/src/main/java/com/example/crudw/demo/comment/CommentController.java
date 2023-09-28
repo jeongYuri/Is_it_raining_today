@@ -1,6 +1,7 @@
 package com.example.crudw.demo.comment;
 
 import com.example.crudw.demo.Heart.HeartService;
+import com.example.crudw.demo.Notification.NotificationService;
 import com.example.crudw.demo.Service.BoardService;
 import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
@@ -24,6 +25,8 @@ public class CommentController {
     BoardService boardService;
     @Autowired
     CommentService commentService;
+    @Autowired
+    NotificationService notificationService;
     @Autowired
     HeartService heartService;
     @Autowired
@@ -54,12 +57,13 @@ public class CommentController {
     }
     @GetMapping("/deleteComment/{no}")
     public String deleteComment(@PathVariable("no") Long no) {
-        Comment comment = commentService.getComment(no);// 댓글 번호이용하여
-        Long boardNo = comment.getBoardNo();//게시물 번호 가져오기
+        Comment comment = commentService.getComment(no);
+        Long boardNo = comment.getBoardNo();
         String page = "/read/" + boardNo;
-        commentService.deleteComment(no); //댓글삭제
+        notificationService.deleteByCommentNo(no); // 변경된 메서드명으로 호출
+        commentService.deleteComment(no);
         page = "redirect:" + page;
-        return  page;
+        return page;
     }
 
 }
