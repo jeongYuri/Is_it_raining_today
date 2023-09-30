@@ -1,5 +1,6 @@
 package com.example.crudw.demo.comment;
 
+import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Repository.MemoryUserRepository;
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
@@ -9,6 +10,9 @@ import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jakarta.persistence.FetchType.LAZY;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,6 +24,7 @@ public class Comment extends TimeEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long no;
+
     @Column(name = "board_no")
     private Long boardNo;
 

@@ -10,6 +10,7 @@ import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
 import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRequestDto;
+import com.example.crudw.demo.comment.CommentWithBoardTitle;
 import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -233,8 +234,12 @@ public class HomeController {
         User user = userService.getUser(id); //회원 정보 가져옴
         //userService.getBoard(user.getNo()); //가져온 회원 정보의 no를 보내줌
         List<Board> myBoards = boardService.myboard(id); //id값으로 검색하기
+        //List<Comment>myComments = commentService.myComment(id);
+        List<CommentWithBoardTitle> CommentsWithBoardTitle = commentService.CommentsWithBoardTitle(id);
         model.addAttribute("myBoard",user);
         model.addAttribute("myBoards",myBoards );
+        //model.addAttribute("myCommnets",myComments);
+        model.addAttribute("Comments",CommentsWithBoardTitle);
         return "myBoardList";
     }
 }

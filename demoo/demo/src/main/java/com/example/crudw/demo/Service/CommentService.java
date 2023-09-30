@@ -3,10 +3,7 @@ package com.example.crudw.demo.Service;
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Board.BoardRepository;
 import com.example.crudw.demo.Notification.NotificationService;
-import com.example.crudw.demo.comment.CommentRepository;
-import com.example.crudw.demo.comment.Comment;
-import com.example.crudw.demo.comment.CommentRequestDto;
-import com.example.crudw.demo.comment.CommentUpdate;
+import com.example.crudw.demo.comment.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -164,4 +161,24 @@ public class CommentService {
         }
         return commentRepository.save(comment);
     }
+
+
+
+    public List<CommentWithBoardTitle> CommentsWithBoardTitle(String writerName) {
+        List<Comment> myCommentList = commentRepository.findByWriterName(writerName); // 내 댓글 목록
+        List<CommentWithBoardTitle> commentsWithBoardTitle = new ArrayList<>();
+
+        for (Comment comment : myCommentList) {
+            List<Object[]> boardTitles = commentRepository.findBoardTitleByBoardNo(comment.getBoardNo());
+            if (!boardTitles.isEmpty()) {
+                String boardTitle = (String) boardTitles.get(0)[0]; // 첫 번째 원소 추출
+                CommentWithBoardTitle commentWithBoardTitle = new CommentWithBoardTitle(boardTitle, comment.getWriterName(), comment.getContent(), comment.getBoardNo(), comment.getModifyTime());
+                commentsWithBoardTitle.add(commentWithBoardTitle);
+            }
+        }
+
+        return commentsWithBoardTitle;
+    }
 }
+
+
