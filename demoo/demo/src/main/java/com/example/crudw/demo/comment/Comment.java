@@ -44,7 +44,7 @@ public class Comment extends TimeEntity {
     private String content;
 
 
-    public void changeIsDeleted(Boolean isDeleted) {
+    public void changeIsDeleted(Boolean isDeleted) { //자식 댓글이 존재할시
         this.isDeleted = isDeleted;
         this.writerName = isDeleted ? "(알수없음)" : null;
         this.content = isDeleted ? "삭제되었습니다." : null;

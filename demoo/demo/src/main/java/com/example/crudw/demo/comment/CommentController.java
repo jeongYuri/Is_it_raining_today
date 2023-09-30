@@ -60,7 +60,7 @@ public class CommentController {
         Comment comment = commentService.getComment(no);
         Long boardNo = comment.getBoardNo();
         String page = "/read/" + boardNo;
-        notificationService.deleteByCommentNo(no); // 변경된 메서드명으로 호출
+        notificationService.deleteByCommentNo(no);//댓글을 작성하면 알림이 울리게 됨으로 댓글 삭제시 알림삭제하기로 함
         commentService.deleteComment(no);
         page = "redirect:" + page;
         return page;

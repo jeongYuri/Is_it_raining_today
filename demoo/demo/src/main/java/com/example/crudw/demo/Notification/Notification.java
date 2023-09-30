@@ -36,7 +36,7 @@ public class Notification extends TimeEntity {
     private String user;
     private String message;
 
-    private boolean isread;
+
 
 
     @Builder

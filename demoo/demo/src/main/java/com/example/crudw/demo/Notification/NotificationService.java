@@ -54,17 +54,14 @@ public class NotificationService {
     }
     private void sendToClient(SseEmitter emitter, String id, Object data) {
         try {
-            //String message = notification.getMessage();
             emitter.send(SseEmitter.event()
                     .id(id)
                     .name("sse")
                     .data( data));
-            logger.info("데이터{}:",data);
         } catch (IOException exception) {
             emitterRepository.deleteById(id);
             throw new RuntimeException("연결오류!");
         }
-        logger.info("게시될까?={}",emitter);
     }
     @Transactional
     public void send(String user, Comment comment) {
@@ -115,6 +112,7 @@ public class NotificationService {
                     .collect(Collectors.toList());
         return NotificationsResponse.of(responses);
     }
+    @Transactional
     public void deleteNotification(Long id){
         notificationRepository.deleteById(id);
     }
