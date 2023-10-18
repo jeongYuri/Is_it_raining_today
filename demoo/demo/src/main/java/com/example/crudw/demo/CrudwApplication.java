@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-@SpringBootApplication(exclude={SecurityAutoConfiguration.class})
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @EnableJpaAuditing
 public class CrudwApplication {
 	public static void main(String[] args) {

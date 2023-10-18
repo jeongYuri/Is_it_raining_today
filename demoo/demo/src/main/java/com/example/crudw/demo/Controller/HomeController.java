@@ -21,12 +21,16 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +80,6 @@ public class HomeController {
     public String login() {
         return "login";
     }
-
     @PostMapping(path = "/checkLogin")
     public String checkLogin(@RequestParam(value="id")String id,
                              @RequestParam(value="pw") String pw,
@@ -90,20 +93,44 @@ public class HomeController {
             page="alert";
         }else{
             User user = userService.getUser(id);
+
             HttpSession session = request.getSession();
             session.setAttribute("id",id);
             session.setAttribute("pw",pw);
             session.setAttribute("no", user.getNo()); //글 작성할때 넣어야해서...user정보랑 같이 넣는 느낌..?
 
-            String sessionId = session.getId(); // 세션 ID를 얻어옵니다.
-            model.addAttribute("sessionId", sessionId);
-            System.out.println(sessionId);
+            String sessionId = session.getId(); // 세션 ID를 얻어옵니다
 
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            //SecurityUser users = (SecurityUser) authentication.getPrincipal();
+            String username = authentication.getName();
+            model.addAttribute("sessionId", sessionId);
+            model.addAttribute("username", username); // 사용자 ID를 모델에 추가
             page="redirect:/";
         }
         return page;
     }
+    @GetMapping("/login/oauth2/code/google")
+    public String googleCallback(@AuthenticationPrincipal OAuth2User principal) {
+        return "list"; // 로그인 성공 후 이동할 페이지
+    }
+    @GetMapping("/login/oauth2/code/{registrationId}")
+    public String googleLogin(@RequestParam String code, @PathVariable String registrationId) {
+        userService.socialLogin(code, registrationId);
+        return "redirect:/";
+    }
+    @GetMapping("/oauth/loginInfo")
+    public String oauthLoginInfo(Authentication authentication,Model model,HttpSession session) {
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        System.out.println(attributes.toString());
 
+        model.addAttribute("name",attributes.get("name"));
+        session.setAttribute("name", attributes.get("name"));
+
+
+        return "redirect:/";
+    }
     @GetMapping(value = "/findIdPw")
     public String findid() {
         return "findIdPw";
@@ -179,38 +206,42 @@ public class HomeController {
         return "detailboard";
     }
 
-    @GetMapping(path="/myPage")
-    public String mypage(Model model,HttpServletRequest request){
-        HttpSession session = request.getSession();
-        String id = (String)session.getAttribute("id");
-        User user = userService.getUser(id);
-        if(user ==null){
-            model.addAttribute("msg","로그인 후 이용가능");
-        }else{
-            model.addAttribute("user",user);
-        }
-        return "myPage";
-    }
-
     @GetMapping("/updateUser")
     public String updateUser(Model model, HttpServletRequest request){
         HttpSession session  = request.getSession();
         String id = (String)session.getAttribute("id");
-        User user = userService.getUser(id);
+        String name = (String)session.getAttribute("name");
+        User user = null;
+        if (id != null) {
+            user = userService.getUser(id);
+        } else if (name != null) {
+            user = userService.getUserName(name);
+
+        }
         model.addAttribute("user",user);
         return "updateUser";
     }
-
     @PostMapping("/saveUser")
     public String saveUser( HttpServletRequest request, Model model, @ModelAttribute UserUpdate updateDTO){
         //Long no = userService.saveUser(user);
         HttpSession session = request.getSession();
-        String id = (String) session.getAttribute("id");
+        String id = (String)session.getAttribute("id");
+        String name = (String)session.getAttribute("name");
 
-        userService.updateUser(id, updateDTO); //정보 업데이트
-        User updatedUser = userService.getUser(id);
+        if (id != null) {
+            userService.updateUser(id, updateDTO);
+            User updatedUser = userService.getUser(id);
+            model.addAttribute("user", updatedUser);
+        } else if (name != null) {
+            userService.updatesocialUser(name, updateDTO);
+            User updatesocialUser = userService.getUserName(name);
+            model.addAttribute("user", updatesocialUser);
+        }
 
-        model.addAttribute("user", updatedUser);
+        //userService.updateUser(id, updateDTO); //정보 업데이트
+       // userService.updateUser(name,updateDTO);
+        //User updatedUser = userService.getUser(id);
+
         model.addAttribute("msg", "정보 수정에 성공하였습니다.");
         model.addAttribute("url", "mypage");
 
@@ -221,27 +252,62 @@ public class HomeController {
     public String deleteUser( Model model,HttpServletRequest request){
         HttpSession session = request.getSession();
         String id = (String) session.getAttribute("id");
+        String name = (String)session.getAttribute("name");
         //String writerName = (String) session.getAttribute("id");//id 값이 writername 같기 떄문에ㅣ.!
-        userService.deleteUser(id);
+        if (id != null) {
+            userService.deleteUser(id);
+        } else if (name != null) {
+            userService.deleteSocialUser(name);
+        }
+        //userService.deleteUser(id);
         session.invalidate();
         return "redirect:/";
     }
 
+    @GetMapping(path="/myPage")
+    public String myPage(Model model,HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String id = (String)session.getAttribute("id");
+        String name = (String)session.getAttribute("name");
+        User user = userService.getUser(id);
+        User socialuser = userService.getUserName(name);
+
+        if (user == null && socialuser==null) {
+            model.addAttribute("msg", "로그인 후 이용가능");
+        } else {
+            if (id != null) {
+                model.addAttribute("user", user);
+            } else {
+                model.addAttribute("user", socialuser);
+            }
+        }
+        return "myPage";
+    }
     @GetMapping("/myBoardList")
     public String myBoard(HttpServletRequest request, Model model){
         HttpSession session = request.getSession();
-        String id = (String) session.getAttribute("id");//id가져오기
-        User user = userService.getUser(id); //회원 정보 가져옴
-        //userService.getBoard(user.getNo()); //가져온 회원 정보의 no를 보내줌
-        List<Board> myBoards = boardService.myboard(id); //id값으로 검색하기
-        //List<Comment>myComments = commentService.myComment(id);
-        List<CommentWithBoardTitle> CommentsWithBoardTitle = commentService.CommentsWithBoardTitle(id);
-        model.addAttribute("myBoard",user);
-        model.addAttribute("myBoards",myBoards );
-        //model.addAttribute("myCommnets",myComments);
-        model.addAttribute("Comments",CommentsWithBoardTitle);
+        String id = (String) session.getAttribute("id");
+        String name = (String) session.getAttribute("name");
+        List<Board> myBoards = new ArrayList<>();
+        User user = null;
+        List<CommentWithBoardTitle> commentsWithBoardTitle = null;
+        if (id != null) {
+            user = userService.getUser(id);
+            myBoards = boardService.myboard(id);
+            commentsWithBoardTitle = commentService.CommentsWithBoardTitle(id);
+        } else if (name != null) {
+            user = userService.getUserName(name);
+            myBoards = boardService.myboard(name);
+            commentsWithBoardTitle = commentService.CommentsWithBoardTitle(name);
+        }
+
+        model.addAttribute("myBoard", user);
+        model.addAttribute("myBoards", myBoards);
+        model.addAttribute("Comments", commentsWithBoardTitle);
+
         return "myBoardList";
     }
+
 }
 
 

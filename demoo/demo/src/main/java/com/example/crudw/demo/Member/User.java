@@ -4,10 +4,7 @@ package com.example.crudw.demo.Member;
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
@@ -25,6 +22,14 @@ public class User extends TimeEntity {
     private String name;
     private String email;
     private String phone;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    public User() {
+
+    }
 
     public Long getNo() {
         return no;
@@ -72,5 +77,22 @@ public class User extends TimeEntity {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+
+    @Builder
+    public User(String name, String email, String id, Role role) {
+        this.name = name;
+        this.email = email;
+        this.id = id;
+        this.role = role;
+    }
+
+    public User update(String name) {
+        this.name = name;
+        this.id = id;
+        return this;
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:text-align="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:text-align="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8" />
@@ -22,20 +22,22 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="./">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="./list">Board</a></li>
-                        <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./signup">SignUp</a></li>
-                        <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="./login">Login</a></li>
-                        <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="./login">Logout</a></li>
-                        <li><a th:if="${session.id!=null}" class="nav-link" href="./myPage">mypage</a></li>
+                        <li class="nav-item"><a th:if="${session.isEmpty()}" class="nav-link" href="./signup">SignUp</a></li>
+                        <li class="nav-item"><a th:if="${session.isEmpty()}" class="nav-link" href="./login">Login</a></li>
+                        <li class="nav-item"><a th:if="${not session.isEmpty()}" class="nav-link" href="/logout">Logout</a></li>
+                        <li><a th:if="${not session.isEmpty()}" class="nav-link" href="./myPage">mypage</a></li>
                         <li class="nav-item dropdown">
-                            <a th:if="${session.id!=null}" class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" th:data-id="${session.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="alarm(this); return false;">
+                            <a th:if="${not session.isEmpty()}" class="nav-link dropdown-toggle" href="#" id="notificationDropdown" role="button" th:data-id="${session.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="alarm(this); return false;">
                                 ✉️
                             </a>
                             <div class="dropdown-menu" aria-labelledby="notificationDropdown">
-                                <a class="open-modal-btn" href="#" type="button"  th:data-id="${session.id}" onclick="alarmlist(this); return false;">알림함</a>
+                                <a class="open-modal-btn" href="#" type="button" th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}"  th:data-id="${session.id}" onclick="alarmlist(this); return false;">알림보기</a>
+                                <a class="open-modal-btn" href="#" type="button" th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}"  th:data-id=${session.socialUser.name} onclick="alarmlist(this); return false;">알림보기</a>
                             </div>
                         </li>
                         <li>
-                            <span class="nav-link" th:if="${session.id!=null}" th:text="${session.id +'님😊'}"></span>
+                            <span class="nav-link" th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" th:text="${session.id +'님😊'}"></span>
+                            <span class="nav-link" th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}" th:text="${session.socialUser.name + '님😊'}"></span>
                         </li>
                     </ul>
                 </div>

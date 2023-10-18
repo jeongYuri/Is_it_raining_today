@@ -22,11 +22,12 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/signup">SignUp</a></li>
-                <li class="nav-item"><a th:if="${session.id==null}" class="nav-link" href="/login">Login</a></li>
-                <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="/login">Logout</a></li>
-                <li class="nav-item"><a th:if="${session.id!=null}" class="nav-link" href="/myPage">my page</a></li>
+                <li class="nav-item"><a th:if="${session.isEmpty()}" class="nav-link" href="/login">Login</a></li>
+                <li class="nav-item"><a th:if="${not session.isEmpty()}" class="nav-link" href="/logout">Logout</a></li>
+                <li class="nav-item"><a th:if="${not session.isEmpty()}" class="nav-link" href="/myPage">my page</a></li>
                 <li class="nav-item">
-                    <span class="nav-link" th:if="${session.id!=null}" th:text="${session.id +'님😊'}"></span>
+                    <span class="nav-link" th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" th:text="${session.id +'님😊'}"></span>
+                    <span class="nav-link" th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}" th:text="${session.socialUser.name + '님😊'}"></span>
                 </li>
             </ul>
         </div>
@@ -80,10 +81,10 @@
         </div>
     </form>
     <div style="text-align: center;">
-        <a th:if="${session.id==board.writerName}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+${board.no}">수정</a>
+        <a th:if="${session.id == board.writerName or (session.socialUser != null and session.socialUser.name == board.writerName)}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+${board.no}">수정</a>
         <a class="btn btn-secondary btn-sm text-white" type="button" href="/list">목록</a>
-        <a th:if="${session.id==board.writerName}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/deletePost/'+${board.no}">삭제</a>
-        <a th:if="${session.id!=null}" class="btn btn-secondary btn-sm text-white" id="like-button" type="button" th:data-boardno="${board.no}" th:data-id="${session.id}" th:data-liked="${like}"  onclick="likeheart(this)"><img id="heart-icon" th:src="@{(${like} > 0) ? '/icon/heart-fill.svg' : '/icon/heart.svg'}"></a>
+        <a th:if="${session.id == board.writerName or (session.socialUser != null and session.socialUser.name == board.writerName)}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/deletePost/'+${board.no}">삭제</a>
+        <a th:if="${not session.isEmpty()}" class="btn btn-secondary btn-sm text-white" id="like-button" type="button" th:data-boardno="${board.no}" th:data-id="${session.id}" th:data-liked="${like}"  onclick="likeheart(this)"><img id="heart-icon" th:src="@{(${like} > 0) ? '/icon/heart-fill.svg' : '/icon/heart.svg'}"></a>
         <p>나의 좋아요: <span th:text="${like}"></span></p>
         <!-- 취소 버튼 -->
     </div>
@@ -103,11 +104,17 @@
                                 <span class="comment-content" th:text="${comment.content}"></span>
                             </div>
                             <div style="text-align: right;">
-                                <a th:if="${session.id==comment.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writerName}" th:data-content="${comment.content}" th:data-no="${comment.no}" th:data-boardno="${comment.boardNo}" onclick="openEditModal(this)">수정</a>
-                                <a th:if="${session.id==comment.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
-                                <a th:if="${session.id!=null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
-                                   th:attr="data-comment-no=${comment.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">
-                                    댓글달기</a>
+                                <a th:if="${session.id == comment.writerName or (session.socialUser != null and session.socialUser.name == comment.writerName)}" type="button" class="btn btn-sm" th:data-writer-name="${comment.writerName}" th:data-content="${comment.content}" th:data-no="${comment.no}" th:data-boardno="${comment.boardNo}" onclick="openEditModal(this)">수정</a>
+                                <a th:if="${session.id == comment.writerName or (session.socialUser != null and session.socialUser.name == comment.writerName)}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${comment.no}">삭제</a>
+                                <a th:if="${not session.isEmpty()}">
+                                    <a th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                       th:attr="data-comment-no=${comment.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">
+                                        댓글달기
+                                    </a>
+                                    <a th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                       th:attr="data-comment-no=${comment.no}, data-board-no=${board.no}, data-session-id=${session.socialUser.name}">
+                                       댓글달기
+                                    </a>
                             </div>
                             <div th:if="${comment.children}">
                                 <h6 class="card-subtitle my-2 text-muted"></h6>
@@ -120,10 +127,16 @@
                                         <p class="card-text" th:text="${child.content}"></p>
                                         </div>
                                         <div style="text-align: right;">
-                                            <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${child.writerName}" th:data-content="${child.content}" th:data-no="${child.no}" th:data-boardno="${child.boardNo}" onclick="openEditModal(this)">수정</a>
-                                            <a th:if="${session.id==child.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${child.no}">삭제</a>
-                                            <a th:if="${session.id!=null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
-                                               th:attr="data-comment-no=${child.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">댓글달기</a>
+                                            <a th:if="${session.id == comment.writerName or (session.socialUser != null and session.socialUser.name == comment.writerName)}" type="button" class="btn btn-sm" th:data-writer-name="${child.writerName}" th:data-content="${child.content}" th:data-no="${child.no}" th:data-boardno="${child.boardNo}" onclick="openEditModal(this)">수정</a>
+                                            <a th:if="${session.id == comment.writerName or (session.socialUser != null and session.socialUser.name == comment.writerName)}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${child.no}">삭제</a>
+                                            <a th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                               th:attr="data-comment-no=${child.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">
+                                                댓글달기
+                                            </a>
+                                            <a th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                               th:attr="data-comment-no=${child.no}, data-board-no=${board.no}, data-session-id=${session.socialUser.name}">
+                                                댓글달기
+                                            </a>
                                         </div>
                                         <div th:each="childComment : ${child.children}" class="child-comment card my-2 ml-3">
                                             <h6 class="card-header"  style="display: flex; justify-content: space-between;">
@@ -133,10 +146,14 @@
                                             <div class="card-body" >
                                                 <p class="card-text" th:text="${childComment.content}"></p>
                                                 <div style="text-align: right;">
-                                                     <a th:if="${session.id==childComment.writerName}" type="button" class="btn btn-sm" th:data-writer-name="${childComment.writerName}" th:data-content="${childComment.content}" th:data-no="${childComment.no}" th:data-boardno="${childComment.boardNo}" onclick="openEditModal(this)">수정</a>
-                                                     <a th:if="${session.id==childComment.writerName}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${childComment.no}">삭제</a>
-                                                     <a th:if="${session.id!=null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
-                                                        th:attr="data-comment-no=${childComment.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">댓글달기</a>
+                                                    <a th:if="${session.id == comment.writerName or (session.socialUser != null and session.socialUser.name == comment.writerName)}" type="button" class="btn btn-sm" th:data-writer-name="${childComment.writerName}" th:data-content="${childComment.content}" th:data-no="${childComment.no}" th:data-boardno="${childComment.boardNo}" onclick="openEditModal(this)">수정</a>
+                                                    <a th:if="${session.id == comment.writerName or (session.socialUser != null and session.socialUser.name == comment.writerName)}" type="button" class="btn btn-sm" th:href="'/deleteComment/'+${childComment.no}">삭제</a>
+                                                    <a th:if="${not session.isEmpty()}">
+                                                        <a th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                                           th:attr="data-comment-no=${childComment.no}, data-board-no=${board.no}, data-session-id=${session.id}, data-session-no=${session.no}">댓글달기</a>
+                                                        <a th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}"  type="button" class="btn btn-sm comment-button" href="javascript:void(0);"
+                                                           th:attr="data-comment-no=${childComment.no}, data-board-no=${board.no}, data-session-no=${session.no}, data-session-id=${session.socialUser.name}">댓글달기</a>
+                                                    </a>
                                                 </div>
                                         </div>
                                     </div>
@@ -152,17 +169,18 @@
     </div>
     <div class="card my-4">
         <div id="c">
-            <div th:if="${session.id==null}">
+            <div th:if="${session.isEmpty()}">
                 Please login first.😨
             </div>
-            <div th:if="${session.id!= null}" class="row">
+            <div th:if="${not session.isEmpty()}" class="row">
                 <h5 class="card-header">Comment:</h5>
                 <div class="card-body">
                     <form name="newComment" action="/comment" method="post">
                         <div class="form-group">
                             <input type="hidden" name="boardNo" th:value="${board.no}">
                             <input type="hidden" name="writerNo" id="writerNo" th:value="${session.no}"/>
-                            <input type="hidden" name="writerName" id="writerName" th:value="${session.id}"/>
+                            <input type="hidden" name="writerName" th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" id="writerName" th:value="${session.id}"/>
+                            <input type="hidden" name="writerName" th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}" id="writerName" th:value="${session.socialUser.name}"/>
                             <textarea id="content" name="content" class="form-control" rows="3"></textarea>
                         </div>
                         <div style="text-align: right;">
@@ -227,7 +245,6 @@
             <form name="newComment" action="/comment" method="post">
                 <div class="form-group">
                     <input type="hidden" name="boardNo" id="new-comment-boardNo" value="${boardNo}">
-                     <input type="hidden" name="writerNo" id="new-comment-writerNo" value="${sessionNo}">
                      <input type="hidden" name="writerName" id="new-comment-writerName" value="${sessionId}">
                       <input type="hidden" name="parentNo" id="new-comment-parentNo" value="${commentNo}">
                       <textarea id="new-comment-content" name="content" class="form-control" rows="3"></textarea>
@@ -249,7 +266,6 @@
         $(document).on('submit', 'form[name="newComment"]', function(event) {
             event.preventDefault(); // 기본 폼 제출 동작 막기
 
-            // 폼 데이터 서버로 전송
             var formData = $(this).serialize();
             $.post("/comment", formData, function(response) {
                 console.log(response);

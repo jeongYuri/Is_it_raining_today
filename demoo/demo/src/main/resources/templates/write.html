@@ -52,7 +52,8 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="writerName">Writer</label>
-                            <input type="text" class="form-control" name="writerName" id="writerName" placeholder="" required th:value="${session.id}">
+                            <input type="text" class="form-control" name="writerName" th:if="${not session.isEmpty() and session.id != null and session.socialUser == null and session.id != null}" id="writerName1" placeholder="" required th:value="${session.id}">
+                            <input type="text" class="form-control" name="writerName" th:if="${not session.isEmpty() and session.socialUser != null and session.socialUser.name != null}" id="writerName2" placeholder="" required th:value="${session.socialUser.name}">
                             <input type="hidden" name="writerNo" th:value="${session.no}">
                         </div>
                     </div>

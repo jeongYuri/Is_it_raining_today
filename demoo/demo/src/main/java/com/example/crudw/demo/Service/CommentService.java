@@ -2,13 +2,17 @@ package com.example.crudw.demo.Service;
 
 import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.Board.BoardRepository;
+import com.example.crudw.demo.Member.User;
+import com.example.crudw.demo.Member.UserRepository;
 import com.example.crudw.demo.Notification.NotificationService;
 import com.example.crudw.demo.comment.*;
+import com.example.crudw.demo.config.auth.dto.SessionUser;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,7 +31,8 @@ public class CommentService {
     private BoardRepository boardRepository;
     @Autowired
     private NotificationService notificationService;
-
+    @Autowired
+    private UserRepository userRepository;
 
 
     public List<Comment> getCommentList(Long board_no) {
@@ -92,10 +97,26 @@ public class CommentService {
     //public void deleteCommentById(String writerName){commentRepository.deleteByUserId(writerName);}
     @Transactional
     public Comment saveComment(CommentRequestDto commentRequestDto) {
+        //SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //String currentUserName = sessionUser.getName();
+        //User user = userRepository.findByName(currentUserName);
+        //commentRequestDto.setWriterNo(user.getNo());
+        System.out.println("된다");
+        Long writerNo = null;
+        if (commentRequestDto.getWriterNo() == null || commentRequestDto.getWriterNo() <= 0) {
+            User user = userRepository.findByName(commentRequestDto.getWriterName());
+            if (user != null) {
+                writerNo = user.getNo();
+            }
+        } else {
+            // writerNo가 이미 주어진 경우 그대로 사용합니다
+            writerNo = commentRequestDto.getWriterNo();
+        }
+
         Comment comment = Comment.builder()
                         .boardNo(commentRequestDto.getBoardNo())
                         .content(commentRequestDto.getContent())
-                        .writerNo(commentRequestDto.getWriterNo())
+                        .writerNo(writerNo)
                         .writerName(commentRequestDto.getWriterName())
                         .build();
 
