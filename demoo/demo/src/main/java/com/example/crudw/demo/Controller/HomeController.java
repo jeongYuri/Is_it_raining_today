@@ -110,9 +110,23 @@ public class HomeController {
         }
         return page;
     }
-    @GetMapping("/login/oauth2/code/google")
-    public String googleCallback(@AuthenticationPrincipal OAuth2User principal) {
-        return "list"; // 로그인 성공 후 이동할 페이지
+    @ResponseBody
+    @GetMapping("/login/oauth2/code/kakao")
+    public void  kakaoCallback(@RequestParam String code) {
+
+        System.out.println(code);
+
+    }
+    @GetMapping("/socialLogin")
+    public String socialLoginPage(@RequestParam String provider) {
+        if ("google".equals(provider)) {
+            return "redirect:/login/oauth2/code/google";
+        } else if ("naver".equals(provider)) {
+            return "redirect:/login/oauth2/code/naver";
+        } else if ("kakao".equals(provider)){
+            return "redirect:/login/oauth2/code/kakao";
+        }
+        return "redirect:/login";
     }
     @GetMapping("/login/oauth2/code/{registrationId}")
     public String googleLogin(@RequestParam String code, @PathVariable String registrationId) {
@@ -124,11 +138,10 @@ public class HomeController {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         Map<String, Object> attributes = oAuth2User.getAttributes();
         System.out.println(attributes.toString());
-
         model.addAttribute("name",attributes.get("name"));
         session.setAttribute("name", attributes.get("name"));
-
-
+        System.out.println(attributes.get("nickname"));
+        System.out.println(attributes.get("name"));
         return "redirect:/";
     }
     @GetMapping(value = "/findIdPw")
