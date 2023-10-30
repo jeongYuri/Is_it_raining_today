@@ -73,8 +73,8 @@ public class NotificationService {
             emitterRepository.saveEventCache(user, notification); // 데이터 캐시 저장(유실 데이터 찾기 위함)
             sendToClient(emitter, id, notification.getMessage());
         });
-        System.out.println(NotificationResponse.from(notification).getMessage());//이것두
-        logger.info("알림 전송: 댓글쓴 사람{}",name);//잘 나옴..
+
+        logger.info("알림 전송: 댓글쓴 사람{}",name);
     }
     /*
     private Notification createNotification(String user, Comment comment) {

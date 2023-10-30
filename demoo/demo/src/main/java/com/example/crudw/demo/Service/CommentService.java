@@ -101,7 +101,7 @@ public class CommentService {
         //String currentUserName = sessionUser.getName();
         //User user = userRepository.findByName(currentUserName);
         //commentRequestDto.setWriterNo(user.getNo());
-        System.out.println("된다");
+
         Long writerNo = null;
         if (commentRequestDto.getWriterNo() == null || commentRequestDto.getWriterNo() <= 0) {
             User user = userRepository.findByName(commentRequestDto.getWriterName());

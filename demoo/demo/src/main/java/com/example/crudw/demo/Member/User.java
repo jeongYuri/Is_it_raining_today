@@ -1,15 +1,9 @@
 package com.example.crudw.demo.Member;
 
 
-import com.example.crudw.demo.Board.Board;
 import com.example.crudw.demo.TimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Entity
@@ -22,6 +16,7 @@ public class User extends TimeEntity {
     private String name;
     private String email;
     private String phone;
+    private String registrationId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -82,12 +77,15 @@ public class User extends TimeEntity {
         return this.role.getKey();
     }
 
+    public void setRegistrationId(String registrationId){this.registrationId =registrationId;}
+
     @Builder
-    public User(String name, String email, String id, Role role) {
+    public User(String name, String email, String id, Role role,String registrationId) {
         this.name = name;
         this.email = email;
         this.id = id;
         this.role = role;
+        this.registrationId = registrationId;
     }
 
     public User update(String name) {

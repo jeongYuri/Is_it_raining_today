@@ -40,11 +40,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-
         User user = saveOrUpdate(attributes);
 
         httpSession.setAttribute("socialUser", new SessionUser(user));
-        System.out.println("엥"+new SessionUser(user));
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
@@ -57,13 +55,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         Optional<User> userOptional = userRepository.findByEmail(attributes.getEmail());
         if (userOptional.isPresent()) {
             user = userOptional.get();
+            if (!user.getRegistrationId().equals(attributes.getRegistrationId())) {
+                user.setRegistrationId(attributes.getRegistrationId());
+                //user = attributes.toEntity();
+                userRepository.save(user);
+            }
+            return user;
         } else {
             user = attributes.toEntity();
             userRepository.save(user);
-            userOptional = userRepository.findByEmail(attributes.getEmail());
-            if (userOptional.isPresent()) {
-                user = userOptional.get();
-            }
         }
         return user;
     }
