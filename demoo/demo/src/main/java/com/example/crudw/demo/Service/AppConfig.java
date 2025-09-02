@@ -1,6 +1,8 @@
 package com.example.crudw.demo.Service;
 
+
 import jakarta.servlet.DispatcherType;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +20,11 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class AppConfig   {
+    /*
+    @Bean
+    public ApplicationRunner initRegionRunner(RegionRepository repository) {
+        return repository.initRegionData();
+    }
     /*
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

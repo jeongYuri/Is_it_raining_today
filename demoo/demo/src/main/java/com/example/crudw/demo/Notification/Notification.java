@@ -5,6 +5,7 @@ import com.example.crudw.demo.TimeEntity;
 import com.example.crudw.demo.comment.Comment;
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -13,13 +14,15 @@ import static jakarta.persistence.FetchType.LAZY;
 @Setter
 @AllArgsConstructor
 @Builder
-@NoArgsConstructor
+//@NoArgsConstructor
 @Table(name="notification")
 public class Notification extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Long no;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id")
@@ -45,7 +48,14 @@ public class Notification extends TimeEntity {
         this.user = user;
         this.board = board;
         this.message = message;
+        this.createdAt = LocalDateTime.now();
 
+    }
+    // 기본 생성자 (JPA 필수)
+    protected Notification() {}
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
 }

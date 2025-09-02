@@ -1,0 +1,52 @@
+<html>
+<head>
+<title>CommentRepository.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CommentRepository.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">comment</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">jpa</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">JpaRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">jpa</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">Query</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">query</span><span class="s2">.</span><span class="s1">Param</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Repository</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s1">@Repository</span>
+<span class="s0">public interface </span><span class="s1">CommentRepository </span><span class="s0">extends </span><span class="s1">JpaRepository</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">,</span><span class="s1">Long</span><span class="s2">&gt; {</span>
+    <span class="s1">@Query</span><span class="s2">(</span><span class="s3">&quot;SELECT c, b.title FROM Comment c JOIN Board b ON c.boardNo = b.no WHERE c.writerName = :writerName&quot;</span><span class="s2">)</span>
+    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Object</span><span class="s2">[]&gt; </span><span class="s1">findCommentsWithBoardTitleByWriterName</span><span class="s2">(</span><span class="s1">@Param</span><span class="s2">(</span><span class="s3">&quot;writerName&quot;</span><span class="s2">) </span><span class="s1">String writerName</span><span class="s2">);</span>
+
+    <span class="s1">@Query</span><span class="s2">(</span><span class="s3">&quot;SELECT b.title FROM Comment c JOIN Board b ON c.boardNo = b.no WHERE c.boardNo = :boardNo&quot;</span><span class="s2">)</span>
+    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Object</span><span class="s2">[]&gt; </span><span class="s1">findBoardTitleByBoardNo</span><span class="s2">(</span><span class="s1">@Param</span><span class="s2">(</span><span class="s3">&quot;boardNo&quot;</span><span class="s2">) </span><span class="s1">Long boardNo</span><span class="s2">);</span>
+
+    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">findByBoardNoOrderByParentNoAscNoAsc</span><span class="s2">(</span><span class="s1">Long boardNo</span><span class="s2">);</span>
+    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt;</span><span class="s1">findByParentNo</span><span class="s2">(</span><span class="s1">Comment paretNo</span><span class="s2">);</span>
+    <span class="s1">Comment findByNo</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">);</span>
+    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">String writerName</span><span class="s2">);</span>
+
+
+    <span class="s1">Comment findCommentByNo</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">);</span>
+    <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">findAllByBoardNo</span><span class="s2">(</span><span class="s1">Long boardNo</span><span class="s2">);</span>
+
+    <span class="s0">boolean </span><span class="s1">existsByBoardNo</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">);</span>
+    <span class="s0">boolean </span><span class="s1">existsByWriterName</span><span class="s2">(</span><span class="s1">String writerName</span><span class="s2">);</span>
+    <span class="s0">void </span><span class="s1">deleteByBoardNo</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">);</span>
+    <span class="s0">void </span><span class="s1">deleteByWriterName</span><span class="s2">(</span><span class="s1">String writerName</span><span class="s2">);</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

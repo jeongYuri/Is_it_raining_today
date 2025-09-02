@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.List;
+
 @Controller
 public class NotificationController {
     private static final Logger logger = LoggerFactory.getLogger(CommentService.class);
@@ -26,8 +28,9 @@ public class NotificationController {
         return notificationService.sub(id,lastEventId);
     }
     @GetMapping("/notifications/{id}")
-    public ResponseEntity<NotificationsResponse> notifications(@PathVariable String id) {
-        return ResponseEntity.ok().body(notificationService.findAllById(id));
+    public ResponseEntity<List<NotificationsResponse>> notifications(@PathVariable String id) {
+        List<NotificationsResponse> responses = notificationService.findAllById(id);
+        return ResponseEntity.ok().body(responses);
     }
 
     @PostMapping("/deletenotification/{no}")

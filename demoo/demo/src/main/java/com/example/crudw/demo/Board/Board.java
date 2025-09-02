@@ -43,7 +43,8 @@ public class Board extends TimeEntity {
         this.no = no;
     }
 
-
+    public Long writerNo() {return writerNo;}
+    public void setWriterNo(Long writerNo) {this.writerNo = writerNo;}
     public String getTitle() {
         return title;
     }
@@ -93,5 +94,19 @@ public class Board extends TimeEntity {
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
+
+    // 기본 생성자 추가
+    public Board() {
+    }
+    // 생성자 추가 (필요한 필드만 초기화....)
+    public Board(String title, String writerName, String content,Long writerNo) {
+        this.title = title;
+        this.writerNo = writerNo;
+        this.writerName = writerName;
+        this.content = content;
+        this.hit = 0;  // 기본값 설정
+        this.likeCount = 0; // 기본값 설정
+    }
+
 }
 

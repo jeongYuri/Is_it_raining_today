@@ -17,7 +17,11 @@ import java.util.Optional;
 @Service
 public class BoardService {
     @Autowired
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
+
+    public BoardService(BoardRepository boardRepository){
+        this.boardRepository = boardRepository;
+    }
     @Transactional
     public Page<Board> pageList(Pageable pageable){
         return boardRepository.findAll(pageable);
@@ -49,29 +53,33 @@ public class BoardService {
     public List<Board> getPostsByUserId(String writerName) {
         return boardRepository.findByWriterName(writerName);
     }
+
+    @Transactional
     public Long savePost(Board board) {
+
         return boardRepository.save(board).getNo();
     }
+    @Transactional
     public void deletePost(Long no){boardRepository.deleteById(no);
     }
     @Transactional
-    public Board updateBoard(Long boardId,BoardUpdate updateDTO) {
-        Board board = boardRepository.findById(boardId)
+    public Board updateBoard(Long boardId, Board board) {
+        Board boardUpdate = boardRepository.findById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+        if (board.getTitle() != null) {
+            boardUpdate.setTitle(board.getTitle());
+        }
+        if (board.getContent() != null) {
+            boardUpdate.setContent(board.getContent());
+        }
+        if (board.getFileName() != null) {
+            boardUpdate.setFileName(board.getFileName());
+        }
+        if (board.getFileLink() != null) {
+            boardUpdate.setFileLink(board.getFileLink());
+        }
 
-        if (updateDTO.getTitle() != null) {
-            board.setTitle(updateDTO.getTitle());
-        }
-        if (updateDTO.getContent() != null) {
-            board.setContent(updateDTO.getContent());
-        }
-        if (updateDTO.getFileName() != null) {
-            board.setFileName(updateDTO.getFileName());
-        }
-        if (updateDTO.getFileLink() != null) {
-            board.setFileLink(updateDTO.getFileLink());
-        }
-        return boardRepository.save(board);
+        return boardRepository.save(boardUpdate); // boardUpdate를 DB에 저장
     }
     @Transactional
     public int hit(Long no){
@@ -96,6 +104,7 @@ public class BoardService {
     @Transactional
     public List<Board> myboard(String id){//내가쓴 글 보기
         List<Board> myBoardList = boardRepository.findBywriterNameOrderByNoDesc(id);
+
         return myBoardList;
     }
 

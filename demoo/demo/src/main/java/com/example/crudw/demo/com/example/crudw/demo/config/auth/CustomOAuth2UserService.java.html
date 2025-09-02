@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>CustomOAuth2UserService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CustomOAuth2UserService.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">auth</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">UserRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">.</span><span class="s1">UserService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">auth</span><span class="s2">.</span><span class="s1">dto</span><span class="s2">.</span><span class="s1">OAuthAttributes</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">auth</span><span class="s2">.</span><span class="s1">dto</span><span class="s2">.</span><span class="s1">SessionUser</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpServletRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">http</span><span class="s2">.</span><span class="s1">HttpSession</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">lombok</span><span class="s2">.</span><span class="s1">RequiredArgsConstructor</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">authentication</span><span class="s2">.</span><span class="s1">UsernamePasswordAuthenticationToken</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">authority</span><span class="s2">.</span><span class="s1">SimpleGrantedAuthority</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">context</span><span class="s2">.</span><span class="s1">SecurityContext</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">context</span><span class="s2">.</span><span class="s1">SecurityContextHolder</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">session</span><span class="s2">.</span><span class="s1">SessionRegistry</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">oauth2</span><span class="s2">.</span><span class="s1">client</span><span class="s2">.</span><span class="s1">userinfo</span><span class="s2">.</span><span class="s1">DefaultOAuth2UserService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">oauth2</span><span class="s2">.</span><span class="s1">client</span><span class="s2">.</span><span class="s1">userinfo</span><span class="s2">.</span><span class="s1">OAuth2UserRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">oauth2</span><span class="s2">.</span><span class="s1">client</span><span class="s2">.</span><span class="s1">userinfo</span><span class="s2">.</span><span class="s1">OAuth2UserService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">oauth2</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">OAuth2AuthenticationException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">oauth2</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">user</span><span class="s2">.</span><span class="s1">DefaultOAuth2User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">oauth2</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">user</span><span class="s2">.</span><span class="s1">OAuth2User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">context</span><span class="s2">.</span><span class="s1">HttpSessionSecurityContextRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Collections</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+
+<span class="s1">@Service</span>
+<span class="s1">@RequiredArgsConstructor</span>
+<span class="s0">public class </span><span class="s1">CustomOAuth2UserService </span><span class="s0">implements </span><span class="s1">OAuth2UserService</span><span class="s2">&lt;</span><span class="s1">OAuth2UserRequest</span><span class="s2">, </span><span class="s1">OAuth2User</span><span class="s2">&gt; {</span>
+    <span class="s0">private final </span><span class="s1">UserRepository userRepository</span><span class="s2">;</span>
+    <span class="s0">private final </span><span class="s1">HttpSession httpSession</span><span class="s2">;</span>
+
+
+    <span class="s1">@Override</span>
+    <span class="s0">public </span><span class="s1">OAuth2User loadUser</span><span class="s2">(</span><span class="s1">OAuth2UserRequest userRequest</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">OAuth2AuthenticationException </span><span class="s2">{</span>
+        <span class="s1">OAuth2UserService</span><span class="s2">&lt;</span><span class="s1">OAuth2UserRequest</span><span class="s2">, </span><span class="s1">OAuth2User</span><span class="s2">&gt; </span><span class="s1">delegate </span><span class="s2">= </span><span class="s0">new </span><span class="s1">DefaultOAuth2UserService</span><span class="s2">();</span>
+        <span class="s1">OAuth2User oAuth2User </span><span class="s2">= </span><span class="s1">delegate</span><span class="s2">.</span><span class="s1">loadUser</span><span class="s2">(</span><span class="s1">userRequest</span><span class="s2">);</span>
+
+        <span class="s1">String registrationId </span><span class="s2">= </span><span class="s1">userRequest</span><span class="s2">.</span><span class="s1">getClientRegistration</span><span class="s2">().</span><span class="s1">getRegistrationId</span><span class="s2">();</span>
+        <span class="s1">String userNameAttributeName </span><span class="s2">= </span><span class="s1">userRequest</span><span class="s2">.</span><span class="s1">getClientRegistration</span><span class="s2">().</span><span class="s1">getProviderDetails</span><span class="s2">().</span><span class="s1">getUserInfoEndpoint</span><span class="s2">().</span><span class="s1">getUserNameAttributeName</span><span class="s2">();</span>
+        <span class="s1">OAuthAttributes attributes </span><span class="s2">= </span><span class="s1">OAuthAttributes</span><span class="s2">.</span><span class="s1">of</span><span class="s2">(</span><span class="s1">registrationId</span><span class="s2">, </span><span class="s1">userNameAttributeName</span><span class="s2">, </span><span class="s1">oAuth2User</span><span class="s2">.</span><span class="s1">getAttributes</span><span class="s2">());</span>
+        <span class="s1">User user </span><span class="s2">= </span><span class="s1">saveOrUpdate</span><span class="s2">(</span><span class="s1">attributes</span><span class="s2">);</span>
+
+        <span class="s1">httpSession</span><span class="s2">.</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;socialUser&quot;</span><span class="s2">, </span><span class="s0">new </span><span class="s1">SessionUser</span><span class="s2">(</span><span class="s1">user</span><span class="s2">));</span>
+
+        <span class="s0">return new </span><span class="s1">DefaultOAuth2User</span><span class="s2">(</span>
+                <span class="s1">Collections</span><span class="s2">.</span><span class="s1">singleton</span><span class="s2">(</span><span class="s0">new </span><span class="s1">SimpleGrantedAuthority</span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">getRoleKey</span><span class="s2">())),</span>
+                <span class="s1">attributes</span><span class="s2">.</span><span class="s1">getAttributes</span><span class="s2">(),</span>
+                <span class="s1">attributes</span><span class="s2">.</span><span class="s1">getNameAttributeKey</span><span class="s2">());</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">User saveOrUpdate</span><span class="s2">(</span><span class="s1">OAuthAttributes attributes</span><span class="s2">) {</span>
+        <span class="s1">User user</span><span class="s2">;</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">User</span><span class="s2">&gt; </span><span class="s1">userOptional </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findByEmail</span><span class="s2">(</span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">getEmail</span><span class="s2">());</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">userOptional</span><span class="s2">.</span><span class="s1">isPresent</span><span class="s2">()) {</span>
+            <span class="s1">user </span><span class="s2">= </span><span class="s1">userOptional</span><span class="s2">.</span><span class="s1">get</span><span class="s2">();</span>
+            <span class="s0">if </span><span class="s2">(!</span><span class="s1">user</span><span class="s2">.</span><span class="s1">getRegistrationId</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">getRegistrationId</span><span class="s2">())) {</span>
+                <span class="s1">user</span><span class="s2">.</span><span class="s1">setRegistrationId</span><span class="s2">(</span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">getRegistrationId</span><span class="s2">());</span>
+                <span class="s4">//user = attributes.toEntity();</span>
+                <span class="s1">userRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">user</span><span class="s2">);</span>
+            <span class="s2">}</span>
+            <span class="s0">return </span><span class="s1">user</span><span class="s2">;</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">user </span><span class="s2">= </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">toEntity</span><span class="s2">();</span>
+            <span class="s1">userRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">user</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">user</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+<span class="s4">/* 
+    private User saveOrUpdate(OAuthAttributes attributes) { 
+        User user = userRepository.findByEmail(attributes.getEmail()) 
+                .map(entity -&gt; entity.update(attributes.getName())) 
+                .orElse(attributes.toEntity()); 
+        System.out.println(user); 
+        /* 
+        SecurityContextHolder.getContext().setAuthentication( 
+                new UsernamePasswordAuthenticationToken(user, null, Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())))); 
+ 
+        return userRepository.save(user); 
+ 
+    } 
+ 
+ 
+    /*User user; 
+        Optional&lt;User&gt; userOptional = userRepository.findByEmail(attributes.getEmail()); 
+        if (userOptional.isPresent()) { 
+            user = userOptional.get(); 
+        } else { 
+            user = attributes.toEntity(); 
+            userRepository.save(user); 
+            userOptional = userRepository.findByEmail(attributes.getEmail()); 
+            if (userOptional.isPresent()) { 
+                user = userOptional.get(); 
+            } 
+        }return user; 
+}*/</span>
+
+</pre>
+</body>
+</html>

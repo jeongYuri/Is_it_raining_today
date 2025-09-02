@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>log4j.xml</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #6aab73;}
+.s3 { color: #bcbec4;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+log4j.xml</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;?</span><span class="s1">xml version</span><span class="s2">=&quot;1.0&quot; </span><span class="s1">encoding</span><span class="s2">=&quot;UTF-8&quot;</span><span class="s0">?&gt;</span>
+<span class="s0">&lt;!DOCTYPE </span><span class="s1">log4j:configuration </span><span class="s0">PUBLIC </span><span class="s2">&quot;-//APACHE//DTD LOG4J 1.2//EN&quot; &quot;log4j.dtd&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;log4j:configuration </span><span class="s1">xmlns:log4j</span><span class="s2">=&quot;http://jakarta.apache.org/log4j/&quot;</span><span class="s0">&gt;</span>
+
+    <span class="s4">&lt;!-- Appenders --&gt;</span>
+    <span class="s0">&lt;appender </span><span class="s1">name</span><span class="s2">=&quot;console&quot; </span><span class="s1">class</span><span class="s2">=&quot;org.apache.log4j.ConsoleAppender&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;param </span><span class="s1">name</span><span class="s2">=&quot;Target&quot; </span><span class="s1">value</span><span class="s2">=&quot;System.out&quot; </span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;layout </span><span class="s1">class</span><span class="s2">=&quot;org.apache.log4j.PatternLayout&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;param </span><span class="s1">name</span><span class="s2">=&quot;ConversionPattern&quot; </span><span class="s1">value</span><span class="s2">=&quot;%-5p: %c - %m%n&quot; </span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;/layout&gt;</span>
+    <span class="s0">&lt;/appender&gt;</span>
+
+    <span class="s4">&lt;!-- Application Loggers --&gt;</span>
+    <span class="s0">&lt;logger </span><span class="s1">name</span><span class="s2">=&quot;com.tody.lovely&quot; </span><span class="s0">&gt;</span>
+        <span class="s0">&lt;level </span><span class="s1">value</span><span class="s2">=&quot;info&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;/logger&gt;</span>
+
+    <span class="s4">&lt;!-- 3rdparty Loggers --&gt;</span>
+    <span class="s0">&lt;logger </span><span class="s1">name</span><span class="s2">=&quot;org.springframework.core&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;level </span><span class="s1">value</span><span class="s2">=&quot;info&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;/logger&gt;</span>
+
+    <span class="s0">&lt;logger </span><span class="s1">name</span><span class="s2">=&quot;org.springframework.beans&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;level </span><span class="s1">value</span><span class="s2">=&quot;info&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;/logger&gt;</span>
+
+    <span class="s0">&lt;logger </span><span class="s1">name</span><span class="s2">=&quot;org.springframework.context&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;level </span><span class="s1">value</span><span class="s2">=&quot;info&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;/logger&gt;</span>
+
+    <span class="s0">&lt;logger </span><span class="s1">name</span><span class="s2">=&quot;org.springframework.web&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;level </span><span class="s1">value</span><span class="s2">=&quot;info&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;/logger&gt;</span>
+
+    <span class="s4">&lt;!-- Root Logger --&gt;</span>
+    <span class="s0">&lt;root&gt;</span>
+        <span class="s0">&lt;priority </span><span class="s1">value</span><span class="s2">=&quot;warn&quot; </span><span class="s0">/&gt;</span>
+        <span class="s0">&lt;appender-ref </span><span class="s1">ref</span><span class="s2">=&quot;console&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;/root&gt;</span>
+
+<span class="s0">&lt;/log4j:configuration&gt;</span>
+</pre>
+</body>
+</html>

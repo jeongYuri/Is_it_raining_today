@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>BoardService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+BoardService.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">BoardUpdate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">BoardRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">EntityNotFoundException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">transaction</span><span class="s2">.</span><span class="s1">Transactional</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">domain</span><span class="s2">.</span><span class="s1">Page</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">domain</span><span class="s2">.</span><span class="s1">Pageable</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Collections</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">BoardService </span><span class="s2">{</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">BoardRepository boardRepository</span><span class="s2">;</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">Page</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">pageList</span><span class="s2">(</span><span class="s1">Pageable pageable</span><span class="s2">){</span>
+        <span class="s0">return </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findAll</span><span class="s2">(</span><span class="s1">pageable</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">BoardList</span><span class="s2">() {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">boardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findAllByOrderByNoDesc</span><span class="s2">();</span>
+        <span class="s0">return </span><span class="s1">boardList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">getBoardList</span><span class="s2">(</span><span class="s1">String searchType</span><span class="s2">, </span><span class="s1">String searchStr</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">boardList</span><span class="s2">;</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">searchType</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;작성자&quot;</span><span class="s2">))</span>
+            <span class="s1">boardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByWriterNameContainingOrderByNoDesc</span><span class="s2">(</span><span class="s1">searchStr</span><span class="s2">);</span>
+        <span class="s0">else if </span><span class="s2">(</span><span class="s1">searchType</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;제목&quot;</span><span class="s2">))</span>
+            <span class="s1">boardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByTitleContainingOrderByNoDesc</span><span class="s2">(</span><span class="s1">searchStr</span><span class="s2">);</span>
+        <span class="s0">else</span>
+            <span class="s1">boardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByContentContainingOrderByNoDesc</span><span class="s2">(</span><span class="s1">searchStr</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s1">boardList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s4">//public Long boardupdate(Board board){return boardRepository.boardupdate(board).getNo();}</span>
+
+    <span class="s0">public </span><span class="s1">Board getPost</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">) {</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">boardOpt </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">no</span><span class="s2">);</span>
+        <span class="s1">Board board </span><span class="s2">= </span><span class="s1">boardOpt</span><span class="s2">.</span><span class="s1">get</span><span class="s2">();</span>
+
+        <span class="s0">return </span><span class="s1">board</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">getPostsByUserId</span><span class="s2">(</span><span class="s1">String writerName</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">writerName</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">Long savePost</span><span class="s2">(</span><span class="s1">Board board</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">board</span><span class="s2">).</span><span class="s1">getNo</span><span class="s2">();</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">deletePost</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">){</span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">deleteById</span><span class="s2">(</span><span class="s1">no</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">Board updateBoard</span><span class="s2">(</span><span class="s1">Long boardId</span><span class="s2">,</span><span class="s1">BoardUpdate updateDTO</span><span class="s2">) {</span>
+        <span class="s1">Board board </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">boardId</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">orElseThrow</span><span class="s2">(() </span><span class="s1">-&gt; </span><span class="s0">new </span><span class="s1">EntityNotFoundException</span><span class="s2">(</span><span class="s3">&quot;게시글을 찾을 수 없습니다.&quot;</span><span class="s2">));</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">board</span><span class="s2">.</span><span class="s1">setTitle</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">board</span><span class="s2">.</span><span class="s1">setContent</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getFileName</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">board</span><span class="s2">.</span><span class="s1">setFileName</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getFileName</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getFileLink</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">board</span><span class="s2">.</span><span class="s1">setFileLink</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getFileLink</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">board</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public int </span><span class="s1">hit</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">){</span>
+        <span class="s0">return </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">hit</span><span class="s2">(</span><span class="s1">no</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">search</span><span class="s2">(</span><span class="s1">String searchStr</span><span class="s2">,</span><span class="s1">String searchType</span><span class="s2">){</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">boardList</span><span class="s2">;</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s3">&quot;title&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">searchType</span><span class="s2">)){</span>
+            <span class="s1">boardList</span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByTitleContainingOrderByNoDesc</span><span class="s2">(</span><span class="s1">searchStr</span><span class="s2">);</span>
+        <span class="s2">}</span><span class="s0">else if</span><span class="s2">(</span><span class="s3">&quot;content&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">searchType</span><span class="s2">)){</span>
+            <span class="s1">boardList</span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByContentContainingOrderByNoDesc</span><span class="s2">(</span><span class="s1">searchStr</span><span class="s2">);</span>
+        <span class="s2">}</span><span class="s0">else if</span><span class="s2">(</span><span class="s3">&quot;writer&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">searchType</span><span class="s2">)){</span>
+            <span class="s1">boardList</span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByWriterNameContainingOrderByNoDesc</span><span class="s2">(</span><span class="s1">searchStr</span><span class="s2">);</span>
+        <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+            <span class="s1">boardList </span><span class="s2">= </span><span class="s1">Collections</span><span class="s2">.</span><span class="s1">emptyList</span><span class="s2">(); </span><span class="s4">//검색이 없으면~</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">boardList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">myboard</span><span class="s2">(</span><span class="s1">String id</span><span class="s2">){</span><span class="s4">//내가쓴 글 보기</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">myBoardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findBywriterNameOrderByNoDesc</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">myBoardList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

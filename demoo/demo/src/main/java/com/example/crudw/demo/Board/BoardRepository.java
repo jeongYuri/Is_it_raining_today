@@ -19,14 +19,15 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     @Modifying
     @Query("update Board  set hit = hit +1 where no = :no")
-    int hit(@Param("no") Long no);
-    @Modifying
-    @Query("UPDATE Board SET likeCount = likeCount + 1 WHERE no=:no")
-    void incrementCount(@Param("no") Long no);
+    int hit(@Param("no") Long no); //조회수
 
     @Modifying
-    @Query("UPDATE Board SET likeCount = likeCount -1 WHERE no=:no")
-    void deleteCount(@Param("no") Long no);
+    @Query("UPDATE Board b SET b.likeCount = b.likeCount + 1 WHERE b.no=:boardNo")
+    void incrementCount(@Param("boardNo") Long boardNo);
+
+    @Modifying
+    @Query("UPDATE Board b SET b.likeCount = b.likeCount -1 WHERE b.no=:boardNo")
+    void deleteCount(@Param("boardNo") Long boardNo);
 
     //Optional<Board>findByNo(Long no);
     Optional<Board> findById(Long no);
@@ -38,7 +39,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     void deleteByWriterName(String writerName);
 
     List<Board> findAllByOrderByNoDesc();
-    List<Board> findBywriterNameOrderByNoDesc(String writerName);
+    List<Board> findBywriterNameOrderByNoDesc(String WriterName);
 
     // Page<Board> findAll(Pageable pageable);
     List<Board> findByWriterNameContainingOrderByNoDesc(String searchStr); //검색하기

@@ -1,0 +1,180 @@
+<html>
+<head>
+<title>signup.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+signup.js</font>
+</center></td></tr></table>
+<pre><span class="s0">function </span><span class="s1">changePhone1</span><span class="s2">(){</span>
+    <span class="s0">const </span><span class="s1">phone1 </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;phone1&quot;</span><span class="s2">).</span><span class="s1">value </span><span class="s4">// 010</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">phone1</span><span class="s2">.</span><span class="s1">length </span><span class="s2">=== </span><span class="s5">3</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;phone2&quot;</span><span class="s2">).</span><span class="s1">focus</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+<span class="s0">function </span><span class="s1">changePhone2</span><span class="s2">(){</span>
+    <span class="s0">const </span><span class="s1">phone2 </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;phone2&quot;</span><span class="s2">).</span><span class="s1">value </span><span class="s4">// 010</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">phone2</span><span class="s2">.</span><span class="s1">length </span><span class="s2">=== </span><span class="s5">4</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;phone3&quot;</span><span class="s2">).</span><span class="s1">focus</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+<span class="s0">function </span><span class="s1">changePhone3</span><span class="s2">(){</span>
+    <span class="s0">const </span><span class="s1">phone3 </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;phone3&quot;</span><span class="s2">).</span><span class="s1">value </span><span class="s4">// 010</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">phone3</span><span class="s2">.</span><span class="s1">length </span><span class="s2">=== </span><span class="s5">4</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;sendMessage&quot;</span><span class="s2">).</span><span class="s1">focus</span><span class="s2">();</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;sendMessage&quot;</span><span class="s2">).</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;style&quot;</span><span class="s2">,</span><span class="s3">&quot;background-color:yellow;&quot;</span><span class="s2">)</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;sendMessage&quot;</span><span class="s2">).</span><span class="s1">disabled </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+
+<span class="s4">// 문자인증+타이머 부분</span>
+<span class="s0">function </span><span class="s1">initButton</span><span class="s2">(){</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;sendMessage&quot;</span><span class="s2">).</span><span class="s1">disabled </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;completion&quot;</span><span class="s2">).</span><span class="s1">disabled </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;certificationNumber&quot;</span><span class="s2">).</span><span class="s1">innerHTML </span><span class="s2">= </span><span class="s3">&quot;000000&quot;</span><span class="s2">;</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;timeLimit&quot;</span><span class="s2">).</span><span class="s1">innerHTML </span><span class="s2">= </span><span class="s3">&quot;03:00&quot;</span><span class="s2">;</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;sendMessage&quot;</span><span class="s2">).</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;style&quot;</span><span class="s2">,</span><span class="s3">&quot;background-color:none;&quot;</span><span class="s2">)</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;completion&quot;</span><span class="s2">).</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;style&quot;</span><span class="s2">,</span><span class="s3">&quot;background-color:none;&quot;</span><span class="s2">)</span>
+<span class="s2">}</span>
+
+<span class="s0">let </span><span class="s1">processID </span><span class="s2">= -</span><span class="s5">1</span><span class="s2">;</span>
+
+<span class="s0">const </span><span class="s1">getToken </span><span class="s2">= () =&gt; {</span>
+
+    <span class="s4">// 인증확인 버튼 활성화</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;completion&quot;</span><span class="s2">).</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;style&quot;</span><span class="s2">,</span><span class="s3">&quot;background-color:yellow;&quot;</span><span class="s2">)</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;completion&quot;</span><span class="s2">).</span><span class="s1">disabled </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+
+    <span class="s0">if </span><span class="s2">(</span><span class="s1">processID </span><span class="s2">!= -</span><span class="s5">1</span><span class="s2">) </span><span class="s1">clearInterval</span><span class="s2">(</span><span class="s1">processID</span><span class="s2">);</span>
+    <span class="s0">const </span><span class="s1">token </span><span class="s2">= </span><span class="s1">String</span><span class="s2">(</span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">Math</span><span class="s2">.</span><span class="s1">random</span><span class="s2">() * </span><span class="s5">1000000</span><span class="s2">)).</span><span class="s1">padStart</span><span class="s2">(</span><span class="s5">6</span><span class="s2">, </span><span class="s3">&quot;0&quot;</span><span class="s2">);</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;certificationNumber&quot;</span><span class="s2">).</span><span class="s1">innerText </span><span class="s2">= </span><span class="s1">token</span><span class="s2">;</span>
+    <span class="s0">let </span><span class="s1">time </span><span class="s2">= </span><span class="s5">180</span><span class="s2">;</span>
+    <span class="s1">processID </span><span class="s2">= </span><span class="s1">setInterval</span><span class="s2">(</span><span class="s0">function </span><span class="s2">() {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">time </span><span class="s2">&lt; </span><span class="s5">0 </span><span class="s2">|| </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;sendMessage&quot;</span><span class="s2">).</span><span class="s1">disabled</span><span class="s2">) {</span>
+            <span class="s1">clearInterval</span><span class="s2">(</span><span class="s1">processID</span><span class="s2">);</span>
+            <span class="s1">initButton</span><span class="s2">();</span>
+            <span class="s0">return</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">let </span><span class="s1">mm </span><span class="s2">= </span><span class="s1">String</span><span class="s2">(</span><span class="s1">Math</span><span class="s2">.</span><span class="s1">floor</span><span class="s2">(</span><span class="s1">time </span><span class="s2">/ </span><span class="s5">60</span><span class="s2">)).</span><span class="s1">padStart</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s3">&quot;0&quot;</span><span class="s2">);</span>
+        <span class="s0">let </span><span class="s1">ss </span><span class="s2">= </span><span class="s1">String</span><span class="s2">(</span><span class="s1">time </span><span class="s2">% </span><span class="s5">60</span><span class="s2">).</span><span class="s1">padStart</span><span class="s2">(</span><span class="s5">2</span><span class="s2">, </span><span class="s3">&quot;0&quot;</span><span class="s2">);</span>
+        <span class="s0">let </span><span class="s1">result </span><span class="s2">= </span><span class="s1">mm </span><span class="s2">+ </span><span class="s3">&quot;:&quot; </span><span class="s2">+ </span><span class="s1">ss</span><span class="s2">;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;timeLimit&quot;</span><span class="s2">).</span><span class="s1">innerText </span><span class="s2">= </span><span class="s1">result</span><span class="s2">;</span>
+        <span class="s1">time</span><span class="s2">--;</span>
+    <span class="s2">}, </span><span class="s5">50</span><span class="s2">);</span>
+<span class="s2">};</span>
+
+<span class="s0">function </span><span class="s1">checkCompletion</span><span class="s2">(){</span>
+    <span class="s1">alert</span><span class="s2">(</span><span class="s3">&quot;문자 인증이 완료되었습니다.&quot;</span><span class="s2">)</span>
+    <span class="s1">initButton</span><span class="s2">();</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;completion&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;인증완료&quot;</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;signUpButton&quot;</span><span class="s2">).</span><span class="s1">disabled </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+    <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;signUpButton&quot;</span><span class="s2">).</span><span class="s1">setAttribute</span><span class="s2">(</span><span class="s3">&quot;style&quot;</span><span class="s2">,</span><span class="s3">&quot;background-color:yellow;&quot;</span><span class="s2">)</span>
+<span class="s2">}</span>
+
+
+<span class="s4">// 가입부분 체크</span>
+
+<span class="s0">function </span><span class="s1">signUpCheck</span><span class="s2">(){</span>
+
+    <span class="s0">let </span><span class="s1">email </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">).</span><span class="s1">value</span>
+    <span class="s0">let </span><span class="s1">name </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;name&quot;</span><span class="s2">).</span><span class="s1">value</span>
+    <span class="s0">let </span><span class="s1">password </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;password&quot;</span><span class="s2">).</span><span class="s1">value</span>
+    <span class="s0">let </span><span class="s1">passwordCheck </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordCheck&quot;</span><span class="s2">).</span><span class="s1">value</span>
+    <span class="s0">let </span><span class="s1">area </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;area&quot;</span><span class="s2">).</span><span class="s1">value</span>
+    <span class="s0">let </span><span class="s1">gender_man </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;gender_man&quot;</span><span class="s2">).</span><span class="s1">checked</span>
+    <span class="s0">let </span><span class="s1">gender_woman </span><span class="s2">= </span><span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;gender_woman&quot;</span><span class="s2">).</span><span class="s1">checked</span>
+    <span class="s0">let </span><span class="s1">check </span><span class="s2">= </span><span class="s0">true</span><span class="s2">;</span>
+
+    <span class="s4">// 이메일확인</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">email</span><span class="s2">.</span><span class="s1">includes</span><span class="s2">(</span><span class="s3">'@'</span><span class="s2">)){</span>
+        <span class="s0">let </span><span class="s1">emailId </span><span class="s2">= </span><span class="s1">email</span><span class="s2">.</span><span class="s1">split</span><span class="s2">(</span><span class="s3">'@'</span><span class="s2">)[</span><span class="s5">0</span><span class="s2">]</span>
+        <span class="s0">let </span><span class="s1">emailServer </span><span class="s2">= </span><span class="s1">email</span><span class="s2">.</span><span class="s1">split</span><span class="s2">(</span><span class="s3">'@'</span><span class="s2">)[</span><span class="s5">1</span><span class="s2">]</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">emailId </span><span class="s2">=== </span><span class="s3">&quot;&quot; </span><span class="s2">|| </span><span class="s1">emailServer </span><span class="s2">=== </span><span class="s3">&quot;&quot;</span><span class="s2">){</span>
+            <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;emailError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;이메일이 올바르지 않습니다.&quot;</span>
+            <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+        <span class="s2">}</span>
+        <span class="s0">else</span><span class="s2">{</span>
+            <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;emailError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;emailError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;이메일이 올바르지 않습니다.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span>
+
+
+    <span class="s4">// 이름확인</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">name</span><span class="s2">===</span><span class="s3">&quot;&quot;</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;nameError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;이름이 올바르지 않습니다.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;nameError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s4">// 비밀번호 확인</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">password </span><span class="s2">!== </span><span class="s1">passwordCheck</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordCheckError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;비밀번호가 동일하지 않습니다.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordCheckError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">password</span><span class="s2">===</span><span class="s3">&quot;&quot;</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;비밀번호를 입력해주세요.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s4">//document.getElementById(&quot;passwordError&quot;).innerHTML=&quot;&quot;</span>
+    <span class="s2">}</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">passwordCheck</span><span class="s2">===</span><span class="s3">&quot;&quot;</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordCheckError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;비밀번호를 다시 입력해주세요.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s4">//document.getElementById(&quot;passwordCheckError&quot;).innerHTML=&quot;&quot;</span>
+    <span class="s2">}</span>
+
+
+    <span class="s4">// 지역선택 확인</span>
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">area </span><span class="s2">=== </span><span class="s3">&quot;지역을 선택하세요.&quot;</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;areaError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;지역을 선택해주세요.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;areaError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// 성별체크확인</span>
+    <span class="s0">if</span><span class="s2">(!</span><span class="s1">gender_man </span><span class="s2">&amp;&amp; !</span><span class="s1">gender_woman</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;genderError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;성별을 선택해주세요.&quot;</span>
+        <span class="s1">check </span><span class="s2">= </span><span class="s0">false</span>
+    <span class="s2">}</span><span class="s0">else</span><span class="s2">{</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;genderError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">if</span><span class="s2">(</span><span class="s1">check</span><span class="s2">){</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;emailError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;nameError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;passwordCheckError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;areaError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+        <span class="s1">document</span><span class="s2">.</span><span class="s1">getElementById</span><span class="s2">(</span><span class="s3">&quot;genderError&quot;</span><span class="s2">).</span><span class="s1">innerHTML</span><span class="s2">=</span><span class="s3">&quot;&quot;</span>
+
+        <span class="s4">//비동기 처리이벤트</span>
+        <span class="s1">setTimeout</span><span class="s2">(</span><span class="s0">function</span><span class="s2">() {</span>
+            <span class="s1">alert</span><span class="s2">(</span><span class="s3">&quot;가입이 완료되었습니다.&quot;</span><span class="s2">)</span>
+        <span class="s2">},</span><span class="s5">0</span><span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

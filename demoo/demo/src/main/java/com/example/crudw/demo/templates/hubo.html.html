@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>hubo.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+.s5 { color: #cf8e6d;}
+.s6 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+hubo.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!doctype </span><span class="s2">html</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html </span><span class="s2">lang</span><span class="s3">=&quot;en&quot; </span><span class="s2">class</span><span class="s3">=&quot;h-100&quot; </span><span class="s2">xmlns:th</span><span class="s3">=&quot;http://www.thymeleaf.org&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;head&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">charset</span><span class="s3">=&quot;utf-8&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;theme-color&quot; </span><span class="s2">content</span><span class="s3">=&quot;#712cf9&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;viewport&quot; </span><span class="s2">content</span><span class="s3">=&quot;width=device-width, initial-scale=1&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;description&quot; </span><span class="s2">content</span><span class="s3">=&quot;&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;author&quot; </span><span class="s2">content</span><span class="s3">=&quot;Mark Otto, Jacob Thornton, and Bootstrap contributors&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;generator&quot; </span><span class="s2">content</span><span class="s3">=&quot;Hugo 0.104.2&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;title&gt;</span><span class="s1">My new Toy🐿️</span><span class="s0">&lt;/title&gt;</span>
+
+    <span class="s0">&lt;link </span><span class="s2">rel</span><span class="s3">=&quot;canonical&quot; </span><span class="s2">href</span><span class="s3">=&quot;https://getbootstrap.com/docs/5.2/examples/cover/&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;link </span><span class="s2">th:href</span><span class="s3">=&quot;@{/static/css/cover.css}&quot; </span><span class="s2">rel</span><span class="s3">=&quot;stylesheet&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;style&gt;</span>
+      <span class="s1">.</span><span class="s0">bd-placeholder-img </span><span class="s1">{</span>
+        <span class="s2">font-size</span><span class="s1">: </span><span class="s4">1.125</span><span class="s3">rem</span><span class="s1">;</span>
+        <span class="s2">text-anchor</span><span class="s1">: </span><span class="s3">middle</span><span class="s1">;</span>
+        <span class="s2">-webkit-user-select</span><span class="s1">: </span><span class="s3">none</span><span class="s1">;</span>
+        <span class="s2">-moz-user-select</span><span class="s1">: </span><span class="s3">none</span><span class="s1">;</span>
+        <span class="s2">user-select</span><span class="s1">: </span><span class="s3">none</span><span class="s1">;</span>
+      <span class="s1">}</span>
+
+      <span class="s5">@media </span><span class="s1">(</span><span class="s2">min-width</span><span class="s1">: </span><span class="s4">768</span><span class="s3">px</span><span class="s1">) {</span>
+        <span class="s1">.</span><span class="s0">bd-placeholder-img-lg </span><span class="s1">{</span>
+          <span class="s2">font-size</span><span class="s1">: </span><span class="s4">3.5</span><span class="s3">rem</span><span class="s1">;</span>
+        <span class="s1">}</span>
+      <span class="s1">}</span>
+
+      <span class="s1">.</span><span class="s0">b-example-divider </span><span class="s1">{</span>
+        <span class="s2">height</span><span class="s1">: </span><span class="s4">3</span><span class="s3">rem</span><span class="s1">;</span>
+        <span class="s2">background-color</span><span class="s1">: </span><span class="s0">rgba</span><span class="s1">(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">.1</span><span class="s1">);</span>
+        <span class="s2">border</span><span class="s1">: </span><span class="s3">solid </span><span class="s0">rgba</span><span class="s1">(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">.15</span><span class="s1">);</span>
+        <span class="s2">border-width</span><span class="s1">: </span><span class="s4">1</span><span class="s3">px </span><span class="s4">0</span><span class="s1">;</span>
+        <span class="s2">box-shadow</span><span class="s1">: </span><span class="s3">inset </span><span class="s4">0 .5</span><span class="s3">em </span><span class="s4">1.5</span><span class="s3">em </span><span class="s0">rgba</span><span class="s1">(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">.1</span><span class="s1">), </span><span class="s3">inset </span><span class="s4">0 .125</span><span class="s3">em </span><span class="s4">.5</span><span class="s3">em </span><span class="s0">rgba</span><span class="s1">(</span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">0</span><span class="s1">, </span><span class="s4">.15</span><span class="s1">);</span>
+      <span class="s1">}</span>
+
+      <span class="s1">.</span><span class="s0">b-example-vr </span><span class="s1">{</span>
+        <span class="s2">flex-shrink</span><span class="s1">: </span><span class="s4">0</span><span class="s1">;</span>
+        <span class="s2">width</span><span class="s1">: </span><span class="s4">1.5</span><span class="s3">rem</span><span class="s1">;</span>
+        <span class="s2">height</span><span class="s1">: </span><span class="s4">100</span><span class="s3">vh</span><span class="s1">;</span>
+      <span class="s1">}</span>
+
+      <span class="s1">.</span><span class="s0">bi </span><span class="s1">{</span>
+        <span class="s2">vertical-align</span><span class="s1">: -</span><span class="s4">.125</span><span class="s3">em</span><span class="s1">;</span>
+        <span class="s2">fill</span><span class="s1">: </span><span class="s3">currentColor</span><span class="s1">;</span>
+      <span class="s1">}</span>
+
+      <span class="s1">.</span><span class="s0">nav-scroller </span><span class="s1">{</span>
+        <span class="s2">position</span><span class="s1">: </span><span class="s3">relative</span><span class="s1">;</span>
+        <span class="s2">z-index</span><span class="s1">: </span><span class="s4">2</span><span class="s1">;</span>
+        <span class="s2">height</span><span class="s1">: </span><span class="s4">2.75</span><span class="s3">rem</span><span class="s1">;</span>
+        <span class="s2">overflow-y</span><span class="s1">: </span><span class="s3">hidden</span><span class="s1">;</span>
+      <span class="s1">}</span>
+
+      <span class="s1">.</span><span class="s0">nav-scroller </span><span class="s1">.</span><span class="s0">nav </span><span class="s1">{</span>
+        <span class="s2">display</span><span class="s1">: </span><span class="s3">flex</span><span class="s1">;</span>
+        <span class="s2">flex-wrap</span><span class="s1">: </span><span class="s3">nowrap</span><span class="s1">;</span>
+        <span class="s2">padding-bottom</span><span class="s1">: </span><span class="s4">1</span><span class="s3">rem</span><span class="s1">;</span>
+        <span class="s2">margin-top</span><span class="s1">: -</span><span class="s4">1</span><span class="s3">px</span><span class="s1">;</span>
+        <span class="s2">overflow-x</span><span class="s1">: </span><span class="s3">auto</span><span class="s1">;</span>
+        <span class="s2">text-align</span><span class="s1">: </span><span class="s3">center</span><span class="s1">;</span>
+        <span class="s2">white-space</span><span class="s1">: </span><span class="s3">nowrap</span><span class="s1">;</span>
+        <span class="s2">-webkit-overflow-scrolling</span><span class="s1">: </span><span class="s3">touch</span><span class="s1">;</span>
+      <span class="s1">}</span>
+    <span class="s0">&lt;/style&gt;</span>
+
+
+    <span class="s6">&lt;!-- Custom styles for this template --&gt;</span>
+    <span class="s0">&lt;link </span><span class="s2">th:href</span><span class="s3">=&quot;@{/static/css/cover.css}&quot; </span><span class="s2">rel</span><span class="s3">=&quot;stylesheet&quot; </span><span class="s0">/&gt;</span>
+  <span class="s0">&lt;/head&gt;</span>
+  <span class="s0">&lt;body </span><span class="s2">class</span><span class="s3">=&quot;d-flex h-100 text-center text-bg-dark&quot;</span><span class="s0">&gt;</span>
+    
+<span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;cover-container d-flex w-100 h-100 p-3 mx-auto flex-column&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;header </span><span class="s2">class</span><span class="s3">=&quot;mb-auto&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;div&gt;</span>
+      <span class="s0">&lt;h3 </span><span class="s2">class</span><span class="s3">=&quot;float-md-start mb-0&quot;</span><span class="s0">&gt;</span><span class="s1">☔☂️</span><span class="s0">&lt;/h3&gt;</span>
+      <span class="s0">&lt;nav </span><span class="s2">class</span><span class="s3">=&quot;nav nav-masthead justify-content-center float-md-end&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;a </span><span class="s2">class</span><span class="s3">=&quot;nav-link fw-bold py-1 px-0 active&quot; </span><span class="s2">aria-current</span><span class="s3">=&quot;page&quot; </span><span class="s2">href</span><span class="s3">=&quot;#&quot;</span><span class="s0">&gt;</span><span class="s1">Home</span><span class="s0">&lt;/a&gt;</span>
+        <span class="s0">&lt;a </span><span class="s2">class</span><span class="s3">=&quot;nav-link fw-bold py-1 px-0&quot; </span><span class="s2">href</span><span class="s3">=&quot;#&quot;</span><span class="s0">&gt;</span><span class="s1">Sign in</span><span class="s0">&lt;/a&gt;</span>
+        <span class="s0">&lt;a </span><span class="s2">class</span><span class="s3">=&quot;nav-link fw-bold py-1 px-0&quot; </span><span class="s2">href</span><span class="s3">=&quot;#&quot;</span><span class="s0">&gt;</span><span class="s1">Login</span><span class="s0">&lt;/a&gt;</span>
+      <span class="s0">&lt;/nav&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+  <span class="s0">&lt;/header&gt;</span>
+
+  <span class="s0">&lt;main </span><span class="s2">class</span><span class="s3">=&quot;px-3&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;h1&gt;</span><span class="s1">hi</span><span class="s0">&lt;/h1&gt;</span>
+    <span class="s0">&lt;p </span><span class="s2">class</span><span class="s3">=&quot;lead&quot;</span><span class="s0">&gt;</span><span class="s1">This is My new Toy Project. Is it raining today?</span><span class="s0">&lt;/p&gt;</span>
+    <span class="s0">&lt;p </span><span class="s2">class</span><span class="s3">=&quot;lead&quot;</span><span class="s0">&gt;</span>
+      <span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;#&quot; </span><span class="s2">class</span><span class="s3">=&quot;btn btn-lg btn-secondary fw-bold border-white bg-white&quot;</span><span class="s0">&gt;</span><span class="s1">go Weather</span><span class="s0">&lt;/a&gt;</span>
+    <span class="s0">&lt;/p&gt;</span>
+  <span class="s0">&lt;/main&gt;</span>
+
+  <span class="s0">&lt;footer </span><span class="s2">class</span><span class="s3">=&quot;mt-auto text-white-50&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;p&gt;</span><span class="s1">Cover template for </span><span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;https://getbootstrap.com/&quot; </span><span class="s2">class</span><span class="s3">=&quot;text-white&quot;</span><span class="s0">&gt;</span><span class="s1">Bootstrap</span><span class="s0">&lt;/a&gt;</span><span class="s1">, by </span><span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;https://twitter.com/mdo&quot; </span><span class="s2">class</span><span class="s3">=&quot;text-white&quot;</span><span class="s0">&gt;</span><span class="s1">@mdo</span><span class="s0">&lt;/a&gt;</span><span class="s1">.</span><span class="s0">&lt;/p&gt;</span>
+  <span class="s0">&lt;/footer&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+
+
+    
+  <span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span>
+</pre>
+</body>
+</html>

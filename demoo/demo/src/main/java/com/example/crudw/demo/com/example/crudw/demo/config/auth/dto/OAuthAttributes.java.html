@@ -1,0 +1,109 @@
+<html>
+<head>
+<title>OAuthAttributes.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+OAuthAttributes.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">auth</span><span class="s2">.</span><span class="s1">dto</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">Role</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">lombok</span><span class="s2">.</span><span class="s1">Builder</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">lombok</span><span class="s2">.</span><span class="s1">Getter</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Map</span><span class="s2">;</span>
+
+<span class="s1">@Getter</span>
+<span class="s0">public class </span><span class="s1">OAuthAttributes </span><span class="s2">{</span>
+    <span class="s0">private </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">attributes</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String nameAttributeKey</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String id</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String name</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String email</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String picture</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String registrationId</span><span class="s2">;</span>
+
+
+    <span class="s1">@Builder</span>
+    <span class="s0">public </span><span class="s1">OAuthAttributes</span><span class="s2">(</span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">attributes</span><span class="s2">, </span><span class="s1">String id</span><span class="s2">,</span><span class="s1">String nameAttributeKey</span><span class="s2">, </span><span class="s1">String name</span><span class="s2">, </span><span class="s1">String email</span><span class="s2">, </span><span class="s1">String picture</span><span class="s2">,</span><span class="s1">String registrationId</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">attributes </span><span class="s2">= </span><span class="s1">attributes</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">nameAttributeKey </span><span class="s2">= </span><span class="s1">nameAttributeKey</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">name </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">id </span><span class="s2">= </span><span class="s1">id</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">email </span><span class="s2">= </span><span class="s1">email</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">picture </span><span class="s2">= </span><span class="s1">picture</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">registrationId </span><span class="s2">= </span><span class="s1">registrationId</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public static </span><span class="s1">OAuthAttributes of</span><span class="s2">(</span><span class="s1">String registrationId</span><span class="s2">, </span><span class="s1">String userNameAttributeName</span><span class="s2">, </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">attributes</span><span class="s2">) {</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s3">&quot;naver&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">registrationId</span><span class="s2">)){</span>
+            <span class="s0">return </span><span class="s1">ofNaver</span><span class="s2">(</span><span class="s3">&quot;id&quot;</span><span class="s2">,</span><span class="s1">attributes</span><span class="s2">,</span><span class="s1">registrationId</span><span class="s2">);</span>
+        <span class="s2">}</span><span class="s0">else if</span><span class="s2">(</span><span class="s3">&quot;kakao&quot;</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">registrationId</span><span class="s2">)){</span>
+            <span class="s0">return </span><span class="s1">ofKaKao</span><span class="s2">(</span><span class="s3">&quot;id&quot;</span><span class="s2">,</span><span class="s1">attributes</span><span class="s2">,</span><span class="s1">registrationId</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">ofGoogle</span><span class="s2">(</span><span class="s1">userNameAttributeName</span><span class="s2">, </span><span class="s1">attributes</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s0">private static </span><span class="s1">OAuthAttributes ofKaKao</span><span class="s2">(</span><span class="s1">String userNameAttributeName</span><span class="s2">, </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">attributes</span><span class="s2">,</span><span class="s1">String registrationId</span><span class="s2">) {</span>
+        <span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">,</span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">response </span><span class="s2">= (</span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt;) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;kakao_account&quot;</span><span class="s2">);</span>
+        <span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">,</span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">account </span><span class="s2">= (</span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt;) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;profile&quot;</span><span class="s2">);</span>
+        <span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">,</span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">accounts </span><span class="s2">= (</span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt;) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;properties&quot;</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s1">OAuthAttributes</span><span class="s2">.</span><span class="s1">builder</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">name</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">accounts</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;nickname&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">email</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">response</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">registrationId</span><span class="s2">(</span><span class="s1">registrationId</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">attributes</span><span class="s2">(</span><span class="s1">attributes</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">nameAttributeKey</span><span class="s2">(</span><span class="s1">userNameAttributeName</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">build</span><span class="s2">();</span>
+
+    <span class="s2">}</span>
+    <span class="s1">@SuppressWarnings</span><span class="s2">(</span><span class="s3">&quot;unchecked&quot;</span><span class="s2">)</span>
+    <span class="s0">private static </span><span class="s1">OAuthAttributes ofNaver</span><span class="s2">(</span><span class="s1">String userNameAttributeName</span><span class="s2">, </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">attributes</span><span class="s2">,</span><span class="s1">String registrationId</span><span class="s2">) {</span>
+        <span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">response </span><span class="s2">= (</span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt;) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;response&quot;</span><span class="s2">);</span>
+        <span class="s1">String id </span><span class="s2">= (</span><span class="s1">String</span><span class="s2">) </span><span class="s1">response</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;id&quot;</span><span class="s2">);</span>
+
+
+        <span class="s0">return </span><span class="s1">OAuthAttributes</span><span class="s2">.</span><span class="s1">builder</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">name</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">response</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;name&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">email</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">response</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">registrationId</span><span class="s2">(</span><span class="s1">registrationId</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">attributes</span><span class="s2">(</span><span class="s1">response</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">nameAttributeKey</span><span class="s2">(</span><span class="s1">userNameAttributeName</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">build</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private static </span><span class="s1">OAuthAttributes ofGoogle</span><span class="s2">(</span><span class="s1">String userNameAttributeName</span><span class="s2">, </span><span class="s1">Map</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">, </span><span class="s1">Object</span><span class="s2">&gt; </span><span class="s1">attributes</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">OAuthAttributes</span><span class="s2">.</span><span class="s1">builder</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">name</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;name&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">email</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;email&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">id</span><span class="s2">((</span><span class="s1">String</span><span class="s2">)</span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;id&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">picture</span><span class="s2">((</span><span class="s1">String</span><span class="s2">) </span><span class="s1">attributes</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;picture&quot;</span><span class="s2">))</span>
+                <span class="s2">.</span><span class="s1">registrationId</span><span class="s2">(</span><span class="s3">&quot;google&quot;</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">attributes</span><span class="s2">(</span><span class="s1">attributes</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">nameAttributeKey</span><span class="s2">(</span><span class="s1">userNameAttributeName</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">build</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">User toEntity</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s1">User</span><span class="s2">.</span><span class="s1">builder</span><span class="s2">()</span>
+                <span class="s2">.</span><span class="s1">name</span><span class="s2">(</span><span class="s1">name</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">email</span><span class="s2">(</span><span class="s1">email</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">id</span><span class="s2">(</span><span class="s1">id</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">role</span><span class="s2">(</span><span class="s1">Role</span><span class="s2">.</span><span class="s1">GUEST</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">registrationId</span><span class="s2">(</span><span class="s1">registrationId</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">build</span><span class="s2">();</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

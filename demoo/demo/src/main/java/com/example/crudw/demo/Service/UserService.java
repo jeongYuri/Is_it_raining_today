@@ -7,10 +7,8 @@ import com.example.crudw.demo.Heart.HeartRepository;
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserUpdate;
 import com.example.crudw.demo.Member.UserRepository;
-import com.example.crudw.demo.Notification.EmitterRepository;
 import com.example.crudw.demo.comment.Comment;
 import com.example.crudw.demo.comment.CommentRepository;
-import com.example.crudw.demo.comment.CommentRequestDto;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +40,7 @@ public class UserService {
             List<Board> boardList = boardRepository.findByWriterName(user.getId());
 
             for (Board board : boardList) {
-                List<Heart> hearts = heartRepository.findByBoardNo(board.getNo());
+                List<Heart> hearts = heartRepository.findByBoardId(board.getNo());
                 heartRepository.deleteAll(hearts); //게시글 좋아요 다 삭제
                 commentRepository.deleteByBoardNo(board.getNo()); //댓글 삭제
                 boardRepository.deleteById(board.getNo()); //게시글 삭제
@@ -67,7 +65,7 @@ public class UserService {
             List<Board> boardList = boardRepository.findByWriterName(user.getName());
 
             for (Board board : boardList) {
-                List<Heart> hearts = heartRepository.findByBoardNo(board.getNo());
+                List<Heart> hearts = heartRepository.findByBoardId(board.getNo());
                 heartRepository.deleteAll(hearts); //게시글 좋아요 다 삭제
                 commentRepository.deleteByBoardNo(board.getNo()); //댓글 삭제
                 boardRepository.deleteById(board.getNo()); //게시글 삭제
@@ -101,7 +99,9 @@ public class UserService {
         return user;
     }
     public Long saveUser(User user) {
+        System.out.println(user.getNo());
         return userRepository.save(user).getNo();
+
     }
 
     public User getUser(Long no) {
@@ -120,6 +120,7 @@ public class UserService {
 
         return result;
     }
+
     public User findId(String name, String email){
         User founduser = userRepository.findByNameAndEmail(name, email);
         return founduser;

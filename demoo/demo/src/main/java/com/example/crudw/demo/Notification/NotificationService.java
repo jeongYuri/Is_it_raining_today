@@ -88,7 +88,6 @@ public class NotificationService {
     }*/
     private Notification createNotification(String user, Comment comment) {
         Long boardNo = comment.getBoardNo();
-        System.out.println(boardNo);
         Optional<Board> boardOptional = boardRepository.findById(boardNo);
         if (boardOptional.isPresent()) {
             Board board = boardOptional.get();
@@ -105,12 +104,11 @@ public class NotificationService {
             throw new EntityNotFoundException("게시글을 찾을 수 없습니다.");
         }
     }
+
     @Transactional
-    public NotificationsResponse findAllById(String userId) {
-        List<NotificationResponse> responses = notificationRepository.findByUser(userId).stream()
-                    .map(NotificationResponse::from)
-                    .collect(Collectors.toList());
-        return NotificationsResponse.of(responses);
+    public List<NotificationsResponse> findAllById(String userId) {
+        List<Notification> notifications = notificationRepository.findByUser(userId);
+        return NotificationsResponse.fromList(notifications); // 리스트 변환 후 반환
     }
     @Transactional
     public void deleteNotification(Long id){

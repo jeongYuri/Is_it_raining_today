@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>SqlCommentRepository.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SqlCommentRepository.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Repository</span><span class="s2">;</span>
+<span class="s3">/* 
+import com.example.crudw.demo.Board.Board; 
+import com.example.crudw.demo.comment.Comment; 
+import org.springframework.jdbc.core.JdbcTemplate; 
+import org.springframework.jdbc.core.RowCallbackHandler; 
+import org.springframework.jdbc.core.RowMapper; 
+ 
+import javax.sql.DataSource; 
+import java.time.LocalDateTime; 
+import java.util.List; 
+import java.util.Optional; 
+ 
+ 
+public class SqlCommentRepository  { 
+    private final JdbcTemplate jdbcTemplate; 
+    private static long sequence = 0L; 
+    public SqlCommentRepository(DataSource dataSource) { 
+        jdbcTemplate = new JdbcTemplate(dataSource); 
+    } 
+ 
+ 
+    public Comment save(Comment comment) { 
+        System.out.println(&quot;hi&quot;); 
+        comment.setWriter_no(++sequence); 
+        comment.setCreate_time(LocalDateTime.now()); 
+        comment.setModify_time(LocalDateTime.now()); 
+        System.out.println(&quot;hi&quot;); 
+        String sql = &quot;insert into comment(no,board_no,writer_no,writer_name,content,create_time,modify_time) values(?,?,?,?,?,?,?)&quot;; 
+        int result = jdbcTemplate.update(sql, comment.getNo(),comment.getBoard_no(),comment.getWriter_no(),comment.getWriter_name(),comment.getContent(),comment.getCreate_time(),comment.getModify_time()); 
+        System.out.println(&quot;complete&quot;); 
+        return comment; 
+    } 
+ 
+ 
+    public Comment commentupdate(Comment comment) { 
+        comment.setModify_time(LocalDateTime.now()); 
+        String sql = &quot;UPDATE comment SET content=?,modify_time=? WHERE no=?&quot;; 
+        jdbcTemplate.update(sql, comment.getContent(),comment.getModify_time(),comment.getNo()); 
+        return comment; 
+    } 
+ 
+ 
+    public void deleteById(Long no) { 
+        String sql = &quot;delete from comment where no=?&quot;; 
+        int result= jdbcTemplate.update(sql, no); 
+ 
+    } 
+ 
+ 
+    public void deleteByUserId(String writerName) { 
+        String sql = &quot;delete from comment where writer_name=?&quot;; 
+        int result= jdbcTemplate.update(sql, writerName); 
+    } 
+/* 
+    @Override 
+    public List&lt;Comment&gt; findById(String writerName) { 
+        String sql = &quot;select *from comment where writer_name=?&quot;; 
+        return jdbcTemplate.query(sql,commentRowMapper(), writerName); 
+    } 
+ 
+ 
+//    public List&lt;Comment&gt; findByBoardNoOrderByParentNoAscNoAsc(Long board_no) { 
+  //      return jdbcTemplate.query(&quot;SELECT * FROM comment WHERE board_no =? ORDER BY parent_no ASC, no ASC&quot;,commentRowMapper(),board_no); 
+ 
+    //} 
+ 
+    public List&lt;Comment&gt; findAll() { 
+        return jdbcTemplate.query(&quot;select *from comment&quot;,commentRowMapper()); 
+    } 
+ 
+    private RowMapper&lt;Comment&gt;commentRowMapper() { 
+        return ((rs, rowNum) -&gt; { 
+            Comment comment = new Comment(); 
+            comment.setNo(rs.getLong(&quot;no&quot;)); 
+            comment.setWriter_no(rs.getLong(&quot;writer_no&quot;)); 
+            comment.setWriter_name(rs.getString(&quot;writer_name&quot;)); 
+            comment.setContent(rs.getString(&quot;content&quot;)); 
+            comment.setBoard_no(rs.getLong(&quot;board_no&quot;)); 
+            comment.setCreate_time(rs.getObject(&quot;create_time&quot;, LocalDateTime.class)); 
+            comment.setModify_time(rs.getObject(&quot;modify_time&quot;, LocalDateTime.class)); 
+            return comment; 
+        }); 
+    } 
+ 
+ 
+    public Optional&lt;Comment&gt; findByNo(Long no) { 
+        String sql = &quot;select * from comment where no=?&quot;; 
+        List&lt;Comment&gt; list = jdbcTemplate.query(sql,commentRowMapper(),no); 
+        return list.stream().findAny(); 
+    } 
+} 
+*/</span></pre>
+</body>
+</html>

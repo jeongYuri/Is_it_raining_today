@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>alert.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #cf8e6d;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+alert.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s0">&gt;</span>
+
+<span class="s0">&lt;html </span><span class="s2">xmlns:th</span><span class="s3">=&quot;https://www.thymeleaf.org&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;head&gt;</span>
+  <span class="s0">&lt;meta </span><span class="s2">charset</span><span class="s3">=&quot;UTF-8&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;title&gt;</span><span class="s1">알림</span><span class="s0">&lt;/title&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body&gt;</span>
+<span class="s0">&lt;script&gt;</span>
+  <span class="s4">/*&lt;![CDATA[*/</span>
+  <span class="s5">var </span><span class="s1">msg = </span><span class="s3">&quot;[[${msg}]]&quot;</span><span class="s1">;</span>
+  <span class="s5">var </span><span class="s1">url = </span><span class="s3">&quot;[[${url}]]&quot;</span><span class="s1">;</span>
+  <span class="s4">/*]]&gt;*/</span>
+
+  <span class="s1">alert(msg);</span>
+  <span class="s1">window.location.href = url;</span>
+<span class="s0">&lt;/script&gt;</span>
+<span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span></pre>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<html>
+<head>
+<title>CommentService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #2aacb8;}
+.s5 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CommentService.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">BoardRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">UserRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Notification</span><span class="s2">.</span><span class="s1">NotificationService</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">comment</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">auth</span><span class="s2">.</span><span class="s1">dto</span><span class="s2">.</span><span class="s1">SessionUser</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">persistence</span><span class="s2">.</span><span class="s1">EntityNotFoundException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">transaction</span><span class="s2">.</span><span class="s1">Transactional</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">slf4j</span><span class="s2">.</span><span class="s1">Logger</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">slf4j</span><span class="s2">.</span><span class="s1">LoggerFactory</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">context</span><span class="s2">.</span><span class="s1">SecurityContextHolder</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDateTime</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">HashMap</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Map</span><span class="s2">;</span>
+
+
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">CommentService </span><span class="s2">{</span>
+    <span class="s0">private static final </span><span class="s1">Logger logger </span><span class="s2">= </span><span class="s1">LoggerFactory</span><span class="s2">.</span><span class="s1">getLogger</span><span class="s2">(</span><span class="s1">CommentService</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">CommentRepository commentRepository</span><span class="s2">;</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">BoardRepository boardRepository</span><span class="s2">;</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">NotificationService notificationService</span><span class="s2">;</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">UserRepository userRepository</span><span class="s2">;</span>
+
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">getCommentList</span><span class="s2">(</span><span class="s1">Long board_no</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">commentList </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByBoardNoOrderByParentNoAscNoAsc</span><span class="s2">(</span><span class="s1">board_no</span><span class="s2">); </span><span class="s3">//board 번호로 commentlist</span>
+        <span class="s0">return </span><span class="s1">commentList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentRequestDto</span><span class="s2">&gt; </span><span class="s1">getComments</span><span class="s2">(</span><span class="s1">Long boardNo</span><span class="s2">) { </span><span class="s3">//게시글의 댓글가져오기~</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">comments </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findAllByBoardNo</span><span class="s2">(</span><span class="s1">boardNo</span><span class="s2">);</span><span class="s3">//해당게시글 댓글 조회</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentRequestDto</span><span class="s2">&gt; </span><span class="s1">commentRequestDtoList </span><span class="s2">= </span><span class="s1">CommentRequestDtoList</span><span class="s2">(</span><span class="s1">comments</span><span class="s2">);</span><span class="s3">//comments를 CommentRequestDto로 변환</span>
+        <span class="s0">return </span><span class="s1">commentRequestDtoList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">private </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentRequestDto</span><span class="s2">&gt;</span><span class="s1">CommentRequestDtoList</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">comments</span><span class="s2">) { </span><span class="s3">//dto를 이용하여 parent 유무에 따른 값 저장</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentRequestDto</span><span class="s2">&gt; </span><span class="s1">commentRequestDtoList </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Comment comment </span><span class="s2">: </span><span class="s1">comments</span><span class="s2">) {</span>
+            <span class="s1">CommentRequestDto cmrd </span><span class="s2">= </span><span class="s0">new </span><span class="s1">CommentRequestDto</span><span class="s2">();</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setNo</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">());</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setContent</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">());</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setWriterName</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">());</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setWriterNo</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getWriterNo</span><span class="s2">());</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setBoardNo</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getBoardNo</span><span class="s2">());</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setCreateTime</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getCreateTime</span><span class="s2">()); </span><span class="s3">// 생성 시간 추가</span>
+            <span class="s1">cmrd</span><span class="s2">.</span><span class="s1">setModifyTime</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getModifyTime</span><span class="s2">()); </span><span class="s3">//수정시간</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">) {</span><span class="s3">//부모가 없다는 뜻</span>
+                <span class="s1">commentRequestDtoList</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">cmrd</span><span class="s2">); </span><span class="s3">//부모가 비었다? 그냥 저장</span>
+            <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+                <span class="s1">CommentRequestDto parentDto </span><span class="s2">= </span><span class="s1">findParent</span><span class="s2">(</span><span class="s1">commentRequestDtoList</span><span class="s2">, </span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">().</span><span class="s1">getNo</span><span class="s2">());</span><span class="s3">//부모가 있으니 부모 번호를 가져와서 저장</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">parentDto </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                    <span class="s1">parentDto</span><span class="s2">.</span><span class="s1">addChild</span><span class="s2">(</span><span class="s1">cmrd</span><span class="s2">);</span>
+                    <span class="s3">//parentDto.getChildren().add(cmrd);</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">commentRequestDtoList</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">private </span><span class="s1">CommentRequestDto findParent</span><span class="s2">(</span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentRequestDto</span><span class="s2">&gt; </span><span class="s1">commentRequestDtoList</span><span class="s2">, </span><span class="s1">Long parentNo</span><span class="s2">) {</span><span class="s3">//부모 찾기</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">CommentRequestDto dto </span><span class="s2">: </span><span class="s1">commentRequestDtoList</span><span class="s2">) {</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">dto</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">parentNo</span><span class="s2">)) {</span>
+                <span class="s0">return </span><span class="s1">dto</span><span class="s2">;</span>
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">dto</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">CommentRequestDto result </span><span class="s2">= </span><span class="s1">findParent</span><span class="s2">(</span><span class="s1">dto</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">(), </span><span class="s1">parentNo</span><span class="s2">);</span>
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">result </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                    <span class="s0">return </span><span class="s1">result</span><span class="s2">;</span>
+                <span class="s2">}</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s0">return null</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">Comment getComment</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">) {</span>
+        <span class="s1">Comment commentOpt </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByNo</span><span class="s2">(</span><span class="s1">no</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">commentOpt</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s3">/* 
+    public List&lt;Comment&gt; getComment(String writerName){ 
+       return commentRepository.findById(writerName); 
+ 
+    }*/</span>
+    <span class="s3">//public void deleteCommentById(String writerName){commentRepository.deleteByUserId(writerName);}</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">Comment saveComment</span><span class="s2">(</span><span class="s1">CommentRequestDto commentRequestDto</span><span class="s2">) {</span>
+        <span class="s3">//SessionUser sessionUser = (SessionUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();</span>
+        <span class="s3">//String currentUserName = sessionUser.getName();</span>
+        <span class="s3">//User user = userRepository.findByName(currentUserName);</span>
+        <span class="s3">//commentRequestDto.setWriterNo(user.getNo());</span>
+
+        <span class="s1">Long writerNo </span><span class="s2">= </span><span class="s0">null</span><span class="s2">;</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getWriterNo</span><span class="s2">() == </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getWriterNo</span><span class="s2">() &lt;= </span><span class="s4">0</span><span class="s2">) {</span>
+            <span class="s1">User user </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findByName</span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">());</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">user </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">writerNo </span><span class="s2">= </span><span class="s1">user</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">();</span>
+            <span class="s2">}</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s3">// writerNo가 이미 주어진 경우 그대로 사용합니다</span>
+            <span class="s1">writerNo </span><span class="s2">= </span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getWriterNo</span><span class="s2">();</span>
+        <span class="s2">}</span>
+
+        <span class="s1">Comment comment </span><span class="s2">= </span><span class="s1">Comment</span><span class="s2">.</span><span class="s1">builder</span><span class="s2">()</span>
+                        <span class="s2">.</span><span class="s1">boardNo</span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getBoardNo</span><span class="s2">())</span>
+                        <span class="s2">.</span><span class="s1">content</span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">())</span>
+                        <span class="s2">.</span><span class="s1">writerNo</span><span class="s2">(</span><span class="s1">writerNo</span><span class="s2">)</span>
+                        <span class="s2">.</span><span class="s1">writerName</span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">())</span>
+                        <span class="s2">.</span><span class="s1">build</span><span class="s2">();</span>
+
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">()!=</span><span class="s0">null</span><span class="s2">){</span><span class="s3">//부모 번호가 있다는것!!</span>
+                 <span class="s1">Comment parentComment </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByNo</span><span class="s2">(</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">());</span>
+                 <span class="s1">comment</span><span class="s2">.</span><span class="s1">updateParent</span><span class="s2">(</span><span class="s1">parentComment</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s1">Comment savedComment </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">);</span>
+        <span class="s1">Long boardNo </span><span class="s2">= </span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getBoardNo</span><span class="s2">();</span>
+        <span class="s1">Board board </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">boardNo</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">orElseThrow</span><span class="s2">(() </span><span class="s1">-&gt; </span><span class="s0">new </span><span class="s1">EntityNotFoundException</span><span class="s2">(</span><span class="s5">&quot;게시글을 찾을 수 없습니다.&quot;</span><span class="s2">));</span>
+        <span class="s3">// 댓글 작성자와 게시글 작성자가 다를 경우에만 알림을 보냄</span>
+        <span class="s0">if </span><span class="s2">(!</span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">().</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">())) {</span>
+            <span class="s1">notificationService</span><span class="s2">.</span><span class="s1">send</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">(), </span><span class="s1">savedComment</span><span class="s2">);</span>
+            <span class="s1">logger</span><span class="s2">.</span><span class="s1">info</span><span class="s2">(</span><span class="s5">&quot;알림 전송: 받는 사람={}, 내용={}&quot;</span><span class="s2">, </span><span class="s1">board</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">(), </span><span class="s1">commentRequestDto</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">savedComment</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s3">/* 
+    @Transactional 
+    public void notifyCommentCreation(CommentRequestDto commentRequestDto) { 
+        // 댓글을 저장하고 댓글 정보를 가져옴 
+        Comment savedComment = saveComment(commentRequestDto); 
+        System.out.println(savedComment + &quot;1212&quot;); 
+        // 게시글 정보를 가져옴 (여기서는 예시로 게시글 번호로 가져오는 것으로 가정) 
+        Long boardNo = commentRequestDto.getBoardNo(); 
+        Board board = boardRepository.findById(boardNo) 
+                .orElseThrow(() -&gt; new EntityNotFoundException(&quot;게시글을 찾을 수 없습니다.&quot;)); 
+        // 댓글 작성자와 게시글 작성자가 다를 경우에만 알림을 보냄 
+        if (!commentRequestDto.getWriterName().equals(board.getWriterName())) { 
+            notificationService.send(board.getWriterName(), savedComment, &quot;새로운 댓글이 달렸습니다!&quot;); 
+            logger.info(&quot;알림 전송: 받는 사람={}, 내용={}&quot;, board.getWriterName(), &quot;새로운 댓글이 달렸습니다!&quot;); 
+        } 
+    }*/</span>
+
+
+    <span class="s1">@Transactional</span>
+    <span class="s0">public void </span><span class="s1">deleteComment</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">) {</span>
+        <span class="s1">Comment comment </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findCommentByNo</span><span class="s2">(</span><span class="s1">no</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">size</span><span class="s2">()!= </span><span class="s4">0</span><span class="s2">) {</span>
+            <span class="s1">comment</span><span class="s2">.</span><span class="s1">changeIsDeleted</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span><span class="s3">//자식이 있으면 상태만 변경..</span>
+            <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">delete</span><span class="s2">(</span><span class="s1">getDeleteableParent</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">));</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+        <span class="s0">private </span><span class="s1">Comment getDeleteableParent</span><span class="s2">(</span><span class="s1">Comment comment</span><span class="s2">){ </span><span class="s3">//삭제 가능 조상 찾기</span>
+            <span class="s1">Comment parentNo </span><span class="s2">= </span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">();</span><span class="s3">//댓글의 부모 구하기</span>
+            <span class="s0">if</span><span class="s2">(</span><span class="s1">parentNo</span><span class="s2">!=</span><span class="s0">null </span><span class="s2">&amp;&amp; </span><span class="s1">parentNo</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">size</span><span class="s2">() == </span><span class="s4">1 </span><span class="s2">&amp;&amp; </span><span class="s1">parentNo</span><span class="s2">.</span><span class="s1">getIsDeleted</span><span class="s2">()==</span><span class="s0">true</span><span class="s2">)</span>
+                <span class="s3">//부모번호가 null값이 아니라면..상태가 true인 상태라면 삭제 가능</span>
+                <span class="s0">return </span><span class="s1">getDeleteableParent</span><span class="s2">(</span><span class="s1">parentNo</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">comment</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+
+
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">Comment updateComment</span><span class="s2">(</span><span class="s1">Long boardId</span><span class="s2">, </span><span class="s1">CommentUpdate updateDTO</span><span class="s2">) {</span>
+        <span class="s1">Comment comment </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">boardId</span><span class="s2">)</span>
+                <span class="s2">.</span><span class="s1">orElseThrow</span><span class="s2">(() </span><span class="s1">-&gt; </span><span class="s0">new </span><span class="s1">EntityNotFoundException</span><span class="s2">(</span><span class="s5">&quot;댓글을 찾을 수 없습니다.&quot;</span><span class="s2">));</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) { </span><span class="s3">//댓글 수정한다면</span>
+            <span class="s1">comment</span><span class="s2">.</span><span class="s1">setContent</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+
+
+    <span class="s0">public </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentWithBoardTitle</span><span class="s2">&gt; </span><span class="s1">CommentsWithBoardTitle</span><span class="s2">(</span><span class="s1">String writerName</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">myCommentList </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">writerName</span><span class="s2">); </span><span class="s3">// 내 댓글 목록</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">CommentWithBoardTitle</span><span class="s2">&gt; </span><span class="s1">commentsWithBoardTitle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Comment comment </span><span class="s2">: </span><span class="s1">myCommentList</span><span class="s2">) {</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Object</span><span class="s2">[]&gt; </span><span class="s1">boardTitles </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findBoardTitleByBoardNo</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getBoardNo</span><span class="s2">());</span>
+            <span class="s0">if </span><span class="s2">(!</span><span class="s1">boardTitles</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+                <span class="s1">String boardTitle </span><span class="s2">= (</span><span class="s1">String</span><span class="s2">) </span><span class="s1">boardTitles</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s4">0</span><span class="s2">)[</span><span class="s4">0</span><span class="s2">]; </span><span class="s3">// 첫 번째 원소 추출</span>
+                <span class="s1">CommentWithBoardTitle commentWithBoardTitle </span><span class="s2">= </span><span class="s0">new </span><span class="s1">CommentWithBoardTitle</span><span class="s2">(</span><span class="s1">boardTitle</span><span class="s2">, </span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">(), </span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getContent</span><span class="s2">(), </span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getBoardNo</span><span class="s2">(), </span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getModifyTime</span><span class="s2">());</span>
+                <span class="s1">commentsWithBoardTitle</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">commentWithBoardTitle</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s1">commentsWithBoardTitle</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+
+
+</pre>
+</body>
+</html>

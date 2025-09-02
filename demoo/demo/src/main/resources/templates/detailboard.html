@@ -84,7 +84,17 @@
         <a th:if="${session.id == board.writerName or (session.socialUser != null and session.socialUser.name == board.writerName)}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/update/post/'+${board.no}">수정</a>
         <a class="btn btn-secondary btn-sm text-white" type="button" href="/list">목록</a>
         <a th:if="${session.id == board.writerName or (session.socialUser != null and session.socialUser.name == board.writerName)}" class="btn btn-secondary btn-sm text-white" type="button" th:href="'/deletePost/'+${board.no}">삭제</a>
-        <a th:if="${not session.isEmpty()}" class="btn btn-secondary btn-sm text-white" id="like-button" type="button" th:data-boardno="${board.no}" th:data-id="${session.id}" th:data-liked="${like}"  onclick="likeheart(this)"><img id="heart-icon" th:src="@{(${like} > 0) ? '/icon/heart-fill.svg' : '/icon/heart.svg'}"></a>
+        <a th:if="${session != null and not session.isEmpty()}"
+           class="btn btn-secondary btn-sm text-white"
+           id="like-button"
+           type="button"
+           th:data-boardno="${board.no}"
+           th:data-writerno="${session.no}"
+           th:data-liked="${like}"
+           onclick="likeheart(this)">
+            <span th:text="${like ? '🖤' : '🩷'}"></span>
+        </a>
+
         <p>나의 좋아요: <span th:text="${like}"></span></p>
         <!-- 취소 버튼 -->
     </div>
@@ -310,12 +320,16 @@
 
     function likeheart(button) {
         var like = $(button).data('liked');
+        console.log(like);
         var no = $(button).data('boardno');
-        var id = $(button).data('id');
+        console.log(no+ "나는 boardNo야");
+        var id = $(button).data('writerno');
+        console.log(id+"나는 writerNo야");
         var heartIcon = document.getElementById('heart-icon');
 
         if (like > 0) {
             console.log(like + "좋아요 누름");
+            console.log("좋아요 요청 데이터:", { no, id });
             $.ajax({
                 url: '/' + no + '/unlike',
                 type: 'POST',
@@ -324,11 +338,11 @@
                     id: id
                 },
                 success: function () {
-                    heartIcon.src = '/icon/heart-fill.svg';
-                    location.reload();
+                    button.innerHTML = '🩷'; // 좋아요 취소 시 하트 변경
+                    $(button).data('liked', 0); // 상태 변경
                 },
                 error: function () {
-                    // 에러 처리 로직
+                    console.log("좋아요 취소 실패");
                 }
             });
         } else {
@@ -342,12 +356,12 @@
                     id: id
                 },
                 success: function () {
-                    heartIcon.src = '/icon/heart.svg';
-                    location.reload();
+                    button.innerHTML = '🖤'; // 좋아요 누를 시 하트 변경
+                    $(button).data('liked', 1); // 상태 변경
                 },
 
                 error: function () {
-                    // 에러 처리 로직
+                    console.log("좋아요 추가 실패");
                 }
             });
         }

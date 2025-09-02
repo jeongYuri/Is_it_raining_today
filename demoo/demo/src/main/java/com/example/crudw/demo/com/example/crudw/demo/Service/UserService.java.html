@@ -1,0 +1,198 @@
+<html>
+<head>
+<title>UserService.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+UserService.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">.</span><span class="s1">BoardRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Heart</span><span class="s2">.</span><span class="s1">Heart</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Heart</span><span class="s2">.</span><span class="s1">HeartRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">UserUpdate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">UserRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Notification</span><span class="s2">.</span><span class="s1">EmitterRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">Comment</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">CommentRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">CommentRequestDto</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta</span><span class="s2">.</span><span class="s1">transaction</span><span class="s2">.</span><span class="s1">Transactional</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">lombok</span><span class="s2">.</span><span class="s1">extern</span><span class="s2">.</span><span class="s1">slf4j</span><span class="s2">.</span><span class="s1">Slf4j</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Service</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+
+<span class="s1">@Slf4j</span>
+<span class="s1">@Service</span>
+<span class="s0">public class </span><span class="s1">UserService </span><span class="s2">{</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private  </span><span class="s1">UserRepository userRepository</span><span class="s2">;</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">BoardRepository boardRepository</span><span class="s2">;</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">CommentRepository commentRepository</span><span class="s2">;</span>
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">HeartRepository heartRepository</span><span class="s2">;</span>
+
+    <span class="s3">//public UserService(UserRepository userRepository) {</span>
+        <span class="s3">//this.userRepository = userRepository;</span>
+    <span class="s3">//}</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public void </span><span class="s1">deleteUser</span><span class="s2">(</span><span class="s1">String id</span><span class="s2">) {</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">User</span><span class="s2">&gt; </span><span class="s1">userOptional </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findUserById</span><span class="s2">(</span><span class="s1">id</span><span class="s2">); </span><span class="s3">//user를 찾을수도 있고 없을수도 있으니까~!!</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">userOptional</span><span class="s2">.</span><span class="s1">isPresent</span><span class="s2">()){ </span><span class="s3">//유저가 있다면</span>
+            <span class="s1">User user </span><span class="s2">= </span><span class="s1">userOptional</span><span class="s2">.</span><span class="s1">get</span><span class="s2">();</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">boardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+
+            <span class="s0">for </span><span class="s2">(</span><span class="s1">Board board </span><span class="s2">: </span><span class="s1">boardList</span><span class="s2">) {</span>
+                <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Heart</span><span class="s2">&gt; </span><span class="s1">hearts </span><span class="s2">= </span><span class="s1">heartRepository</span><span class="s2">.</span><span class="s1">findByBoardNo</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">());</span>
+                <span class="s1">heartRepository</span><span class="s2">.</span><span class="s1">deleteAll</span><span class="s2">(</span><span class="s1">hearts</span><span class="s2">); </span><span class="s3">//게시글 좋아요 다 삭제</span>
+                <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">deleteByBoardNo</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">()); </span><span class="s3">//댓글 삭제</span>
+                <span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">deleteById</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">()); </span><span class="s3">//게시글 삭제</span>
+
+            <span class="s2">}</span>
+
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">commentList </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+            <span class="s0">for </span><span class="s2">(</span><span class="s1">Comment comment </span><span class="s2">: </span><span class="s1">commentList</span><span class="s2">) {</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">()==</span><span class="s0">null</span><span class="s2">){</span><span class="s3">//부모 자식 관계 끊기</span>
+                    <span class="s1">deleteChildComments</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">); </span><span class="s3">//자식 댓글 삭제</span>
+                <span class="s2">}</span>
+                <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">deleteByWriterName</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">());</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+           <span class="s1">userRepository</span><span class="s2">.</span><span class="s1">deleteById</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+        <span class="s2">}</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public void </span><span class="s1">deleteSocialUser</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">) {</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">User</span><span class="s2">&gt; </span><span class="s1">userOptional </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findUserByName</span><span class="s2">(</span><span class="s1">name</span><span class="s2">); </span><span class="s3">//user를 찾을수도 있고 없을수도 있으니까~!!</span>
+        <span class="s0">if</span><span class="s2">(</span><span class="s1">userOptional</span><span class="s2">.</span><span class="s1">isPresent</span><span class="s2">()){ </span><span class="s3">//유저가 있다면</span>
+            <span class="s1">User user </span><span class="s2">= </span><span class="s1">userOptional</span><span class="s2">.</span><span class="s1">get</span><span class="s2">();</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Board</span><span class="s2">&gt; </span><span class="s1">boardList </span><span class="s2">= </span><span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+
+            <span class="s0">for </span><span class="s2">(</span><span class="s1">Board board </span><span class="s2">: </span><span class="s1">boardList</span><span class="s2">) {</span>
+                <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Heart</span><span class="s2">&gt; </span><span class="s1">hearts </span><span class="s2">= </span><span class="s1">heartRepository</span><span class="s2">.</span><span class="s1">findByBoardNo</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">());</span>
+                <span class="s1">heartRepository</span><span class="s2">.</span><span class="s1">deleteAll</span><span class="s2">(</span><span class="s1">hearts</span><span class="s2">); </span><span class="s3">//게시글 좋아요 다 삭제</span>
+                <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">deleteByBoardNo</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">()); </span><span class="s3">//댓글 삭제</span>
+                <span class="s1">boardRepository</span><span class="s2">.</span><span class="s1">deleteById</span><span class="s2">(</span><span class="s1">board</span><span class="s2">.</span><span class="s1">getNo</span><span class="s2">()); </span><span class="s3">//게시글 삭제</span>
+
+            <span class="s2">}</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">commentList </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByWriterName</span><span class="s2">(</span><span class="s1">user</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+            <span class="s0">for </span><span class="s2">(</span><span class="s1">Comment comment </span><span class="s2">: </span><span class="s1">commentList</span><span class="s2">) {</span>
+                <span class="s0">if</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">()==</span><span class="s0">null</span><span class="s2">){</span><span class="s3">//부모 자식 관계 끊기</span>
+                    <span class="s1">deleteChildComments</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">); </span><span class="s3">//자식 댓글 삭제</span>
+                <span class="s2">}</span>
+                <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">deleteByWriterName</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">());</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+        <span class="s1">userRepository</span><span class="s2">.</span><span class="s1">deleteByName</span><span class="s2">(</span><span class="s1">name</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s0">private void </span><span class="s1">deleteChildComments</span><span class="s2">(</span><span class="s1">Comment comment</span><span class="s2">) {     </span><span class="s3">// 부모 댓글에 속한 아이 댓글 삭제</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Comment</span><span class="s2">&gt; </span><span class="s1">childComments </span><span class="s2">= </span><span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">findByParentNo</span><span class="s2">(</span><span class="s1">comment</span><span class="s2">.</span><span class="s1">getParentNo</span><span class="s2">());</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">Comment childComment </span><span class="s2">: </span><span class="s1">childComments</span><span class="s2">) {</span>
+            <span class="s1">deleteChildComments</span><span class="s2">(</span><span class="s1">childComment</span><span class="s2">);</span>
+            <span class="s1">commentRepository</span><span class="s2">.</span><span class="s1">deleteByWriterName</span><span class="s2">(</span><span class="s1">childComment</span><span class="s2">.</span><span class="s1">getWriterName</span><span class="s2">());</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">User getUser</span><span class="s2">(</span><span class="s1">String id</span><span class="s2">){</span>
+        <span class="s1">User user </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s1">user</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">User getUserName</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">){</span>
+        <span class="s1">User user </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findByName</span><span class="s2">(</span><span class="s1">name</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">user</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">Long saveUser</span><span class="s2">(</span><span class="s1">User user</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">user</span><span class="s2">).</span><span class="s1">getNo</span><span class="s2">();</span>
+    <span class="s2">}</span>
+
+    <span class="s0">public </span><span class="s1">User getUser</span><span class="s2">(</span><span class="s1">Long no</span><span class="s2">) {</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">User</span><span class="s2">&gt; </span><span class="s1">userOpt </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">no</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">userOpt</span><span class="s2">.</span><span class="s1">orElse</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+
+    <span class="s0">public boolean </span><span class="s1">login</span><span class="s2">(</span><span class="s1">String id</span><span class="s2">, </span><span class="s1">String pw</span><span class="s2">) {</span>
+        <span class="s1">User user </span><span class="s2">= </span><span class="s1">getUser</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">user </span><span class="s2">== </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s0">return false</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s1">String storedPw </span><span class="s2">= </span><span class="s1">user</span><span class="s2">.</span><span class="s1">getPw</span><span class="s2">();</span>
+        <span class="s0">boolean </span><span class="s1">result </span><span class="s2">= </span><span class="s1">pw</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">storedPw</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s1">result</span><span class="s2">;</span>
+    <span class="s2">}</span>
+    <span class="s0">public </span><span class="s1">User findId</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">String email</span><span class="s2">){</span>
+        <span class="s1">User founduser </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findByNameAndEmail</span><span class="s2">(</span><span class="s1">name</span><span class="s2">, </span><span class="s1">email</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">founduser</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">User updateUser</span><span class="s2">(</span><span class="s1">String id</span><span class="s2">, </span><span class="s1">UserUpdate updateDTO</span><span class="s2">) {</span>
+        <span class="s1">User user </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">id</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setId</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPw</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setPw</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPw</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setName</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getEmail</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setEmail</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getEmail</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPhone</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setPhone</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPhone</span><span class="s2">());</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">user</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s1">@Transactional</span>
+    <span class="s0">public </span><span class="s1">User updatesocialUser</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">UserUpdate updateDTO</span><span class="s2">) {</span>
+        <span class="s1">User user </span><span class="s2">= </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">findByName</span><span class="s2">(</span><span class="s1">name</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setId</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getId</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPw</span><span class="s2">() == </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setPw</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPw</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setName</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getEmail</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setEmail</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getEmail</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPhone</span><span class="s2">() != </span><span class="s0">null</span><span class="s2">) {</span>
+            <span class="s1">user</span><span class="s2">.</span><span class="s1">setPhone</span><span class="s2">(</span><span class="s1">updateDTO</span><span class="s2">.</span><span class="s1">getPhone</span><span class="s2">());</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">user</span><span class="s2">);</span>
+    <span class="s2">}</span>
+    <span class="s0">public void </span><span class="s1">socialLogin</span><span class="s2">(</span><span class="s1">String code</span><span class="s2">, </span><span class="s1">String registrationId</span><span class="s2">) {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;code = &quot; </span><span class="s2">+ </span><span class="s1">code</span><span class="s2">);</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;registrationId = &quot; </span><span class="s2">+ </span><span class="s1">registrationId</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

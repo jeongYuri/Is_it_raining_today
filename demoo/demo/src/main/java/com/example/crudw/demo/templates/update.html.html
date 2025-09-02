@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>update.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+.s6 { color: #56a8f5;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+update.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html </span><span class="s2">lang</span><span class="s3">=&quot;ko&quot;</span><span class="s0">&gt;</span>
+
+<span class="s0">&lt;head&gt;</span>
+  <span class="s0">&lt;meta </span><span class="s2">charset</span><span class="s3">=&quot;UTF-8&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;meta </span><span class="s2">http-equiv</span><span class="s3">=&quot;X-UA-Compatible&quot; </span><span class="s2">content</span><span class="s3">=&quot;IE=edge&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;viewport&quot; </span><span class="s2">content</span><span class="s3">=&quot;width=device-width, initial-scale=1.0&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;title&gt;</span><span class="s1">✍️글쓰기✍️</span><span class="s0">&lt;/title&gt;</span>
+
+  <span class="s4">&lt;!-- Bootstrap CSS --&gt;</span>
+  <span class="s0">&lt;link </span><span class="s2">rel</span><span class="s3">=&quot;stylesheet&quot; </span><span class="s2">href</span><span class="s3">=&quot;https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;</span>
+        <span class="s2">integrity</span><span class="s3">=&quot;sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T&quot; </span><span class="s2">crossorigin</span><span class="s3">=&quot;anonymous&quot;</span><span class="s0">&gt;</span>
+
+  <span class="s0">&lt;style&gt;</span>
+    <span class="s0">body </span><span class="s1">{</span>
+      <span class="s2">min-height</span><span class="s1">: </span><span class="s5">100</span><span class="s3">vh</span><span class="s1">;</span>
+      <span class="s2">background</span><span class="s1">: </span><span class="s0">-webkit-gradient</span><span class="s1">(</span><span class="s3">linear</span><span class="s1">, </span><span class="s3">left bottom</span><span class="s1">, </span><span class="s3">right top</span><span class="s1">, </span><span class="s0">from</span><span class="s1">(</span><span class="s6">#92b5db</span><span class="s1">), </span><span class="s0">to</span><span class="s1">(</span><span class="s6">#1d466c</span><span class="s1">));</span>
+      <span class="s2">background</span><span class="s1">: </span><span class="s0">-webkit-linear-gradient</span><span class="s1">(</span><span class="s3">bottom left</span><span class="s1">, </span><span class="s6">#92b5db </span><span class="s5">0</span><span class="s1">%, </span><span class="s6">#1d466c </span><span class="s5">100</span><span class="s1">%);</span>
+      <span class="s2">background</span><span class="s1">: </span><span class="s0">-moz-linear-gradient</span><span class="s1">(</span><span class="s3">bottom left</span><span class="s1">, </span><span class="s6">#92b5db </span><span class="s5">0</span><span class="s1">%, </span><span class="s6">#1d466c </span><span class="s5">100</span><span class="s1">%);</span>
+      <span class="s2">background</span><span class="s1">: </span><span class="s0">-o-linear-gradient</span><span class="s1">(</span><span class="s3">bottom left</span><span class="s1">, </span><span class="s6">#92b5db </span><span class="s5">0</span><span class="s1">%, </span><span class="s6">#1d466c </span><span class="s5">100</span><span class="s1">%);</span>
+      <span class="s2">background</span><span class="s1">: </span><span class="s0">linear-gradient</span><span class="s1">(</span><span class="s3">to top right</span><span class="s1">, </span><span class="s6">#92b5db </span><span class="s5">0</span><span class="s1">%, </span><span class="s6">#1d466c </span><span class="s5">100</span><span class="s1">%);</span>
+    <span class="s1">}</span>
+
+    <span class="s1">.</span><span class="s0">input-form </span><span class="s1">{</span>
+      <span class="s2">max-width</span><span class="s1">: </span><span class="s5">680</span><span class="s3">px</span><span class="s1">;</span>
+      <span class="s2">margin-top</span><span class="s1">: </span><span class="s5">80</span><span class="s3">px</span><span class="s1">;</span>
+      <span class="s2">padding</span><span class="s1">: </span><span class="s5">32</span><span class="s3">px</span><span class="s1">;</span>
+      <span class="s2">background</span><span class="s1">: </span><span class="s6">#fff</span><span class="s1">;</span>
+      <span class="s2">-webkit-border-radius</span><span class="s1">: </span><span class="s5">10</span><span class="s3">px</span><span class="s1">;</span>
+      <span class="s2">-moz-border-radius</span><span class="s1">: </span><span class="s5">10</span><span class="s3">px</span><span class="s1">;</span>
+      <span class="s2">border-radius</span><span class="s1">: </span><span class="s5">10</span><span class="s3">px</span><span class="s1">;</span>
+      <span class="s2">-webkit-box-shadow</span><span class="s1">: </span><span class="s5">0 8</span><span class="s3">px </span><span class="s5">20</span><span class="s3">px </span><span class="s5">0 </span><span class="s0">rgba</span><span class="s1">(</span><span class="s5">0</span><span class="s1">, </span><span class="s5">0</span><span class="s1">, </span><span class="s5">0</span><span class="s1">, </span><span class="s5">0.15</span><span class="s1">);</span>
+      <span class="s2">-moz-box-shadow</span><span class="s1">: </span><span class="s5">0 8</span><span class="s3">px </span><span class="s5">20</span><span class="s3">px </span><span class="s5">0 </span><span class="s0">rgba</span><span class="s1">(</span><span class="s5">0</span><span class="s1">, </span><span class="s5">0</span><span class="s1">, </span><span class="s5">0</span><span class="s1">, </span><span class="s5">0.15</span><span class="s1">);</span>
+      <span class="s2">box-shadow</span><span class="s1">: </span><span class="s5">0 8</span><span class="s3">px </span><span class="s5">20</span><span class="s3">px </span><span class="s5">0 </span><span class="s0">rgba</span><span class="s1">(</span><span class="s5">0</span><span class="s1">, </span><span class="s5">0</span><span class="s1">, </span><span class="s5">0</span><span class="s1">, </span><span class="s5">0.15</span><span class="s1">)</span>
+    <span class="s1">}</span>
+  <span class="s0">&lt;/style&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body&gt;</span>
+<span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;container&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/savePost&quot; </span><span class="s2">method</span><span class="s3">=&quot;post&quot; </span><span class="s2">enctype</span><span class="s3">=&quot;multipart/form-data&quot; </span><span class="s0">&gt;</span>
+    <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;input-form-backgroud row&quot;</span><span class="s0">&gt;</span>
+      <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;input-form col-md-12 mx-auto&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;h3 </span><span class="s2">class</span><span class="s3">=&quot;mb-3&quot;</span><span class="s0">&gt;</span><span class="s1">✍️✍️</span><span class="s0">&lt;/h3&gt;</span>
+        <span class="s0">&lt;form </span><span class="s2">class</span><span class="s3">=&quot;validation-form&quot; </span><span class="s2">novalidate</span><span class="s0">&gt;</span>
+          <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;mb-3&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;tr </span><span class="s2">th:each</span><span class="s3">=&quot;board:${nboard}&quot;</span><span class="s0">&gt;&lt;/tr&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;hidden&quot; </span><span class="s2">class</span><span class="s3">=&quot;form-control&quot; </span><span class="s2">name</span><span class="s3">=&quot;no&quot; </span><span class="s2">id</span><span class="s3">=&quot;no&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${board.no}&quot; </span><span class="s2">required</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;name&quot;</span><span class="s0">&gt;</span><span class="s1">Title</span><span class="s0">&lt;/label&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">class</span><span class="s3">=&quot;form-control&quot; </span><span class="s2">name</span><span class="s3">=&quot;title&quot; </span><span class="s2">id</span><span class="s3">=&quot;title&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${board.title}&quot; </span><span class="s2">required</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;invalid-feedback&quot;</span><span class="s0">&gt;</span>
+              <span class="s1">제목을 입력해주세요!😨</span>
+            <span class="s0">&lt;/div&gt;</span>
+          <span class="s0">&lt;/div&gt;</span>
+          <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;mb-3&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;name&quot;</span><span class="s0">&gt;</span><span class="s1">Content</span><span class="s0">&lt;/label&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">class</span><span class="s3">=&quot;form-control&quot; </span><span class="s2">name</span><span class="s3">=&quot;content&quot; </span><span class="s2">id</span><span class="s3">=&quot;content&quot;  </span><span class="s2">style</span><span class="s3">=&quot;</span><span class="s2">height</span><span class="s1">:</span><span class="s5">300</span><span class="s3">px</span><span class="s1">;</span><span class="s2">font-size</span><span class="s1">:</span><span class="s5">15</span><span class="s3">px</span><span class="s1">;</span><span class="s3">&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${board.content}&quot;</span><span class="s2">required</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;invalid-feedback&quot;</span><span class="s0">&gt;</span>
+              <span class="s1">내용을 입력해주세요!😨</span>
+            <span class="s0">&lt;/div&gt;</span>
+          <span class="s0">&lt;/div&gt;</span>
+          <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;mb-3&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;name&quot;</span><span class="s0">&gt;</span><span class="s1">File</span><span class="s0">&lt;/label&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;file&quot; </span><span class="s2">class</span><span class="s3">=&quot;form-control&quot; </span><span class="s2">name</span><span class="s3">=&quot;newFile&quot; </span><span class="s2">id</span><span class="s3">=&quot;inputfile&quot; </span><span class="s2">value</span><span class="s3">=&quot;&quot;</span><span class="s0">&gt;</span>
+          <span class="s0">&lt;/div&gt;</span>
+          <span class="s0">&lt;div </span><span class="s2">style</span><span class="s3">=&quot; </span><span class="s2">text-align</span><span class="s1">: </span><span class="s3">center</span><span class="s1">;</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;btn btn-primary btn-sm&quot; </span><span class="s2">type</span><span class="s3">=&quot;submit&quot;</span><span class="s0">&gt;</span><span class="s1">수정</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;btn btn-primary btn-sm&quot; </span><span class="s2">type</span><span class="s3">=&quot;reset&quot;</span><span class="s0">&gt;</span><span class="s1">초기화</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;a </span><span class="s2">class</span><span class="s3">=&quot;btn btn-primary btn-sm&quot; </span><span class="s2">type</span><span class="s3">=&quot;button&quot; </span><span class="s2">href</span><span class="s3">=&quot;/list&quot;</span><span class="s0">&gt;</span><span class="s1">목록</span><span class="s0">&lt;/a&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;btn btn-primary btn-sm&quot; </span><span class="s2">type</span><span class="s3">=&quot;button&quot; </span><span class="s2">value</span><span class="s3">=&quot;뒤로가기&quot; </span><span class="s2">onclick</span><span class="s3">=&quot;</span><span class="s1">history.back();</span><span class="s3">&quot; </span><span class="s0">&gt;</span><span class="s1">취소</span><span class="s0">&lt;/button&gt;</span>
+          <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;/form&gt;</span>
+
+      <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;footer </span><span class="s2">class</span><span class="s3">=&quot;my-3 text-center text-small&quot;</span><span class="s0">&gt;</span>
+      <span class="s0">&lt;p </span><span class="s2">class</span><span class="s3">=&quot;mb-1&quot;</span><span class="s0">&gt;</span><span class="s6">&amp;copy;</span><span class="s1">2021 YD</span><span class="s0">&lt;/p&gt;</span>
+    <span class="s0">&lt;/footer&gt;</span>
+  <span class="s0">&lt;/form&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+<span class="s0">&lt;script&gt;</span>
+<span class="s0">&lt;/script&gt;</span>
+<span class="s0">&lt;/body&gt;</span>
+
+<span class="s0">&lt;/html&gt;</span></pre>
+</body>
+</html>

@@ -3,11 +3,13 @@ package com.example.crudw.demo.Weather;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@Table(name="region")
 public class Region {
     @Id
     @Column(name="id")
@@ -22,6 +24,5 @@ public class Region {
     }
 
     public Region() {
-
     }
 }

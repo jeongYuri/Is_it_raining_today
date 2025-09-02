@@ -29,7 +29,7 @@ public class WeatherController {
     @GetMapping("/weather")
     public String getWeather(@RequestParam("nx") String nx, @RequestParam("ny") String ny) throws Exception {
 
-        String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+        String apiUrl = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
         String serviceKey = "PXL4ObzaxgbrcVcEe5c8QTzAdF5bD9Y714d3X2Tus6DgtWsj10nEfjP6lUL6Z%2FAPd2pM1XQhuvJx%2BWrEo5%2BLfw%3D%3D";
         String dataType = "JSON";
         String numOfRows = "50";
@@ -63,7 +63,7 @@ public class WeatherController {
         if (ny.contains(".")) {
             ny = ny.substring(0, ny.indexOf("."));
         }
-        String url = apiUrl + "?serviceKey=" + serviceKey + "&nx=" + nx + "&ny=" + ny + "&base_date=" + base_date + "&base_time=" + base_time + "&dataType=" + dataType + "&numOfRows=" + numOfRows;
+        String url = apiUrl + "?serviceKey=" + serviceKey + "&numOfRows=" + numOfRows+"&nx=" +nx+ "&dataType=" + dataType+ "&base_date=" + base_date + "&base_time=" + base_time+ nx + "&ny=" + ny;
         JSONObject jsonObject = new JSONObject();
         HashMap<String, Object> resultMap = getDataFromJson(url, "UTF-8", "get", "");
         System.out.println("# RESULT :" + resultMap);

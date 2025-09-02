@@ -33,7 +33,7 @@ import org.apache.logging.log4j.*;
 @RequestMapping("/api")
 public class WeekController {
     private final EntityManager em;
-    private static final Logger logger = LogManager.getLogger(WeekController.class);
+    //private static final Logger logger = LogManager.getLogger(WeekController.class);
     public WeekController(EntityManager em) {
         this.em = em;
     }
@@ -41,7 +41,7 @@ public class WeekController {
     @PostMapping("/region")
     @Transactional
     public ResponseEntity<String> resetRegionList() {
-        String fileLocation = "C:\\Users\\storage\\init\\중기예보코드.csv";
+        String fileLocation = "C:\\Users\\hp\\IdeaProjects\\Is_it_raining_today\\demoo\\demo\\storage\\init\\중기예보코드.csv";
         Path path = Paths.get(fileLocation);
         URI uri = path.toUri();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -103,8 +103,8 @@ public class WeekController {
         HashMap<String, Object> items = (HashMap<String, Object>) body.get("items");
         ArrayList<HashMap<String, Object>> itemArray = (ArrayList<HashMap<String, Object>>) items.get("item");
         HashMap<String, Object> dataToSend = new HashMap<>();
-        for (HashMap<String, Object> item : itemArray) {
-            int taMin3=(int)item.get("taMin3");
+        /*for (HashMap<String, Object> item : itemArray) {
+            /*int taMin3=(int)item.get("taMin3");
             dataToSend.put("taMin3", taMin3);
             int taMax3 = (int)item.get("taMax3");
             dataToSend.put("taMax3",taMax3);
@@ -139,14 +139,39 @@ public class WeekController {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonData = objectMapper.writeValueAsString(dataToSend);
             System.out.println(jsonData);
+            return jsonData;*/
+        for (HashMap<String, Object> item : itemArray) {
+             // 발표 시간 (0600 or 1800)
+            if (tmFc == null) continue;
+
+            // 발표 시간이 0600일 경우 (4~10일 예보 포함)
+            if (tmFc.equals("0600")) {
+                int taMin4 = (int) item.getOrDefault("taMin4", 0);
+                dataToSend.put("taMin4", taMin4);
+                int taMax4 = (int) item.getOrDefault("taMax4", 0);
+                dataToSend.put("taMax4", taMax4);
+            }
+
+            // 5~10일 예보 (0600, 1800 공통)
+            for (int i = 5; i <= 10; i++) {
+                int taMin = (int) item.getOrDefault("taMin" + i, 0);
+                dataToSend.put("taMin" + i, taMin);
+                int taMax = (int) item.getOrDefault("taMax" + i, 0);
+                dataToSend.put("taMax" + i, taMax);
+            }
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonData = objectMapper.writeValueAsString(dataToSend);
+            System.out.println(jsonData);
             return jsonData;
+
         }
 
 
-
+        System.out.println(url);
         System.out.println("# RESULT :" + resultMap);
         jsonObject.put("result",resultMap);
-        return url;//이거 임시임 돌리지마..
+        return url;
     }
 
 

@@ -1,0 +1,101 @@
+<html>
+<head>
+<title>MysqlUserRepository.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MysqlUserRepository.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Repository</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Member</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">lombok</span><span class="s2">.</span><span class="s1">extern</span><span class="s2">.</span><span class="s1">slf4j</span><span class="s2">.</span><span class="s1">Slf4j</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">jdbc</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">JdbcTemplate</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">jdbc</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">RowMapper</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">sql</span><span class="s2">.</span><span class="s1">DataSource</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">time</span><span class="s2">.</span><span class="s1">LocalDateTime</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+<span class="s3">/* 
+@Slf4j 
+public class MysqlUserRepository { 
+    private final JdbcTemplate jdbcTemplate; 
+ 
+    public MysqlUserRepository(DataSource dataSource) { 
+ 
+        jdbcTemplate = new JdbcTemplate(dataSource); 
+    } 
+ 
+ 
+    public User save(User user) { 
+        user.setCreate_time(LocalDateTime.now()); 
+        String sql = &quot;insert into users(no,id,pw,name,email,phone,create_time) values(null,?,?,?,?,?,?)&quot;; 
+        int result = jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getCreate_time()); 
+        log.warn(&quot;Hi I'm {MysqlUserRepository} log&quot;, &quot;WARN&quot;); 
+        return user; 
+    } 
+ 
+ 
+    public void deleteById(String id) { 
+        String sql = &quot;delete from users where id=?&quot;; 
+        jdbcTemplate.update(sql, id); 
+    } 
+ 
+ 
+    public Optional&lt;User&gt; findById(Long no) { 
+        String sql = &quot;select * from users where no =?&quot;; 
+        List&lt;User&gt; list = jdbcTemplate.query(sql,userRowMapper(),no); 
+        return list.stream().findAny(); 
+    } 
+ 
+ 
+    public Optional&lt;User&gt; findById(String id) { 
+        String sql = &quot;select * from users where id =?&quot;; 
+        List&lt;User&gt; list = jdbcTemplate.query(sql,userRowMapper(),id); 
+        return list.stream().findAny(); 
+    } 
+ 
+ 
+    public User userUpdate(User user) { 
+        System.out.println(user); 
+        user.setModify_time(LocalDateTime.now()); 
+        String sql = &quot;update users set id=?,pw=?,name=?,email=?,phone=?,modify_time=? where no=?&quot;; 
+        jdbcTemplate.update(sql,user.getId(),user.getPw(),user.getName(),user.getEmail(),user.getPhone(),user.getModify_time(),user.getNo()); 
+        System.out.println(user); 
+        return  user; 
+    } 
+ 
+ 
+    public List&lt;User&gt;findAll(){ 
+ 
+        return jdbcTemplate.query(&quot;select *from users&quot;,userRowMapper()); 
+    } 
+ 
+    private RowMapper&lt;User&gt; userRowMapper() { 
+        return ((rs, rowNum) -&gt; { 
+            User user = new User(); 
+            user.setNo(rs.getLong(&quot;no&quot;)); 
+            user.setId(rs.getString(&quot;id&quot;)); 
+            user.setPw(rs.getString(&quot;pw&quot;)); 
+            user.setName(rs.getString(&quot;name&quot;)); 
+            user.setEmail(rs.getString(&quot;email&quot;)); 
+            user.setPhone(rs.getString(&quot;phone&quot;)); 
+            user.setCreate_time(rs.getObject(&quot;create_time&quot;,LocalDateTime.class)); 
+            user.setModify_time(rs.getObject(&quot;modify_time&quot;, LocalDateTime.class)); 
+            return user; 
+        }); 
+    } 
+}*/</span>
+</pre>
+</body>
+</html>

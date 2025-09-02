@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>CrudwApplication.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CrudwApplication.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">lombok</span><span class="s2">.</span><span class="s1">extern</span><span class="s2">.</span><span class="s1">slf4j</span><span class="s2">.</span><span class="s1">Slf4j</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">boot</span><span class="s2">.</span><span class="s1">SpringApplication</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">boot</span><span class="s2">.</span><span class="s1">autoconfigure</span><span class="s2">.</span><span class="s1">SpringBootApplication</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">boot</span><span class="s2">.</span><span class="s1">autoconfigure</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">servlet</span><span class="s2">.</span><span class="s1">SecurityAutoConfiguration</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">jpa</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">config</span><span class="s2">.</span><span class="s1">EnableJpaAuditing</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">nio</span><span class="s2">.</span><span class="s1">file</span><span class="s2">.</span><span class="s1">Path</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">nio</span><span class="s2">.</span><span class="s1">file</span><span class="s2">.</span><span class="s1">Paths</span><span class="s2">;</span>
+<span class="s1">@SpringBootApplication</span><span class="s2">(</span><span class="s1">exclude </span><span class="s2">= </span><span class="s1">SecurityAutoConfiguration</span><span class="s2">.</span><span class="s0">class</span><span class="s2">)</span>
+<span class="s1">@EnableJpaAuditing</span>
+<span class="s0">public class </span><span class="s1">CrudwApplication </span><span class="s2">{</span>
+	<span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+		<span class="s1">SpringApplication</span><span class="s2">.</span><span class="s1">run</span><span class="s2">(</span><span class="s1">CrudwApplication</span><span class="s2">.</span><span class="s0">class</span><span class="s2">, </span><span class="s1">args</span><span class="s2">);</span>
+
+		<span class="s1">Path path </span><span class="s2">= </span><span class="s1">Paths</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;storage/init/중기예보코드.csv&quot;</span><span class="s2">);</span>
+		<span class="s4">//System.out.println(path.toAbsolutePath().toString());</span>
+	<span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

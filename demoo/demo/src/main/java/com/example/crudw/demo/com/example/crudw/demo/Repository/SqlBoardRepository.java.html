@@ -1,0 +1,112 @@
+<html>
+<head>
+<title>SqlBoardRepository.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SqlBoardRepository.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">crudw</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">Repository</span><span class="s2">;</span>
+<span class="s3">/* 
+import com.example.crudw.demo.Board.Board; 
+import lombok.extern.slf4j.Slf4j; 
+import org.springframework.data.domain.Page; 
+import org.springframework.data.domain.Pageable; 
+import org.springframework.jdbc.core.JdbcTemplate; 
+import org.springframework.jdbc.core.RowMapper; 
+ 
+import javax.sql.DataSource; 
+import java.time.LocalDateTime; 
+import java.util.List; 
+import java.util.Optional; 
+@Slf4j 
+ 
+public class SqlBoardRepository{ 
+    private final JdbcTemplate jdbcTemplate; 
+    private static long sequence = 0L; 
+    //private static Map&lt;Long,Board&gt; store = new HashMap&lt;&gt;(); 
+ 
+    public SqlBoardRepository(DataSource dataSource){ 
+        jdbcTemplate = new JdbcTemplate(dataSource); 
+    } 
+ 
+ 
+    public Board insert(Board board) { 
+        board.setWriter_no(++sequence); 
+        board.setCreate_time(LocalDateTime.now()); // 현재 시간으로 설정 
+        board.setModify_time(LocalDateTime.now()); 
+        //store.put(board.getWriterNo(),board); 
+        String sql = &quot;insert into nboard(no,writer_no,writer_name,title,content,create_time,modify_time,hit,file_name,file_link) values(?,?,?,?,?,?,?,?,?,?)&quot;; 
+        int result = jdbcTemplate.update(sql, board.getNo(),board.getWriter_no(),board.getWriter_name(), board.getTitle(), board.getContent(), board.getCreate_time(), board.getModify_time(), board.getHit(), board.getFile_name(), board.getFile_link()); 
+        System.out.println(board); 
+        return board; 
+    } 
+ 
+    public Board boardupdate(Board board){ 
+        board.setModify_time(LocalDateTime.now()); 
+        String sql = &quot;UPDATE nboard SET title = ?, content = ?, modify_time=? WHERE no = ?&quot;; 
+        jdbcTemplate.update(sql, board.getTitle(), board.getContent(),board.getModify_time(), board.getNo()); 
+ 
+         return board; 
+    } 
+ 
+ 
+    public void hit(Long no) { 
+        String sql=&quot;UPDATE nboard SET hit = hit+1 WHERE no = ?&quot;; 
+        jdbcTemplate.update(sql,no); 
+    } 
+ 
+ 
+    public void deleteById(Long no) { 
+        String sql =&quot;delete from nboard where no = ?&quot;; 
+        int result = jdbcTemplate.update(sql,no); 
+    } 
+ 
+ 
+ 
+    public List&lt;Board&gt; findAll() { 
+        return jdbcTemplate.query(&quot;select *from nboard&quot;,boardRowMapper()); 
+    } 
+ 
+    private RowMapper&lt;Board&gt; boardRowMapper() { 
+        return ((rs, rowNum) -&gt; { 
+            Board board = new Board(); 
+            board.setNo(rs.getLong(&quot;no&quot;)); 
+            board.setWriter_no(rs.getLong(&quot;writer_no&quot;)); 
+            board.setWriter_name(rs.getString(&quot;writer_name&quot;)); 
+            board.setCreate_time(rs.getObject(&quot;create_time&quot;, LocalDateTime.class)); 
+            board.setModify_time(rs.getObject(&quot;modify_time&quot;, LocalDateTime.class)); 
+            board.setTitle(rs.getString(&quot;title&quot;)); 
+            board.setHit(rs.getInt(&quot;hit&quot;)); 
+            board.setContent(rs.getString(&quot;content&quot;)); 
+            board.setFile_name(rs.getString(&quot;file_name&quot;)); 
+            board.setFile_link(rs.getString(&quot;file_link&quot;)); 
+            return board; 
+        }); 
+    } 
+ 
+    public Optional&lt;Board&gt; findById(Long no) { 
+        String sql = &quot;select * from nboard where no =?&quot;; 
+        List&lt;Board&gt; list = jdbcTemplate.query(sql,boardRowMapper(),no); 
+        return list.stream().findAny(); 
+    } 
+ 
+ 
+    public List&lt;Board&gt; findByWriterName(String writerName) { 
+        String sql = &quot;select * from nboard where writer_name =?&quot;; 
+        return jdbcTemplate.query(sql,boardRowMapper(),writerName); 
+    } 
+ 
+ 
+}*/</span></pre>
+</body>
+</html>
