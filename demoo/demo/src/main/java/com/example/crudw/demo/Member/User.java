@@ -12,8 +12,12 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User extends TimeEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long no;
@@ -28,121 +32,55 @@ public class User extends TimeEntity implements UserDetails {
     @Column(nullable = false)
     private Role role = Role.DEFAULT;
 
-    public User() {
-
-    }
-
-    public Long getNo() {
-        return no;
-    }
-
-    public void setNo(Long no) {
-        this.no = no;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPw() {
-        return pw;
-    }
-
-    public void setPw(String pw) {
-        this.pw = pw;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    public String getRoleKey() {
-        return role.getKey();
-    }
-
-    public void setRegistrationId(String registrationId){this.registrationId =registrationId;}
-
-    public String getRole() {
-        if (role == null) {
-            return Role.DEFAULT.getKey();  // 기본값을 반환
-        }
-        return role.getKey();
-    }
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-
     @Builder
-    public User(String name, String email, String id, Role role,String registrationId) {
+    public User(String name, String email, String id, Role role, String registrationId, String pw) {
         this.name = name;
         this.email = email;
         this.id = id;
         this.role = (role == null) ? Role.DEFAULT : role;
         this.registrationId = registrationId;
+        this.pw = pw;
     }
 
-    public User update(String name) {
-        this.name = name;
-        this.id = id;
-        return this;
+    public String getRoleKey() {
+        return role.getKey();
     }
 
+    // UserDetails 메서드들을 올바르게 구현합니다.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.name()));  // 권한 반환
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
+
     @Override
     public String getPassword() {
-        return this.pw;  // 비밀번호 반환
+        return this.pw;
     }
 
+    // Spring Security의 고유 ID(username)를 반환하도록 수정
     @Override
     public String getUsername() {
-        return "";
+        return this.id;
     }
 
+    // 계정 상태를 true로 설정하여 정상 로그인 가능하도록 수정
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
-
 }

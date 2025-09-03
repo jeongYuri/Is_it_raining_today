@@ -6,20 +6,16 @@ import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserRepository;
 import com.example.crudw.demo.Notification.NotificationService;
 import com.example.crudw.demo.comment.*;
-import com.example.crudw.demo.config.auth.dto.SessionUser;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 
 @Service
@@ -104,25 +100,34 @@ public class CommentService {
 
         Long writerNo = null;
         if (commentRequestDto.getWriterNo() == null || commentRequestDto.getWriterNo() <= 0) {
-            User user = userRepository.findByName(commentRequestDto.getWriterName());
-            if (user != null) {
-                writerNo = user.getNo();
+            Optional<User> user = userRepository.findById(commentRequestDto.getWriterName());
+            if (user.isPresent()) {
+                writerNo = user.get().getNo();
+            } else {
+                logger.error("❌ 댓글 작성자를 찾을 수 없습니다. WriterName: {}", commentRequestDto.getWriterName());
+                return null; // 사용자 정보가 없으면 댓글 저장 실패
             }
         } else {
-            // writerNo가 이미 주어진 경우 그대로 사용합니다
+            // writerNo가 이미 주어진 경우 그대로 사용합니다.
             writerNo = commentRequestDto.getWriterNo();
         }
 
         Comment comment = Comment.builder()
-                        .boardNo(commentRequestDto.getBoardNo())
-                        .content(commentRequestDto.getContent())
-                        .writerNo(writerNo)
-                        .writerName(commentRequestDto.getWriterName())
-                        .build();
+                .boardNo(commentRequestDto.getBoardNo())
+                .content(commentRequestDto.getContent())
+                .writerNo(writerNo)
+                .writerName(commentRequestDto.getWriterName())
+                .build();
+
 
         if(commentRequestDto.getParentNo()!=null){//부모 번호가 있다는것!!
-                 Comment parentComment = commentRepository.findByNo(commentRequestDto.getParentNo());
-                 comment.updateParent(parentComment);
+            Optional<Comment> parentCommentOptional = commentRepository.findById(commentRequestDto.getParentNo());
+            if (parentCommentOptional.isPresent()) {
+                comment.updateParent(parentCommentOptional.get());
+            } else {
+                logger.error("❌ 부모 댓글이 존재하지 않습니다. ParentNo: {}", commentRequestDto.getParentNo());
+                // 부모 댓글이 없으면 대댓글이 아닌 일반 댓글로 처리하거나, 여기서 오류를 반환할 수 있습니다.
+            }
         }
         Comment savedComment = commentRepository.save(comment);
         Long boardNo = commentRequestDto.getBoardNo();

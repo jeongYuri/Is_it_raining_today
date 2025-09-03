@@ -14,7 +14,7 @@ public class CrudwApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CrudwApplication.class, args);
 
-		Path path = Paths.get("storage/init/중기예보코드.csv");
+		Path path = Paths.get("storage/init/weather_code.csv");
 		//System.out.println(path.toAbsolutePath().toString());
 	}
 

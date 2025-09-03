@@ -1,25 +1,18 @@
-package com.example.crudw.demo.config.auth;
+package com.example.crudw.demo.config;
 
 import com.example.crudw.demo.Member.User;
 import com.example.crudw.demo.Member.UserRepository;
-import com.example.crudw.demo.Service.UserService;
-import com.example.crudw.demo.config.auth.dto.OAuthAttributes;
-import com.example.crudw.demo.config.auth.dto.SessionUser;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.crudw.demo.config.dto.OAuthAttributes;
+import com.example.crudw.demo.config.dto.SessionUser;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

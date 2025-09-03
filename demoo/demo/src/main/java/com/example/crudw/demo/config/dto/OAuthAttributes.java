@@ -1,4 +1,4 @@
-package com.example.crudw.demo.config.auth.dto;
+package com.example.crudw.demo.config.dto;
 
 import com.example.crudw.demo.Member.Role;
 import com.example.crudw.demo.Member.User;

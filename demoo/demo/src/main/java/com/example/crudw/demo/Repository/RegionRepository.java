@@ -36,7 +36,7 @@ public class RegionRepository {
 
     @Transactional
     public void resetRegionList() {
-        String fileLocation = "init/중기예보코드.csv";
+        String fileLocation = "init/weather_code.csv";
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 new ClassPathResource(fileLocation).getInputStream()))) {
             System.out.println("📂 파일 로딩 성공! 경로: " + fileLocation);

@@ -1,14 +1,15 @@
 package com.example.crudw.demo.Controller;
 import com.example.crudw.demo.Board.Board;
+import com.example.crudw.demo.Board.BoardRepository;
 import com.example.crudw.demo.Heart.Heart;
+import com.example.crudw.demo.Heart.HeartRepository;
 import com.example.crudw.demo.Heart.HeartService;
-import com.example.crudw.demo.Member.User;
-import com.example.crudw.demo.Member.UserForm;
-import com.example.crudw.demo.Member.UserUpdate;
+import com.example.crudw.demo.Member.*;
 import com.example.crudw.demo.Service.BoardService;
 import com.example.crudw.demo.Service.CommentService;
 import com.example.crudw.demo.Service.UserService;
 import com.example.crudw.demo.comment.Comment;
+import com.example.crudw.demo.comment.CommentRepository;
 import com.example.crudw.demo.comment.CommentRequestDto;
 import com.example.crudw.demo.comment.CommentWithBoardTitle;
 import jakarta.persistence.EntityManager;
@@ -28,13 +29,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import com.example.crudw.demo.Member.Role;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,28 +46,66 @@ import java.util.Map;
 @Slf4j
 @Controller
 public class HomeController {
-    @Autowired
-    UserService userService;
-    @Autowired
-    BoardService boardService;
-    @Autowired
-    CommentService commentService;
-    @Autowired
-    HeartService heartService;
-    @Autowired
-    EntityManager em;
+    private final UserRepository userRepository;
+    private final BoardRepository boardRepository;
+    private final HeartRepository heartRepository;
+    private final CommentRepository commentRepository;
+    private final UserService userService;
+    private final BoardService boardService;
+    private final CommentService commentService;
+    public HomeController(UserRepository userRepository, BoardRepository boardRepository, HeartRepository heartRepository, CommentRepository commentRepository, UserService userService, BoardService boardService, CommentService commentService) {
+        this.userRepository = userRepository;
+        this.boardRepository = boardRepository;
+        this.heartRepository = heartRepository;
+        this.commentRepository = commentRepository;
+        this.userService = userService;
+        this.boardService = boardService;
+        this.commentService = commentService;
+    }
 
 
     @GetMapping(value = "/")
-    public String home() {
+    public String home(Model model, Principal principal, HttpSession session) {
+        String username = "Guest";
+        Long userNo = null;
+
+        if (principal != null) {
+            if (principal instanceof OAuth2AuthenticationToken) {
+                OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) principal;
+                String socialUsername = oauthToken.getPrincipal().getAttribute("name");
+                if (socialUsername == null || socialUsername.isEmpty()) {
+                    socialUsername = oauthToken.getPrincipal().getAttribute("id");
+                }
+                session.setAttribute("name", socialUsername);
+                username = socialUsername;
+
+                User user = userRepository.findByName(socialUsername)
+                        .orElse(null);
+                if (user != null) {
+                    userNo = user.getNo();
+                    session.setAttribute("userNo", userNo);
+                }
+            } else if (principal instanceof UsernamePasswordAuthenticationToken) {
+                username = principal.getName();
+                session.setAttribute("id", username);
+                User user = userRepository.findById(username)
+                        .orElse(null);
+                if (user != null) {
+                    userNo = user.getNo();
+                    session.setAttribute("userNo", userNo);
+                }
+            }
+        }
+        model.addAttribute("username", username);
         return "index";
     }
 
     @GetMapping(value="/loginhome")
-    public String loginhome(){return "loginhome";}
+    public String loginhome(){
+        return "loginhome";}
 
 
-
+/*
     @PostMapping(path = "/checkLogin")
     public String checkLogin(@RequestParam(value="id")String id,
                              @RequestParam(value="pw") String pw,
@@ -106,7 +146,7 @@ public class HomeController {
         model.addAttribute("username", username); // 사용자 ID를 모델에 추가
         String res = "redirect:/";
         return res;
-    }
+    }*/
 
     @ResponseBody
     @GetMapping("/login/oauth2/code/kakao")

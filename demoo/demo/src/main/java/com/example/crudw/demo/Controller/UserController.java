@@ -40,14 +40,11 @@ public class UserController {
     public String addUser(@ModelAttribute User user, Model model){
         boolean exist = userService.getUser(user.getId()) != null;
 
-        if (user.getRole() == null) {
-            user.setRole(Role.DEFAULT);  // setRole을 사용해서 기본값을 설정
-        }
         if (exist == true) {
             model.addAttribute("msg", "회원가입에 실패하였습니다.");
             model.addAttribute("url", "signup");
         } else {
-            Long no = userService.saveUser(user);
+            userService.save(user);
             model.addAttribute("msg", "회원가입에 성공하였습니다.");
             model.addAttribute("url", "login");
         }
@@ -58,6 +55,12 @@ public class UserController {
     @GetMapping(value = "/login")
     public String login(){
         return "login";
+    }
+
+
+    @PostMapping("/checkLogin")
+    public String checkLogin() {
+        return "redirect:/";
     }
 
     @PostMapping(path="/findId", produces = "application/json")
@@ -198,6 +201,8 @@ public class UserController {
 
         return "myPage";
     }
+
+
 }
 
 
